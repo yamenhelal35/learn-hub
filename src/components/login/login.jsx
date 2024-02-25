@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import logo from "../images/Logo.png";
 import Text from "../images/Text.svg";
-import './loginStyle.css'
+import "./loginStyle.css";
 // import { Box } from '@mui/material';
 
 const Login = () => {
@@ -46,20 +46,38 @@ const Login = () => {
     secondary: "#FAFAFA",
     buttons: "#968BC9",
   };
-  return (
 
-    <div className="w-full h-full flex flex-col lg:flex-row items-center">
-      {/* TopBar Section of Logo and Text */}
-      <section className="TopBar">
-        <div className="flex items-center justify-between p-4 lg:p-8">
-          <img src={logo} alt="Logo" className="w-24" />
-          <img src={Text} alt="Text" className="w-3/4 lg:w-auto ml-120" />
-        </div>
-      </section>
-      {/* Left Part: Login Form */}
-    
+  //flex-col lg:flex-row items-center
+  return (
+    <div className="w-full h-full flex items-start ">
+      <div className="w-1/2 h-screen flex items-start bg-[#FAFAFA]" >
+      <img src={logo} alt="Logo" className="w-52 p-4 lg:p-8" />
+
+
+
+      <div className="w-full flex flex-col">
+        <h3 className="text-2xl font-semibold mb-4 ">Login</h3>
+        <p className="text-sm mb-2">
+            Welcome To LearnHub, Start your Journey Now
+        </p>
+      </div>
+
+
+      </div>
     </div>
   );
+  
 };
 
 export default Login;
+
+
+
+
+// {/* First div with fixed position */}
+<div className="fixed top-0 left-0 w-full bg-white z-10">
+<div className="flex items-center justify-between p-4 lg:p-8">
+  <img src={logo} alt="Logo" className="w-24" />
+  <img src={Text} alt="Text" className="w-3/4 lg:w-auto ml-120" />
+</div>
+</div>
