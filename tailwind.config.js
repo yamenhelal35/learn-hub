@@ -7,7 +7,11 @@ module.exports = {
     extend: {
       margin:{
         '120': '38rem'
-      }
+      },
+      width:{
+        '96': '25rem',
+        '97': '27rem'
+        }
     },
   },
   plugins: [],
