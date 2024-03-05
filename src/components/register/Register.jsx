@@ -21,23 +21,29 @@ const colors = {
 
         <div className="w-full flex flex-col max-w-[550px]:">
           <div className="w-full flex flex-col mb-1">
-            <h3 className="text-4xl font-bold mb-4">Register</h3>
+            <h3 className="text-4xl font-bold mb-4">Register To LearnHub</h3>
             <p className="text-base mb-2">
               Welcome To LearnHub, Start your Journey Now</p>
           </div>
 
           {/* Form Register or Login */}
           <div className="w-full flex flex-col">
-            <input type="email"
+            <input type="Name"
+              placeholder="Name *"
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
+               <input type="email"
               placeholder="Email Address *"
               className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
             <input type="Password"
               placeholder="Password *"
               className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
+            <input type="Password"
+              placeholder="Re Enter Password *"
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
           </div>
           <div className="w-full flex flex-col my-4">
             <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
-              Login
+              Create Account
             </button>
           </div>
 
