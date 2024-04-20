@@ -2,6 +2,8 @@ import React from "react";
 import logo from "../images/Logo.png";
 import Service from "../images/Landing/Service.png"
 import AboutUs from "../images/Landing/About Us.png"
+// import Card from "./Card/card";
+
 
 const colors = {
   primary: "#FFFFFF",
@@ -98,28 +100,96 @@ function Landing() {
 
       {/* Main Content */}
       <main className="flex-grow p-8">
+        {/* Header Section */}
         <header>
-          <div className="absolute top-0 right-0 p-4">
-          <button className="">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 fill-[#8a8a8a]">
-              <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-            </svg>
-
-          </button>
-          <button></button>
-         
+          <div className="absolute top-0 right-0 p-4 flex space-x-4">
+            <button className="bg-[#968BC9] hover:bg-[#605d70] text-white py-0 px-8 rounded-sm">Join Now</button>
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 fill-[#8a8a8a]">
+                <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clipRule="evenodd" />
+              </svg>
+            </button>
           </div>
-
-
-          <img src={AboutUs} className="w-120 justify-center" alt="About" />
-
+          <img src={AboutUs} className="w-130 justify-center" alt="About" />
         </header>
+
         <br /><br />
+
+        {/* Service Section */}
         <section className="flex  flex-col justify-center items-center flex-grow">
           <h3 className="text-2xl font-bold">OUR SERVICE</h3>
           <img src={Service} className="w-120 justify-center" alt="Service" />
         </section>
+<br /><br /><br /><br /><br />
 
+<section className="flex justify-center flex-grow gap-8">
+  <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
+    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+    </div>
+    <div className="p-4">
+      <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+       Tailwind card
+      </h5>
+      <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
+      </p>
+    </div>
+    <div className="p-4 pt-0">
+      <button
+        data-ripple-light="true"
+        type="button"
+        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      >
+        Read More
+      </button>
+    </div>
+  </div>
+  <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
+    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+    </div>
+    <div className="p-4">
+      <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+       Tailwind card
+      </h5>
+      <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
+      </p>
+    </div>
+    <div className="p-4 pt-0">
+      <button
+        data-ripple-light="true"
+        type="button"
+        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      >
+        Read More
+      </button>
+    </div>
+  </div>
+  <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
+    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+    </div>
+    <div className="p-4">
+      <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+       Tailwind card
+      </h5>
+      <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
+      </p>
+    </div>
+    <div className="p-4 pt-0">
+      <button
+        data-ripple-light="true"
+        type="button"
+        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      >
+        Read More
+      </button>
+    </div>
+  </div>
+</section>
+
+
+{/* <Card></Card> */}
 
 
       </main>
