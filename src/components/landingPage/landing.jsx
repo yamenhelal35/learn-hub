@@ -62,7 +62,7 @@ function Landing() {
 
             </span>
             <a href="#" className="text-[#8a8a8a] font-medium">
-              Quizzes
+              Quizzesg
             </a>
           </li>
           <li className="flex items-center mb-2 hover:bg-[#dcd4ff] rounded-md p-3">
