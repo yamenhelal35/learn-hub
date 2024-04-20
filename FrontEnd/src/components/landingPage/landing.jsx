@@ -2,6 +2,8 @@ import React from "react";
 import logo from "../images/Logo.png";
 import Service from "../images/Landing/Service.png"
 import AboutUs from "../images/Landing/About Us.png"
+import Courses from "../images/Landing/Courses.png"
+
 // import Card from "./Card/card";
 
 
@@ -124,68 +126,28 @@ function Landing() {
 
 <section className="flex justify-center flex-grow gap-8">
   <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
-    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40">
+    <img src={Courses}/>
     </div>
     <div className="p-4">
       <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-       Tailwind card
+       Courses
       </h5>
       <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
+        Acess Hundreds of Courses for free and with paid bundles.
       </p>
     </div>
     <div className="p-4 pt-0">
       <button
         data-ripple-light="true"
         type="button"
-        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        className="select-none rounded-lg bg-[#968BC9] py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       >
         Read More
       </button>
     </div>
   </div>
-  <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
-    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
-    </div>
-    <div className="p-4">
-      <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-       Tailwind card
-      </h5>
-      <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
-      </p>
-    </div>
-    <div className="p-4 pt-0">
-      <button
-        data-ripple-light="true"
-        type="button"
-        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-      >
-        Read More
-      </button>
-    </div>
-  </div>
-  <div className="relative flex flex-col w-64 rounded-xl bg-white text-gray-700 shadow-md">
-    <div className="relative mx-4 -mt-6 h-32 overflow-hidden rounded-t-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
-    </div>
-    <div className="p-4">
-      <h5 className="mb-2 block font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-       Tailwind card
-      </h5>
-      <p className="block font-sans text-sm font-light leading-relaxed text-inherit antialiased">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.
-      </p>
-    </div>
-    <div className="p-4 pt-0">
-      <button
-        data-ripple-light="true"
-        type="button"
-        className="select-none rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-      >
-        Read More
-      </button>
-    </div>
-  </div>
+ 
 </section>
 
 
