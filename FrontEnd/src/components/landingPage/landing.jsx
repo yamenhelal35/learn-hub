@@ -1,5 +1,7 @@
 import React from "react";
 import logo from "../images/Logo.png";
+import Service from "../images/Landing/Service.png"
+import AboutUs from "../images/Landing/About Us.png"
 
 const colors = {
   primary: "#FFFFFF",
@@ -11,8 +13,8 @@ const colors = {
 function Landing() {
   return (
     <div className="flex bg-[#F4F0FF]">
-      {/* Sidebar */}
-      <aside className="bg-white text-black w-64 p-4 rounded-3xl flex flex-col font-sans">
+
+      <div className="bg-white text-black w-64 p-4 rounded-3xl flex flex-col font-sans">
         {/* Center the image and make it smaller */}
         <img src={logo} className="w-40 mt-4 mb-6" alt="Logo" />
         <ul>
@@ -62,7 +64,7 @@ function Landing() {
 
             </span>
             <a href="#" className="text-[#8a8a8a] font-medium">
-              Quizzesg
+              Quizzes
             </a>
           </li>
           <li className="flex items-center mb-2 hover:bg-[#dcd4ff] rounded-md p-3">
@@ -92,46 +94,34 @@ function Landing() {
           </li>
 
         </ul>
-      </aside>
+      </div>
 
       {/* Main Content */}
       <main className="flex-grow p-8">
-        <header className="bg-gray-800 text-white p-4">
-          <h1 className="text-2xl font-bold">Welcome to My Landing Page</h1>
-          <p>
-            This is a basic example of a landing page built with React and
-            Tailwind CSS.
-          </p>
-        </header>
-        <section className="bg-blue-500 text-white p-8">
-          <h2 className="text-3xl font-bold mb-4">
-            Discover Our Amazing Product
-          </h2>
-          <p className="text-lg mb-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut gravida
-            libero nec suscipit tristique.
-          </p>
-          <button className="bg-white text-blue-500 font-semibold py-2 px-4 rounded hover:bg-blue-400 hover:text-white">
-            Learn More
+        <header>
+          <div className="absolute top-0 right-0 p-4">
+          <button className="">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 fill-[#8a8a8a]">
+              <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+            </svg>
+
           </button>
+          <button></button>
+         
+          </div>
+
+
+          <img src={AboutUs} className="w-120 justify-center" alt="About" />
+
+        </header>
+        <br /><br />
+        <section className="flex  flex-col justify-center items-center flex-grow">
+          <h3 className="text-2xl font-bold">OUR SERVICE</h3>
+          <img src={Service} className="w-120 justify-center" alt="Service" />
         </section>
-        <section className="p-8">
-          <h2 className="text-3xl font-bold mb-4">Features</h2>
-          <div className="mb-4">
-            <h3 className="text-2xl font-bold mb-2">Feature 1</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-2xl font-bold mb-2">Feature 2</h3>
-            <p>Ut gravida libero nec suscipit tristique.</p>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-2xl font-bold mb-2">Feature 3</h3>
-            <p>
-              Sed euismod lacus non justo tristique, nec hendrerit elit rhoncus.
-            </p>
-          </div>
-        </section>
+
+
+
       </main>
     </div>
   );

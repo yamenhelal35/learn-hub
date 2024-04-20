@@ -10,7 +10,8 @@ module.exports = {
       },
       width:{
         '96': '25rem',
-        '97': '27rem'
+        '97': '27rem',
+        '120': '50rem'
         }
     },
   },
