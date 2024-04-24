@@ -1,8 +1,9 @@
 // Login.js
 import jwt_decode from "jwt-decode";
 import React, { useState } from "react";
-import Text from "../images/Text.svg";
-import logo2 from "../images/login-promotion 1.png";
+import Text from "../login/Text.svg";
+
+import logo2 from "../login/login-promotion 1.png";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from '@react-oauth/google';
 import "./loginStyle.css";
@@ -35,11 +36,7 @@ const Login = () => {
     console.log("Username:", username);
     console.log("Password:", password);
   };
-  const colors = {
-    primary: "#FFFFFF",
-    secondary: "#FAFAFA",
-    buttons: "#968BC9",
-  };
+
 
   //flex-col lg:flex-row items-center
   return (
@@ -68,9 +65,11 @@ const Login = () => {
             />
           </div>
           <div className="w-full flex flex-col my-4">
+            <Link to="Home">
             <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
               Login
             </button>
+            </Link>
           </div>
 
           <div className="w-full flex items-center justify-center relative py-2">
@@ -90,18 +89,14 @@ const Login = () => {
               }}
             />
 
-<Link to="/register">
-            <button className=" bg-[#c1c1c1] rounded-md  p-2 w-60 text-center text-white flex items-center justify-center">
-             Create new Account 
-            </button>
+            <Link to="/register">
+              <button className=" bg-[#c1c1c1] rounded-md  p-2 w-60 text-center text-white flex items-center justify-center">
+                Create new Account
+              </button>
             </Link>
           </div>
         </div>
       </div>
-
-
-
-{/* //////////////////////////////////////////////////////////////////////////////// */}
 
 
       {/* Right Part Logo and Button */}

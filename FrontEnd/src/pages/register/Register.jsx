@@ -1,18 +1,12 @@
 // Register 
 //imports 
 import React, { useState } from "react";
-import logo from "../images/Logo.png";
-import Text from "../images/Text.svg";
-import logo2 from "../images/login-promotion 1.png";
-import github from "../images/github-svgrepo-com.svg"
+import Text from "../login/Text.svg";
+import logo2 from "../login/login-promotion 1.png";
 import { Link } from 'react-router-dom';
 // consts 
 const Register = () => {
-const colors = {
-    primary: "#FFFFFF",
-    secondary: "#FAFAFA",
-    buttons: "#968BC9",
-  };
+
 
   return (
     <div className="w-full h-full flex items-start ">
