@@ -32,13 +32,12 @@ function App() {
     //<Dashboard/> 
     <Router>
       <Routes>
+
         <Route exact path="/Community" element={<Community communityData={communityData} />} />
         <Route exact path="/CreateCommunity" element={<CreateCommunity onSave={handleSaveCommunity} />} />
-
-
-        {/* <Route exact path="/" element={<Login />} /> */}
-        {/* <Route exact path="/register" element={<Register />} /> */}
-        {/* <Route exact path="/Home" element={<Landing />} /> */}
+        <Route exact path="/" element={<Login />} />
+        <Route exact path="/register" element={<Register />} />
+        <Route exact path="/Home" element={<Landing />} />
         {/* <Landing></Landing> */}
       </Routes>
     </Router>
