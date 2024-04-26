@@ -22,7 +22,7 @@ const Dashboard = () => {
     <div>
    <Sidebar/>
    <div className="flex-grow p-8 ml-64 flex flex-col justify-center bg-[#F4F0FF]">
-    <CalendarComponent events={events />
+    <CalendarComponent events={events} />
      
    </div>
 </div>
