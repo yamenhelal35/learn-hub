@@ -1,4 +1,6 @@
 const CommunityService = require('../Service/communityService')
+const { uploadFile } = require('../Config/firebaseeconfig')
+const admin = require('firebase-admin')
 
 class CommunityController {
   constructor () {
@@ -7,16 +9,17 @@ class CommunityController {
 
   async addNewCommunity (req, res) {
     try {
-      const userId = req.decodedUserId
-      const userName = req.username
-
+      const userId = req.mongouserId
+      const username = req.username
+      console.log(`userId: ${userId}`)
+      console.log(`username: ${username}`)
       const community = {
         ownerID: userId,
         name: req.body.name,
         isOwner: true,
         members: [{
           _id: userId,
-          username: userName
+          username
         }]
       }
       console.log(`community data: ${JSON.stringify(community)}`)
@@ -45,13 +48,9 @@ class CommunityController {
   async joinCommunity (req, res) {
     try {
       const communityId = req.params.communityId
-      const userId = req.decodedUserId
+      const userId = req.mongouserId
       const username = req.username
       let isOwner = false
-
-      console.log(`Community ID: ${communityId}`)
-      console.log(`User ID: ${userId}`)
-      console.log(`Username: ${username}`)
 
       const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username)
       console.log(`Updated Community: ${JSON.stringify(updatedCommunity)}`)
@@ -69,7 +68,7 @@ class CommunityController {
 
   async getAllForUser (req, res) {
     try {
-      const userId = req.decodedUserId
+      const userId = req.mongouserId
       const communities = await this.communityService.getAllCommunitiesforuser(userId)
 
       const updatedCommunities = []
@@ -82,6 +81,25 @@ class CommunityController {
       res.json({ communities: updatedCommunities })
     } catch (err) {
       res.status(400).json({ message: err.message })
+    }
+  }
+
+  async uploadFile (req, res) {
+    try {
+      const file = req.file
+      const userId = req.mongouserId
+      const communityId = req.params.communityId
+
+      if (!file) {
+        return res.status(400).json({ error: 'No file uploaded.' })
+      }
+
+      const result = await this.communityService.uploadFile(communityId, userId, file)
+
+      res.json(result)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
     }
   }
 }
