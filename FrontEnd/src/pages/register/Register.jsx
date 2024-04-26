@@ -1,45 +1,118 @@
-// Register 
-//imports 
 import React, { useState } from "react";
 import Text from "../login/Text.svg";
 import logo2 from "../login/login-promotion 1.png";
-import { Link } from 'react-router-dom';
-// consts 
-const Register = () => {
+import { Link } from "react-router-dom";
 
+function Register() {
+  const [data, setData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
+  const handleInputChange = (e) => {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    console.log("Data before sending:", data);
+    
+    if (!data.email.includes("@") || !data.email.includes(".")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (data.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const userRegistrationData = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      };
+
+      const response = await fetch("http://localhost:8002/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userRegistrationData),
+      });
+      console.log("Response status:", response.status);
+      console.log("Response body:", await response.json());
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      // Handle successful registration (e.g., redirect, display message)
+      alert("Registration successful!");
+      // Potentially redirect user to a different page
+    } catch (error) {
+      console.error("Error registering user:", error);
+      // Display error message to user
+    }
+  };
   return (
     <div className="w-full h-full flex items-start ">
       {/* Left Part Form and Login */}
-      <div className="w-1/2 h-screen flex flex-col p-10  justify-between bg-[#FAFAFA]" >
-
+      <div className="w-1/2 h-screen flex flex-col p-10 justify-between bg-[#FAFAFA]">
         <div className="w-full flex flex-col max-w-[550px]:">
           <div className="w-full flex flex-col mb-1">
             <h3 className="text-4xl font-bold mb-4">Register To LearnHub</h3>
-            <p className="text-base mb-2">
-              Welcome To LearnHub, Start your Journey Now</p>
+            <p className="text-base mb-2">Welcome To LearnHub, Start your Journey Now</p>
           </div>
 
-          {/* Form Register or Login */}
           <div className="w-full flex flex-col">
-            <input type="Name"
+            <input
+              type="text"
+              id="username"
+              value={data.username}
+              onChange={handleInputChange}
               placeholder="Name *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
-               <input type="email"
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+            />
+            <input
+              type="email"
+              id="email"
+              value={data.email}
+              onChange={handleInputChange}
               placeholder="Email Address *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
-            <input type="Password"
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+            />
+            <input
+              type="password"
+              id="password"
+              value={data.password}
+              onChange={handleInputChange}
               placeholder="Password *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
-            <input type="Password"
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+            />
+            <input
+              type="password"
+              id="confirmPassword"
               placeholder="Re Enter Password *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none" />
+              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+              onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
+            />
           </div>
           <div className="w-full flex flex-col my-4">
-            <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
+            <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center" onClick={handleSubmit}>
               Create Account
             </button>
           </div>
+
 
          
 

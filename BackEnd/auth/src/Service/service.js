@@ -11,8 +11,8 @@ class AuthService {
   validateUserData (data) {
     const schema = joi.object({
       username: joi.string().required().label('UserName'),
-      firstname: joi.string().required().label('First Name'),
-      lastname: joi.string().required().label('Last Name'),
+      firstname: joi.string().label('First Name'),
+      lastname: joi.string().label('Last Name'),
       email: joi.string().email().required().label('Email'),
       password: joi.string().required().label('Password')
     })
