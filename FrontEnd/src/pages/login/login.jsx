@@ -7,9 +7,10 @@ import logo2 from "../login/login-promotion 1.png";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from '@react-oauth/google';
 import "./loginStyle.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+/*   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -36,7 +37,56 @@ const Login = () => {
     console.log("Username:", username);
     console.log("Password:", password);
   };
+ */
 
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+  };
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Data before sending:", data);
+
+
+    if (!data.email.includes("@") || !data.email.includes(".")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!data.email || !data.password) {
+      alert("Please enter both email and password");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8002/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed: " + (await response.text()));
+      }
+
+      const loginData = await response.json(); // Parse response data
+
+      navigate('/home')
+      // Handle successful login (e.g., store token, redirect to dashboard)
+      console.log("Login successful:", loginData);
+      navigate("/home"); // Assuming a dashboard route
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
 
   //flex-col lg:flex-row items-center
   return (
@@ -55,18 +105,22 @@ const Login = () => {
           <div className="w-full flex flex-col">
             <input
               type="email"
+              id="email"
+              onChange={handleInputChange}
               placeholder="Email Address *"
               className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
             />
             <input
               type="Password"
+              id="password"
+              onChange={handleInputChange}
               placeholder="Password *"
               className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
             />
           </div>
           <div className="w-full flex flex-col my-4">
             <Link to="Home">
-            <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
+            <button onClick={handleSubmit} className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
               Login
             </button>
             </Link>
