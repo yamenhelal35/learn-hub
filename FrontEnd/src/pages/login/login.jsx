@@ -79,10 +79,8 @@ const Login = () => {
 
       const loginData = await response.json(); // Parse response data
 
-      navigate('/home')
-      // Handle successful login (e.g., store token, redirect to dashboard)
       console.log("Login successful:", loginData);
-      navigate("/home"); // Assuming a dashboard route
+      navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
     }

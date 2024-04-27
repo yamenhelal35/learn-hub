@@ -17,7 +17,7 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     console.log("Data before sending:", data);
     
     if (!data.email.includes("@") || !data.email.includes(".")) {
@@ -56,12 +56,9 @@ function Register() {
         throw new Error(`Error: ${response.statusText}`);
       }
 
-      // Handle successful registration (e.g., redirect, display message)
       alert("Registration successful!");
-      // Potentially redirect user to a different page
     } catch (error) {
       console.error("Error registering user:", error);
-      // Display error message to user
     }
   };
   return (
