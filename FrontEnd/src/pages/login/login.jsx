@@ -78,9 +78,15 @@ const Login = () => {
       }
 
       const loginData = await response.json(); // Parse response data
+      
+      if(loginData){
 
-      console.log("Login successful:", loginData);
-      navigate("/home");
+        localStorage.setItem("Token", loginData.token);
+
+        console.log("Login successful:", loginData);
+        navigate("/home");        
+      }
+
     } catch (error) {
       console.error("Login error:", error);
     }
