@@ -92,6 +92,7 @@ class AuthController {
       const token = await userCredential.user.getIdToken(true)
 
       console.log('token :', token)
+      res.cookie('token', token, { httpOnly: true })
       res.json({ message: 'Authentication successful', token })
     } catch (error) {
       const errorCode = error.code

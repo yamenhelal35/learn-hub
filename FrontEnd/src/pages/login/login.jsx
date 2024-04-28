@@ -80,9 +80,7 @@ const Login = () => {
       const loginData = await response.json(); // Parse response data
       
       if(loginData){
-
-        localStorage.setItem("Token", loginData.token);
-
+        document.cookie = `token=${loginData.token}; SameSite=Strict; Secure`;
         console.log("Login successful:", loginData);
         navigate("/home");        
       }
