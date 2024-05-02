@@ -3,7 +3,7 @@ const { admin } = require('../Config/firebaseeconfig')
 
 dotenv.config()
 
-async function readCookie (req, res, next) {
+/* async function readCookie (req, res, next) {
   try {
     const tokenCookie = req.cookies.token
     const token = tokenCookie || null
@@ -16,10 +16,11 @@ async function readCookie (req, res, next) {
     res.status(500).json({ message: 'Internal Server Error' })
     next(error)
   }
-}
+} */
 
 async function userFromToken (req, res, next) {
   const tokenHeader = req.headers.authorization
+  console.log(`req.headers : ${req.headers}`)
 
   if (!tokenHeader) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' })
@@ -41,4 +42,4 @@ async function userFromToken (req, res, next) {
   next()
 }
 
-module.exports = { readCookie, userFromToken }
+module.exports = { userFromToken }

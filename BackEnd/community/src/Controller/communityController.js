@@ -70,14 +70,13 @@ class CommunityController {
     try {
       const userId = req.mongouserId
       const communities = await this.communityService.getAllCommunitiesforuser(userId)
-
       const updatedCommunities = []
 
       for (const community of communities) {
+        const communityName = community.name
         const [updatedCommunity, isOwner] = await this.communityService.updateIsOwner(community._id, userId)
-        updatedCommunities.push({ ...updatedCommunity.toObject(), isOwner })
+        updatedCommunities.push({ ...updatedCommunity.toObject(), communityName, isOwner })
       }
-
       res.json({ communities: updatedCommunities })
     } catch (err) {
       res.status(400).json({ message: err.message })
