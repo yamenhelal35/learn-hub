@@ -10,7 +10,8 @@ const CommunitySchema = new mongoose.Schema(
     name: { type: String, required: true, unique: false },
     ownerID: { type: String, required: false, unique: false },
     isOwner: { type: Boolean, required: false, unique: false },
-    members: [MemberSchema]
+    members: [MemberSchema],
+    files: { type: Array, required: false }
   },
   { timestamps: true }
 )

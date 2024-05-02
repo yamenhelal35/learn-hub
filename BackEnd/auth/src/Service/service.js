@@ -11,8 +11,8 @@ class AuthService {
   validateUserData (data) {
     const schema = joi.object({
       username: joi.string().required().label('UserName'),
-      firstname: joi.string().required().label('First Name'),
-      lastname: joi.string().required().label('Last Name'),
+      firstname: joi.string().label('First Name'),
+      lastname: joi.string().label('Last Name'),
       email: joi.string().email().required().label('Email'),
       password: joi.string().required().label('Password')
     })
@@ -94,6 +94,20 @@ class AuthService {
       throw new Error(`Failed to fetch users: ${error.message}`)
     }
   }
-}
 
+  async getMongoUserFromEmail (email) {
+    try {
+      const user = await this.authRepository.findUserByEmail(email)
+
+      if (user) {
+        return user
+      } else {
+        throw new Error('User not found')
+      }
+    } catch (error) {
+      console.error('Error fetching MongoDB user ID by email:', error)
+      throw new Error('Error fetching MongoDB user ID by email')
+    }
+  }
+}
 module.exports = AuthService

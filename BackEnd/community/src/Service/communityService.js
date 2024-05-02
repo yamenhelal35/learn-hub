@@ -37,6 +37,8 @@ class CommunityService {
   async getCommunityById (_id) {
     try {
       const community = await this.communityRepository.findCommunityById(_id)
+      console.log(`communityID: ${_id}`)
+
       return community
     } catch (error) {
       throw new Error(`Failed to fetch user: ${error.message}`)
@@ -84,6 +86,16 @@ class CommunityService {
       return [community, isOwner]
     } catch (error) {
       throw new Error(`Failed to update community: ${error.message}`)
+    }
+  }
+
+  async uploadFile (communityId, userId, file) {
+    try {
+      const result = await this.communityRepository.uploadFile(communityId, userId, file)
+
+      return result
+    } catch (error) {
+      throw new Error(`Failed to upload file: ${error.message}`)
     }
   }
 }

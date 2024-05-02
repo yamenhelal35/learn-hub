@@ -1,16 +1,62 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import SearchBar from "../../components/landingPage/Searchbar/Searchbar";
 import CreateCommunity from './CreateCommunity';
 
 const Community = ({ communityData: initialCommunityData }) => {
     const [communityList, setCommunityList] = useState(initialCommunityData);
+    const [isLoading, setIsLoading] = useState(true);
+
+
+
 
     const handleSaveCommunity = (newCommunity) => {
         setCommunityList([...communityList, { id: communityList.length + 1, ...newCommunity }]);
         // Optionally, you can navigate back to the community page after saving
     };
+
+    
+    const fetchCommunities = async () => {
+        try {
+          const token = Cookies.get('token');
+
+          console.log(`token: ${token}`)
+          const response = await fetch('http://localhost:8003/community/getallforuser',{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+          });
+          if (!response.ok) {
+            throw new Error(`Error fetching communities: ${response.statusText}`);
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Error fetching communities:', error);
+          return []; // Or handle the error differently, like showing an error message
+        }
+      };
+      
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const communities = await fetchCommunities();
+            setCommunityList(communities.communities);
+            console.log('communities:', communities);
+            
+            setIsLoading(false);
+          } catch (error) {
+            console.error('Error loading communities:', error);
+            setIsLoading(false);
+          }
+        };
+      
+        fetchData();
+      }, []);
+    
+      
 
     return (
         <div className="flex flex-col bg-[#F4F0FF]">
@@ -36,28 +82,38 @@ const Community = ({ communityData: initialCommunityData }) => {
 
             {/* Communites Section */}
             <h1 className='ml-72 mt-8 font-bold text-4xl text-[#8A8A8A]' >Communities</h1>
-            {/* Communites Section */}
-            <div className=" flex-grow p-8 ml-64 grid grid-cols-3 gap-8 justify-center items-center">
-                {communityList.map((community) => (
-                    <div
-                        key={community.id}
-                        className="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between"
-                        style={{ minWidth: '250px', maxWidth: '300px' }}
-                    >
-                        <h2 className="text-lg font-semibold mb-2">{community.name}</h2>
-                        <p className="text-gray-600 mb-4">{community.details}</p>
-                        <div className="flex justify-between">
-                            <button className="bg-[#968BC9] hover:bg-[#605d70] text-white py-2 px-4 rounded-sm mr-2">
-                                Join
-                            </button>
-                            <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-sm">
-                                View
-                            </button>
+        
+                {/* Communites Section */}
+            {isLoading ? (
+                <p className="text-center">Loading communities...</p>
+            ):(
+                
+            communityList.length > 0 ? (
+                
+                <div className=" flex-grow p-8 ml-64 grid grid-cols-3 gap-8 justify-center items-center">
+                    {Object.values(communityList).map((community) => (
+                        <div
+                            key={community._id}
+                            className="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between"
+                            style={{ minWidth: '250px', maxWidth: '300px' }}
+                        >
+                            <h2 className="text-lg font-semibold mb-2">{community.communityName}</h2>
+                            <p className="text-gray-600 mb-4">{community.details}</p>
+                            <div className="flex justify-between">
+                                <button className="bg-[#968BC9] hover:bg-[#605d70] text-white py-2 px-4 rounded-sm mr-2">
+                                    Join
+                                </button>
+                                <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-sm">
+                                    View
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-
+                    ))}
+                </div>
+            ) : (
+                <p className="text-center">No communities found.</p>
+            )
+    )}
         </div>
 
     )
