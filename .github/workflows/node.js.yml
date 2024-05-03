@@ -22,6 +22,8 @@ jobs:
           - directory: 'BackEnd/community' # Correct placement for directory in the matrix
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -47,15 +49,13 @@ jobs:
 
         
       - name: Build
-        run: npm start
+        run: npm run build  
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
-
-
-        
-        
       - name: Start application
         run: npm start
+        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+        
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
 
