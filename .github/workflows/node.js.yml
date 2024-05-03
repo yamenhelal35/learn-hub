@@ -37,6 +37,29 @@ jobs:
         run: npm start
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
+      - name: Log DB 
+        run: echo "DB is ${{ secrets.DB }}"
+      - name: Log JWT SECRET
+        run: echo "JWT SECRET is ${{ secrets.JWT_SECRET }}"
+      - name: Log SALT 
+        run: echo "SALT is ${{ secrets.SALT }}"        
+      - name: Log Firebase API Key 
+        run: echo "Firebase API Key is ${{ secrets.FIREBASE_API_KEY }}"
+      - name: Log FIREBASE AUTH DOMAIN 
+        run: echo "FIREBASE AUTH DOMAIN is ${{ secrets.FIREBASE_AUTH_DOMAIN }}"
+      - name: Log FIREBASE PROJECT ID 
+        run: echo "FIREBASE PROJECT ID is ${{ secrets.FIREBASE_PROJECT_ID }}"        
+      - name: Log FIREBASE APP ID 
+        run: echo "FIREBASE APP ID is ${{ secrets.FIREBASE_APP_ID }}"
+      - name: Log FIREBASE MESSAGING SENDER ID 
+        run: echo "FIREBASE MESSAGING SENDER ID is ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}"
+      - name: Log FIREBASE MEASUREMENT ID 
+        run: echo "FIREBASE MEASUREMENT ID is ${{ secrets.FIREBASE_MEASUREMENT_ID }}"
+      - name: Log FIREBASE SERVICE ACCOUNT BASE64 
+        run: echo "FIREBASE SERVICE ACCOUNT BASE64 is ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}"
+
+        
+        
       - name: Start application
         run: npm start
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
