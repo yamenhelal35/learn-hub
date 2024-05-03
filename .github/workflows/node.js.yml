@@ -34,7 +34,7 @@ jobs:
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
       - name: Build
-        run: npm run build
+        run: npm start
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
       - name: Start application
