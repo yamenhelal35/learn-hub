@@ -7,38 +7,34 @@ on:
   push:
     branches: [ "master" ]
 
-
 jobs:
   build:
-
     runs-on: self-hosted
-
     strategy:
       matrix:
         node-version: [16.x]
-        directory: ['FrontEnd', 'BackEnd']
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        directory: ['FrontEnd', 'BackEnd'] # Correct placement for directory in the matrix
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: Install dependencies
-    - run: npm install
-    - working-directory: ${{github.workspace}}/${{ matrix.directory }}
-    
-    - name: Build
-    - run: npm run build
-      working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+      - uses: actions/checkout@v4
 
-    - name: Start application
-      run: npm start
-      working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+
+      - name: Build
+        run: npm run build
+        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+
+      - name: Start application
+        run: npm start
+        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
 
 
