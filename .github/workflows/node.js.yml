@@ -13,7 +13,11 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        directory: ['FrontEnd', 'BackEnd'] # Correct placement for directory in the matrix
+        include:
+          - directory: 'FrontEnd'
+          - directory: 'BackEnd/api-gateway'
+          - directory: 'BackEnd/auth'
+          - directory: 'BackEnd/community' # Correct placement for directory in the matrix
 
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +27,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: ${{ github.workspace }}/${{ matrix.directory }}/package-lock.json
 
       - name: Install dependencies
         run: npm install
