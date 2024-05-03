@@ -33,10 +33,7 @@ jobs:
         run: npm install
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
-      - name: Build
-        run: npm start
-        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
-
+        
       - name: Log DB 
         run: echo "DB is ${{ secrets.DB }}"
       - name: Log JWT SECRET
@@ -57,6 +54,13 @@ jobs:
         run: echo "FIREBASE MEASUREMENT ID is ${{ secrets.FIREBASE_MEASUREMENT_ID }}"
       - name: Log FIREBASE SERVICE ACCOUNT BASE64 
         run: echo "FIREBASE SERVICE ACCOUNT BASE64 is ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}"
+
+        
+      - name: Build
+        run: npm start
+        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
+
+
 
         
         
