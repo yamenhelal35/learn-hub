@@ -16,7 +16,6 @@ const firebaseConfig = {
 // Initialize Firebase app
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('ascii'))
-// Initialize Firebase Admin with your service account credentials
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 })
