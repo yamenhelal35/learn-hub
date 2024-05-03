@@ -58,8 +58,6 @@ const Community = ({ communityData: initialCommunityData }) => {
         fetchData();
       }, []);
     
-      
-
     return (
         <div className="flex flex-col bg-[#F4F0FF]">
             <Sidebar />

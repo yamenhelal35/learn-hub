@@ -15,7 +15,7 @@ const Sidebar = () => {
                             <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                         </svg>
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
+                    <a href="Home" className="text-[#8a8a8a] font-medium">
                         Home
                     </a>
                 </li>
@@ -28,7 +28,7 @@ const Sidebar = () => {
                         </svg>
 
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
+                    <a href="Dahsboard" className="text-[#8a8a8a] font-medium">
                         Dashboard
                     </a>
                 </li>
@@ -42,8 +42,8 @@ const Sidebar = () => {
                         </svg>
 
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
-                        Courses
+                    <a href="Community" className="text-[#8a8a8a] font-medium">
+                    Communities
                     </a>
                 </li>
 
@@ -54,7 +54,7 @@ const Sidebar = () => {
                         </svg>
 
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
+                    <a href="Quiz" className="text-[#8a8a8a] font-medium">
                         Quizzes
                     </a>
                 </li>
@@ -66,7 +66,7 @@ const Sidebar = () => {
                         </svg>
 
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
+                    <a href="Profile" className="text-[#8a8a8a] font-medium">
                         Account
                     </a>
                 </li>
@@ -80,8 +80,24 @@ const Sidebar = () => {
                         </svg>
 
                     </span>
-                    <a href="#" className="text-[#8a8a8a] font-medium">
+                    <a href="Pacakges" className="text-[#8a8a8a] font-medium">
                         Packages
+                    </a>
+                </li>
+
+                <br /><br />
+
+                <li className="flex items-center mb-2 hover:bg-[#fb8f8f] rounded-md p-3 cursor-pointer">
+                    <span className="mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-[#f40000]">
+                            <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+                            <path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 14.625v-9.75ZM8.25 9.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM18.75 9a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V9.75a.75.75 0 0 0-.75-.75h-.008ZM4.5 9.75A.75.75 0 0 1 5.25 9h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V9.75Z" clip-rule="evenodd" />
+                            <path d="M2.25 18a.75.75 0 0 0 0 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 0 0-.75-.75H2.25Z" />
+                        </svg>
+
+                    </span>
+                    <a href="login" className="text-[#ec3535] font-medium">
+                        Log Out
                     </a>
                 </li>
 
