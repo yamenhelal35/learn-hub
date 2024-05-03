@@ -1,51 +1,45 @@
-const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
+const { admin } = require('../Config/firebaseeconfig')
 
 dotenv.config()
 
-async function readCookie (req, res, next) {
+/* async function readCookie (req, res, next) {
   try {
     const tokenCookie = req.cookies.token
     const token = tokenCookie || null
 
-    // Store the token in the request object
     req.token = token
 
-    // Move next() inside the try block
     next()
   } catch (error) {
     console.error(`Error while processing token: ${error}`)
     res.status(500).json({ message: 'Internal Server Error' })
-    next(error) // Pass the error to the next middleware or route handler
+    next(error)
   }
-}
+} */
 
-function userFromToken (req, res, next) {
+async function userFromToken (req, res, next) {
   const tokenHeader = req.headers.authorization
+  console.log(`req.headers : ${req.headers}`)
 
   if (!tokenHeader) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' })
   }
 
-  const token = tokenHeader.split(' ')[1] // Remove 'Bearer ' prefix
+  const token = tokenHeader.split('Bearer ')[1]
+  console.log(`token : ${token}`)
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: 'Unauthorized: Invalid token' })
-    }
+  const decodedToken = await admin.auth().verifyIdToken(token)
+  console.log('Firebase ID token verified successfully:', decodedToken)
+  const userId = decodedToken.uid
+  const mongouserId = decodedToken.mongoUserID
+  const username = decodedToken.mongoUserName
 
-    if (!decoded || !decoded.userId) {
-      return res.status(401).json({ error: 'Unauthorized: Invalid decoded user object' })
-    }
+  req.userId = userId
+  req.mongouserId = mongouserId
+  req.username = username
 
-    // Attach decoded information to the request object
-    req.decodedUserId = decoded.userId
-    req.username = decoded.username
-    console.log(`id is ${req.decodedUserId}`)
-    console.log(`username is ${req.username}`)
-
-    next()
-  })
+  next()
 }
 
-module.exports = { readCookie, userFromToken }
+module.exports = { userFromToken }

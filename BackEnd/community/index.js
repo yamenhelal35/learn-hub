@@ -3,9 +3,13 @@ const connectToDB = require('./connectToDB')
 const cookieParser = require('cookie-parser')
 const communityRoutes = require('./src/Routes/communityRoutes')
 const app = express()
+const cors = require('cors')
+
 const port = process.env.PORT || 8003
 
 app.use(express.json())
+app.use(cors())
+
 connectToDB()
 
 app.use(cookieParser())
