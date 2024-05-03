@@ -104,4 +104,3 @@ class CommunityController {
 }
 
 module.exports = CommunityController
-
