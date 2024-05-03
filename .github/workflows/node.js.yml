@@ -22,8 +22,6 @@ jobs:
           - directory: 'BackEnd/community' # Correct placement for directory in the matrix
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
