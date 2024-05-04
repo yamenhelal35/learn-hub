@@ -34,7 +34,7 @@ const CreateCommunity = ({ onSave }) => {
     <div className="absolute top-0 left-0 ml-4 md:ml-72">
       <SearchBar />
     </div>
-    <form className='ml-72 mt-28 bg-gray-800 text-gray-300'>
+    <form className='ml-64 mt-24 bg-gray-800 text-gray-300 p-3'>
   <div className="space-y-12">
     <div className="border-b border-gray-700 pb-12">
       <h1 className=" font-bold leading-9 text-3xl">Create Community</h1>
