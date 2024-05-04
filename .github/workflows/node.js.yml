@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        directory: ['FrontEnd', 'BackEnd/api-gateway', 'BackEnd/auth', 'BackEnd/community']
+        directory: ['FrontEnd' , 'BackEnd/auth', 'BackEnd/community']
 
     steps:
       - uses: actions/checkout@v3
