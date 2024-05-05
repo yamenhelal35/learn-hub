@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import profilepic from "../../components/images/profile.jpg";
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
     return (
@@ -12,18 +13,22 @@ const Profile = () => {
                     {/* ================== User Name ===================== */}
                     <div className='flex flex-row'>
                         <div class="relative">
-                            <img class="w-20 h-20 rounded-full" src={profilepic}  />
+                            <img class="w-20 h-20 rounded-full" src={profilepic} />
                             <span class="top-0 left-14 absolute w-6 h-6 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                         </div>
                         <div className='col flex-col ml-2'>
                             <h1 className=" font-bold leading-9 text-4xl" id='UserName'>Cody Rhodes </h1>
                             <h1 className=" font-normal leading-9 text-m" id='UserNameTag'>@CodyRhodes343 </h1>
                         </div>
+                        {/* =============Button Edit Profile Info =============== */}
 
-<div className='ml-100'>
-<button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Edit Profile</button>
+                       
 
-</div>
+                        <div className='ml-100'>
+                        <Link to="/EditProfile"> 
+                            <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Edit Profile</button>
+                            </Link>
+                        </div>
 
 
                     </div>

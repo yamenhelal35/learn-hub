@@ -10,6 +10,8 @@ import Community from './pages/Communities/Community';
 import CreateCommunity from './pages/Communities/CreateCommunity';
 import Package from './pages/packagePage/package';
 import Profile from './pages/Profile/Profile';
+import EditProfile from './pages/Profile/EditProfile';
+
 
 
 
@@ -41,6 +43,7 @@ function App() {
         <Route exact path="/Packages" element={<Package />} />
         <Route exact path="/Profile" element={<Profile />} />
         <Route exact path="/Home" element={<Landing />} />
+        <Route exact path="/EditProfile" element={<EditProfile />} />
         {/* <Landing></Landing> */}
       </Routes>
     </Router>
