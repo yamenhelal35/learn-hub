@@ -6,13 +6,15 @@ module.exports = {
   theme: {
     extend: {
       margin:{
-        '120': '38rem'
+        '120': '38rem',
+        '100': '32rem'
       },
       width:{
         '96': '25rem',
         '97': '27rem',
         '120': '50rem',
-        '130':'65rem'
+        '130':'65rem',
+        '100':'32rem'
         }
     },
   },
