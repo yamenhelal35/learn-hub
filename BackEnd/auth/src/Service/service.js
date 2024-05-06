@@ -14,7 +14,8 @@ class AuthService {
       firstname: joi.string().label('First Name'),
       lastname: joi.string().label('Last Name'),
       email: joi.string().email().required().label('Email'),
-      password: joi.string().required().label('Password')
+      password: joi.string().required().label('Password'),
+      profilepic: joi.string().label('Profilepic')
     })
 
     return schema.validate(data)
@@ -84,6 +85,10 @@ class AuthService {
     } catch (error) {
       throw new Error(`Failed to fetch user: ${error.message}`)
     }
+  }
+
+  async updateOne (filter, update) {
+    return this.authRepository.updateOne(filter, update)
   }
 
   async getAllUsers () {
