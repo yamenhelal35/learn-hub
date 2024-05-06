@@ -8,6 +8,7 @@ const authController = new AuthController()
 router.post('/register', authController.register.bind(authController))
 router.post('/login', authController.login.bind(authController))
 router.get('/setcookie', authController.setcookie.bind(authController))
+router.post('/logout', authController.logout.bind(authController))
 
 // Use isAuthenticated middleware for routes that require authentication
 router.get('/profile', authMiddlewares.isAuthenticated, authController.getProfile.bind(authController))

@@ -130,6 +130,15 @@ class AuthController {
       res.status(400).json({ message: err.message })
     }
   }
+
+  async logout (req, res) {
+    try {
+      res.clearCookie('token', { httpOnly: true })
+      res.json({ message: 'Logged Out' })
+    } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
 }
 
 module.exports = AuthController

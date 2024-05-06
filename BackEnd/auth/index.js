@@ -9,7 +9,12 @@ const app = express()
 const port = process.env.PORT || 8002
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use(session({
   secret: 'your_secret_key_here',
