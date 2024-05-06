@@ -1,9 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import profilepic from "../../components/images/profile.jpg";
+import nopic from "../../components/images/404.jpeg";
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 const Profile = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [profileData, setProfileData] = useState({});
+
+
+
+    const fetchProfileData = async () => {
+        try {
+          const token = Cookies.get('token');
+
+          console.log(`token: ${token}`)
+          const response = await fetch('http://localhost:8002/auth/profile', {
+            method: "GET", 
+            credentials: 'include',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          console.log(response)
+
+          if (!response.ok) {
+            throw new Error(`Error fetching ProfileData: ${response.statusText}`);
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Error fetching ProfileData:', error);
+          return []; 
+        }
+      };
+
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const data
+             = await fetchProfileData();
+            if (data) {
+                setProfileData(data); 
+                }
+            setIsLoading(false);
+          } catch (error) {
+            console.error('Error loading profileData:', error);
+            setIsLoading(false);
+          }
+        };
+      
+        fetchData();
+      }, []);
+
+
     return (
         <div className=" flex flex-col bg-gray-800 min-h-screen">
             <Sidebar />
@@ -12,13 +64,13 @@ const Profile = () => {
                     {/* ======================User Infoo======================== */}
                     {/* ================== User Name ===================== */}
                     <div className='flex flex-row'>
-                        <div class="relative">
-                            <img class="w-20 h-20 rounded-full" src={profilepic} />
+                        <div class="relative" key={profileData.profilepic || nopic}>
+                            <img class="w-20 h-20 rounded-full" src={profileData.profilepic || nopic} />
                             <span class="top-0 left-14 absolute w-6 h-6 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                         </div>
-                        <div className='col flex-col ml-2'>
-                            <h1 className=" font-bold leading-9 text-4xl" id='UserName'>Cody Rhodes </h1>
-                            <h1 className=" font-normal leading-9 text-m" id='UserNameTag'>@CodyRhodes343 </h1>
+                        <div className='col flex-col ml-2' key={profileData.username}>
+                            <h1 className=" font-bold leading-9 text-4xl" id='UserName'>{profileData.username || nopic} </h1>
+                            <h1 className=" font-normal leading-9 text-m" id='UserNameTag'>@{profileData.username} </h1>
                         </div>
                         {/* =============Button Edit Profile Info =============== */}
 
