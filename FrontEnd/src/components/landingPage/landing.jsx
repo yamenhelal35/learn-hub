@@ -12,10 +12,6 @@ import Sidebar from "../StickyComponent/Side Bar/Sidebar";
 
 
 
-
-// import Card from "./Card/card";
-
-
 const colors = {
   primary: "#FFFFFF",
   secondary: "#FAFAFA",

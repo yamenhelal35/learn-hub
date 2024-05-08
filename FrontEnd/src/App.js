@@ -11,6 +11,8 @@ import CreateCommunity from './pages/Communities/CreateCommunity';
 import Package from './pages/packagePage/package';
 import Profile from './pages/Profile/Profile';
 import EditProfile from './pages/Profile/EditProfile';
+import Chat from './pages/Chat/Chat';
+
 
 
 
@@ -39,6 +41,7 @@ function App() {
         <Route exact path="/Community" element={<Community communityData={communityData} />} />
         <Route exact path="/CreateCommunity" element={<CreateCommunity onSave={handleSaveCommunity} />} />
         <Route exact path="/login" element={<Login />} />
+        <Route exact path="/Inbox" element={<Chat />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/Packages" element={<Package />} />
         <Route exact path="/Profile" element={<Profile />} />
