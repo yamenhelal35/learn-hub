@@ -9,6 +9,8 @@ import SearchBar from "./Searchbar/Searchbar";
 import LogoWhite from "../images/Logowhite.png";
 import LogoGray from "../images/LogoGray.png";
 import Sidebar from "../StickyComponent/Side Bar/Sidebar";
+import { Link } from "react-router-dom";
+
 
 
 
@@ -170,7 +172,7 @@ function Landing() {
 
       {/* Footer Section */}
       <section className="ml-64">
-        <footer class="bg-white ">
+        <footer class="bg-gray-900 ">
           <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
             <div class="md:flex md:justify-between">
               <div class="mb-6 md:mb-0">
@@ -255,6 +257,8 @@ function Landing() {
             </div>
           </div>
         </footer>
+
+       
 
       </section>
 
