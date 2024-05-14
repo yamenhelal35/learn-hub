@@ -12,6 +12,10 @@ import Package from './pages/packagePage/package';
 import Profile from './pages/Profile/Profile';
 import EditProfile from './pages/Profile/EditProfile';
 import Chat from './pages/Chat/Chat';
+import AI from './pages/AskAi/AI';
+import Courses from './pages/Courses/Courses';
+
+
 
 
 
@@ -45,9 +49,13 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/Packages" element={<Package />} />
         <Route exact path="/Profile" element={<Profile />} />
+        <Route exact path="/Dashboard" element={<Dashboard />} />
         <Route exact path="/Home" element={<Landing />} />
         <Route exact path="/EditProfile" element={<EditProfile />} />
-        {/* <Landing></Landing> */}
+        <Route exact path="/AI" element={<AI/>} />
+        <Route exact path="/Courses" element={<Courses/>} />
+        
+      
       </Routes>
     </Router>
   );
