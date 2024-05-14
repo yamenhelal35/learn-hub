@@ -4,12 +4,17 @@ const authRoutes = require('./src/Routes/authRoutes')
 /* const authMiddlewares = require('./src/middlewares/authMiddlewares') */
 const cors = require('cors')
 const session = require('express-session')
-
 const app = express()
+const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 8002
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use(session({
   secret: 'your_secret_key_here',
@@ -17,6 +22,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Set to 'true' if using HTTPS
 }))
+
+app.use(cookieParser())
 
 connectToDB()
 /* app.use(authMiddlewares.cookieParser()) */

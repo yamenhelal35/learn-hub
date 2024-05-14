@@ -3,6 +3,7 @@ const { firebaseApp } = require('../Config/firebaseeconfig')
 const { admin } = require('../Config/firebaseeconfig')
 const AuthService = require('../Service/service')
 const tenYearsInSeconds = 10 * 365 * 24 * 60 * 60
+const cloudinary = require('../Config/cloudinary')
 
 /* const AuthMiddlewares = require('../middlewares/authMiddlewares') */
 
@@ -82,12 +83,15 @@ class AuthController {
       const firebaseUid = userCredential.user.uid
 
       const mongoUser = await this.authService.getMongoUserFromEmail(email)
-      console.log('mongoUser:', mongoUser)
       const mongoUserID = mongoUser._id
       const mongoUserName = mongoUser.username
-      console.log('mongoUserId :', mongoUserID)
-      console.log('mongoUserName :', mongoUserName)
       await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName })
+        .then(() => {
+          console.log('Custom claims set successfully')
+        })
+        .catch(error => {
+          console.error('Error setting custom claims:', error)
+        })
 
       const token = await userCredential.user.getIdToken(true)
 
@@ -126,6 +130,62 @@ class AuthController {
       const userToken = req.headers.authorization
       res.setHeader('Set-Cookie', `token=${userToken}; Path=/; HttpOnly; Max-Age=${tenYearsInSeconds}`)
       res.send('got a cookie')
+    } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async uploadphoto (req, res) {
+    const userId = req.mongouserId
+    const user = await this.authService.getUserById(userId)
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded.'
+      })
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found!'
+      })
+    }
+
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path)
+      const updateResult = await this.authService.updateOne(
+        { _id: userId }, // Correct filter to update the correct user
+        { $set: { profilepic: result.secure_url } }
+      )
+
+      if (updateResult.nModified === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Error while updating profile picture.'
+        })
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Uploaded successfully!',
+        data: result
+      })
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({
+        success: false,
+        message: 'Error during file upload',
+        error: err.message
+      })
+    }
+  }
+
+  async logout (req, res) {
+    try {
+      res.clearCookie('token', { httpOnly: true })
+      res.json({ message: 'Logged Out' })
     } catch (err) {
       res.status(400).json({ message: err.message })
     }

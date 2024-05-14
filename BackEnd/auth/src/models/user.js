@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     firstname: { type: String, required: false, unique: false },
-    lastname: { type: String, required: false, unique: false }
+    lastname: { type: String, required: false, unique: false },
+    profilepic: { type: String, required: false, unique: false, default: '' }
   }, { timestamps: true })
 
 const User = mongoose.model('User', UserSchema)

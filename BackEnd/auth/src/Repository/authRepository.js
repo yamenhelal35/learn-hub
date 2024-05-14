@@ -30,6 +30,15 @@ class AuthRepository {
     return user
   }
 
+  async updateOne (filter, update) {
+    try {
+      const result = await User.updateOne(filter, update) // Perform the update
+      return result
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`)
+    }
+  }
+
   async getAllUsers () {
     try {
       const users = await User.find().lean()
