@@ -1,19 +1,7 @@
 const { admin } = require('../Config/firebaseeconfig')
 
 async function isAuthenticated (req, res, next) {
-  const authHeader = req.headers.authorization
-  console.log(`authHeader: ${authHeader}`)
-
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Authorization header is missing' })
-  }
-
-  if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authorization header format is invalid' })
-  }
-
-  const token = authHeader.split('Bearer ')[1]
-  console.log(`token: ${token}`)
+  const token = req.cookies.token
 
   if (!token) {
     return res.status(401).json({ error: 'Token is missing' })
@@ -22,10 +10,15 @@ async function isAuthenticated (req, res, next) {
   try {
     console.log('Verifying Firebase ID token...')
     const decodedToken = await admin.auth().verifyIdToken(token)
-    console.log('Firebase ID token verified successfully:', decodedToken)
+    console.log(decodedToken)
+
+    if (decodedToken.mongoUserID) {
+      console.log('MongoDB user ID found in token:', decodedToken.mongoUserID)
+    }
+
     const userId = decodedToken.uid
-    const mongouserId = decodedToken.mongoUserId
-    const username = decodedToken.username
+    const mongouserId = decodedToken.mongoUserID
+    const username = decodedToken.mongoUserName
 
     req.userId = userId
     req.mongouserId = mongouserId
@@ -34,7 +27,13 @@ async function isAuthenticated (req, res, next) {
     next()
   } catch (error) {
     console.error('Error verifying Firebase ID token:', error)
-    return res.status(403).json({ error: 'Failed to verify Firebase ID token' })
+    if (error.code === 'auth/id-token-expired') {
+      return res.status(401).json({ error: 'Firebase ID token has expired. Please login again.' })
+    } else if (error.code === 'auth/argument-error') {
+      return res.status(401).json({ error: 'Firebase ID token is malformed or invalid.' })
+    } else {
+      return res.status(403).json({ error: 'Failed to verify Firebase ID token.' })
+    }
   }
 }
 

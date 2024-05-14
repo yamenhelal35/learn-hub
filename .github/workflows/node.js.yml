@@ -7,24 +7,18 @@ on:
   push:
     branches: [ "master" ]
 
-
-    
 jobs:
   build:
     runs-on: self-hosted
     strategy:
       matrix:
         node-version: [16.x]
-        include:
-          - directory: 'FrontEnd'
-          - directory: 'BackEnd/api-gateway'
-          - directory: 'BackEnd/auth'
-          - directory: 'BackEnd/community' # Correct placement for directory in the matrix
+        directory: ['FrontEnd', 'BackEnd/auth', 'BackEnd/community']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -35,38 +29,9 @@ jobs:
         run: npm install
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
 
-        
-      - name: Log DB 
-      - name: Log JWT SECRET
-      - name: Log SALT 
-      - name: Log Firebase API Key 
-      - name: Log FIREBASE AUTH DOMAIN 
-      - name: Log FIREBASE PROJECT ID 
-      - name: Log FIREBASE APP ID 
-      - name: Log FIREBASE MESSAGING SENDER ID 
-      - name: Log FIREBASE MEASUREMENT ID 
-      - name: Log FIREBASE SERVICE ACCOUNT BASE64 
 
-        
-      - name: Build
-        run: npm run build
-        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
-        env:
-          MONGO_DB_URL: ${{ secrets.DB }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          SALT: ${{ secrets.SALT }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
 
-      - name: Start application
-        run: npm start
-        working-directory: ${{ github.workspace }}/${{ matrix.directory }}
-        
+
       - name: Start application
         run: npm start
         working-directory: ${{ github.workspace }}/${{ matrix.directory }}
@@ -81,7 +46,4 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           FIREBASE_SERVICE_ACCOUNT_BASE64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BASE64 }}
-
-
-
 
