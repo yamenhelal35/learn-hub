@@ -6,9 +6,7 @@ import Cookies from 'js-cookie';
 
 
 const CreateCommunity = ({ onSave }) => {
-  const [name] = useState('');
-  const [about] = useState('');
-  const [CommunityPic] = useState('');
+
 
   const [data, setData] = useState({
     name: '',
@@ -16,15 +14,7 @@ const CreateCommunity = ({ onSave }) => {
     privacy: '', // default is empty, should be set to 'public' or 'private'
   });
 
-  const handleSave = () => {
-    // Validate data if needed
-    const newCommunity = {
-      name,
-      about,
-      CommunityPic
-    };
-    onSave(newCommunity);
-  };
+
 
 
   const handleInputChange = (e) => {
