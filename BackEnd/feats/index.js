@@ -3,9 +3,9 @@ const cors = require('cors');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
-
+const tokenDecoder = require('./tokenDecoder')
+const cookieParser = require('cookie-parser');
 const users = {};
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -14,8 +14,19 @@ const io = socketIo(server, {
     }
 });
 
+
+
+app.use(cookieParser());
+app.use(tokenDecoder.userFromToken);
+
 // Serve static files from the "chat" directory
 app.use(express.static(path.join(__dirname, 'chat')));
+
+app.get('/username',(req,res)=>{
+    const name = req.username
+    res.json({name})
+})
+
 
 io.on('connection', (socket) => {
     console.log('New client connected');
@@ -23,11 +34,12 @@ io.on('connection', (socket) => {
     socket.on('new-user', name => {
         users[socket.id] = name;
         socket.broadcast.emit('user-connected', name);
+        
     });
 
     socket.on('send-chat-message', message => {
         const data = { message: message, name: users[socket.id] };
-        socket.broadcast.emit('chat-message', data); // Emit only to other clients
+        socket.broadcast.emit('chat-message', data); 
     });
 
     socket.on('disconnect', () => {
