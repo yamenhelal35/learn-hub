@@ -23,7 +23,7 @@ const Community = ({ communityData: initialCommunityData }) => {
           const token = Cookies.get('token');
 
           console.log(`token: ${token}`)
-          const response = await fetch('http://localhost:8003/community/getallforuser',{
+          const response = await fetch('http://localhost:8001/community/getallforuser',{
             headers: {
                 'Authorization': `Bearer ${token}`,
             }

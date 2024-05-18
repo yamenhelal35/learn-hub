@@ -20,7 +20,7 @@ const Sidebar = () => {
 
    const logout = async()=>{
       try {
-         const response = await fetch("http://localhost:8002/auth/logout", {
+         const response = await fetch("http://localhost:8001/auth/logout", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
            credentials: 'include', 
