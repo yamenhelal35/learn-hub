@@ -159,11 +159,12 @@ const CommunityPage = () => {
                     </div>
                 );
             case 'Files':
-                return <div className="text-white">
+                return <div className="text-white border-t border-gray-200">
                     <section>
+                        {/* <hr className='p-4'/> */}
                         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
 
-                            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden max-w-fill">
                                 <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                                     <div class="w-full md:w-1/2">
                                         <form class="flex items-center">
@@ -239,13 +240,14 @@ const CommunityPage = () => {
                                         </div>
                                     </div>
                                 </div>
+                            
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
                                                 <th scope="col" class="px-4 py-3">Name</th>
                                                 <th scope="col" class="px-4 py-3">Category</th>
-                                        
+
                                                 <th scope="col" class="px-4 py-3">Description</th>
                                                 <th scope="col" class="px-4 py-3">
                                                     <span class="sr-only">Actions</span>
@@ -253,12 +255,12 @@ const CommunityPage = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          
+
                                             <tr class="border-b dark:border-gray-700">
                                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple iPhone 14</th>
                                                 <td class="px-4 py-3">Phone</td>
                                                 <td class="px-4 py-3">Apple</td>
-                                              
+
                                                 <td class="px-4 py-3 flex items-center justify-end">
                                                     <button id="apple-iphone-14-dropdown-button" data-dropdown-toggle="apple-iphone-14-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +286,7 @@ const CommunityPage = () => {
                                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple iPad Air</th>
                                                 <td class="px-4 py-3">Tablet</td>
                                                 <td class="px-4 py-3">Apple</td>
-                                              
+
                                                 <td class="px-4 py-3 flex items-center justify-end">
                                                     <button id="apple-ipad-air-dropdown-button" data-dropdown-toggle="apple-ipad-air-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -310,7 +312,7 @@ const CommunityPage = () => {
                                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Xbox Series S</th>
                                                 <td class="px-4 py-3">Gaming/Console</td>
                                                 <td class="px-4 py-3">Microsoft</td>
-                                              
+
                                                 <td class="px-4 py-3 flex items-center justify-end">
                                                     <button id="xbox-series-s-dropdown-button" data-dropdown-toggle="xbox-series-s-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -332,9 +334,9 @@ const CommunityPage = () => {
                                                     </div>
                                                 </td>
                                             </tr>
-                                           
-                                         
-                                           
+
+
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -386,7 +388,9 @@ const CommunityPage = () => {
 
                 </div>;
             case 'People':
-                return <div className="text-white">
+                return <div className="text-white border-t border-gray-200">
+                                            {/* <hr className='p-4'/> */}
+
                     <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-700">
                         {people.map((person) => (
                             <li key={person.email} className="flex justify-between gap-x-6 py-5">
