@@ -1,30 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import SearchBar from '../../components/landingPage/Searchbar/Searchbar';
+import Cookies from 'js-cookie';
+
 
 
 const CreateCommunity = ({ onSave }) => {
-  const [name, setName] = useState('');
-  const [details, setDetails] = useState('');
-  const [owner, setOwner] = useState('');
-  const [Bio, setBio] = useState('');
-  const [CommunityPic, setCommunityPic] = useState('');
 
-  const handleSave = () => {
-    // Validate data if needed
-    const newCommunity = {
-      name,
-      details,
-      owner,
-      Bio,
-      CommunityPic
-    };
-    onSave(newCommunity);
+
+  const [data, setData] = useState({
+    name: '',
+    about: '',
+    privacy: '', // default is empty, should be set to 'public' or 'private'
+  });
+
+
+
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+  
+  const handlePrivacyChange = (value) => {
+    setData((prevData) => ({
+      ...prevData,
+      privacy: value,
+    }));
   };
 
-  useEffect(() => {
-    console.log('Props received by CreateCommunity:', { onSave });
-  }, [onSave]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Data before sending:", data);
+
+    if (!data.name) {
+      alert("Please enter a community name.");
+      return;
+    }
+
+    if (!data.privacy) {
+      alert("Please choose your community privacy.");
+      return;
+    }
+
+    try {
+      const token = Cookies.get('token');
+      console.log(`token: ${token}`);
+      const response = await fetch('http://localhost:8003/community/new', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const responseBody = await response.json();
+      console.log("data:", data.name)
+      console.log("data:", data.about)
+      console.log("data:", data.privacy)
+
+      console.log("responseBody:", responseBody);
+      if (!response.ok) {
+        throw new Error(`Error creating community: ${response.statusText}`);
+      }
+
+      alert("Community Created!");
+      onSave(data); // If you want to save the created community data
+    } catch (error) {
+      console.error('Error while creating community:', error);
+    }
+  };
+
 
   return (
 
@@ -52,8 +101,10 @@ const CreateCommunity = ({ onSave }) => {
                     <span className="flex select-none items-center pl-3 text-gray-400 sm:text-sm">LearnHub.com/</span>
                     <input
                       type="text"
-                      name="CommunityName"
-                      id="CommunityName"
+                      name="name"
+                      id="name"
+                      value={data.name}
+                      onChange={handleInputChange}
                       autoComplete="CommunityName"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-300 placeholder-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="ProductDesign1"
@@ -70,6 +121,8 @@ const CreateCommunity = ({ onSave }) => {
                   <textarea
                     id="about"
                     name="about"
+                    value={data.about}
+                    onChange={handleInputChange}
                     rows={3}
                     className=" w-full rounded-md border-0 py-1.5 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-800 sm:text-sm sm:leading-6"
                     defaultValue={''}
@@ -250,6 +303,8 @@ const CreateCommunity = ({ onSave }) => {
                       id="privacy-public"
                       name="community-privacy"
                       type="radio"
+                      checked={data.privacy === 'public'}
+                      onChange={() => handlePrivacyChange('public')}
                       className="h-4 w-4 border-gray-300 text-indigo-400 focus:ring-indigo-600"
                     />
                     <label htmlFor="privacy-public" className="block text-sm font-medium leading-6">
@@ -261,6 +316,8 @@ const CreateCommunity = ({ onSave }) => {
                       id="privacy-private"
                       name="community-privacy"
                       type="radio"
+                      checked={data.privacy === 'private'}
+                      onChange={() => handlePrivacyChange('private')}
                       className="h-4 w-4 border-gray-300 text-indigo-400 focus:ring-indigo-600"
                     />
                     <label htmlFor="privacy-private" className="block text-sm font-medium leading-6">
@@ -281,6 +338,7 @@ const CreateCommunity = ({ onSave }) => {
           </button>
           <button
             type="submit"
+            onClick={handleSubmit}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Save

@@ -20,7 +20,9 @@ class CommunityController {
         members: [{
           _id: userId,
           username
-        }]
+        }],
+        privacy: req.body.privacy,
+        about: req.body.about
       }
       console.log(`community data: ${JSON.stringify(community)}`)
       const result = await this.communityService.newCommunity(community)

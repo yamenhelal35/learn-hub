@@ -8,10 +8,12 @@ class CommunityService {
 
   validateCommunityData (data) {
     const schema = joi.object({
-      name: joi.string().required().label('Name'),
+      name: joi.string().required().label('name'),
       ownerID: joi.string().label('ownerID'),
       isOwner: joi.boolean().label('isOwner'),
-      members: joi.array().label('members')
+      members: joi.array().label('members'),
+      about: joi.string().label('about'),
+      privacy: joi.string().required().label('privacy')
     })
     return schema.validate(data)
   }

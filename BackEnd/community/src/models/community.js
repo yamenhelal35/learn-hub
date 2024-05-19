@@ -8,6 +8,13 @@ const MemberSchema = new mongoose.Schema({
 const CommunitySchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: false },
+    about: { type: String, required: false, unique: false },
+    privacy: {
+      type: String,
+      required: true,
+      enum: ['public', 'private'], // Only allow "public" and "private"
+      unique: false
+    },
     ownerID: { type: String, required: false, unique: false },
     isOwner: { type: Boolean, required: false, unique: false },
     members: [MemberSchema],
