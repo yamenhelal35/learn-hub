@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar'
 import { Link } from 'react-router-dom'
 import CreateCommunity from './CreateCommunity'
+import Footer from '../../components/Footer/Footer'
 
 
 
@@ -18,21 +19,21 @@ const NewCommunity = () => {
 
                 <div className='flex flex-row'>
 
-                 
-                        {/* <a href="#" class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
+
+                    {/* <a href="#" class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
                             Create Your Community
                            
                         </a> */}
 
-                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border flex flex-row border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Create Community
-                        </button>
+                    <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border flex flex-row border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Create Community
+                    </button>
 
-                    
+
 
                     {/* <div className='ml-100'>
                         <input type="text" id="CommunityID" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Join Code" required />
                     </div> */}
-   <form class="flex items-center max-w-sm mx-auto ml-96">
+                    <form class="flex items-center max-w-sm mx-auto ml-96">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -86,7 +87,7 @@ const NewCommunity = () => {
                 <div className='flex flex-row'>
                     <h2 class="text-3xl font-bold dark:text-white">Discover Communites</h2>
 
-{/* =========Search For Communites */}
+                    {/* =========Search For Communites */}
                     <form class="flex items-center max-w-sm mx-auto ml-80">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
@@ -155,10 +156,7 @@ const NewCommunity = () => {
                         </h3>
                         <span class="text-gray-500 dark:text-gray-400">Bio Goes Here</span>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
-
-
                         <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
-
                     </div>
                 </div>
 
@@ -167,10 +165,12 @@ const NewCommunity = () => {
             </div>
 
 
+            {/* =================Footer================================= */}
+            <div className='mt-8'>
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-
-
-
+                <Footer></Footer>
+            </div>
 
 
 
