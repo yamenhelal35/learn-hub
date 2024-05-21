@@ -1,22 +1,8 @@
 const dotenv = require('dotenv')
 const { admin } = require('../Config/firebaseeconfig')
+const Community = require('../models/community') // Assuming you have a Community model
 
 dotenv.config()
-
-/* async function readCookie (req, res, next) {
-  try {
-    const tokenCookie = req.cookies.token
-    const token = tokenCookie || null
-
-    req.token = token
-
-    next()
-  } catch (error) {
-    console.error(`Error while processing token: ${error}`)
-    res.status(500).json({ message: 'Internal Server Error' })
-    next(error)
-  }
-} */
 
 async function userFromToken (req, res, next) {
   const tokenHeader = req.headers.authorization
@@ -26,20 +12,45 @@ async function userFromToken (req, res, next) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' })
   }
 
-  const token = tokenHeader.split('Bearer ')[1]
-  console.log(`token : ${token}`)
+  try {
+    const token = tokenHeader.split('Bearer ')[1]
+    console.log(`token : ${token}`)
 
-  const decodedToken = await admin.auth().verifyIdToken(token)
-  console.log('Firebase ID token verified successfully:', decodedToken)
-  const userId = decodedToken.uid
-  const mongouserId = decodedToken.mongoUserID
-  const username = decodedToken.mongoUserName
+    const decodedToken = await admin.auth().verifyIdToken(token)
+    console.log('Firebase ID token verified successfully:', decodedToken)
 
-  req.userId = userId
-  req.mongouserId = mongouserId
-  req.username = username
+    req.userId = decodedToken.uid
+    req.mongouserId = decodedToken.mongoUserID
+    req.username = decodedToken.mongoUserName
 
-  next()
+    next()
+  } catch (error) {
+    console.error(`Error while verifying token: ${error}`)
+    res.status(401).json({ error: 'Unauthorized: Invalid token' })
+  }
 }
 
-module.exports = { userFromToken }
+async function checkIsOwner (req, res, next) {
+  try {
+    const { communityId } = req.params
+    const userId = req.userId
+
+    const community = await Community.findById(communityId)
+    if (!community) {
+      return res.status(404).json({ error: 'Community not found' })
+    }
+
+    if (community.ownerID === userId) {
+      req.userRole = 'Admin'
+    } else {
+      req.userRole = 'Member'
+    }
+
+    next()
+  } catch (error) {
+    console.error(`Error while checking ownership: ${error}`)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+
+module.exports = { userFromToken, checkIsOwner }

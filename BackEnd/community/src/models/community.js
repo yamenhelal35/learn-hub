@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const MemberSchema = new mongoose.Schema({
-  username: { type: String, required: false },
   _id: { type: mongoose.Schema.Types.ObjectId, required: false }
 })
 
@@ -16,7 +15,6 @@ const CommunitySchema = new mongoose.Schema(
       unique: false
     },
     ownerID: { type: String, required: false, unique: false },
-    isOwner: { type: Boolean, required: false, unique: false },
     members: [MemberSchema],
     files: { type: Array, required: false }
   },
@@ -24,5 +22,18 @@ const CommunitySchema = new mongoose.Schema(
 )
 
 const Community = mongoose.model('Community', CommunitySchema)
+
+/* mongoose.connection.on('connected', async () => {
+  try {
+    await mongoose.connection.db.dropCollection('communities') // Replace 'users' with the actual name of your collection
+    console.log('communities collection dropped.')
+  } catch (error) {
+    if (error.code === 26) {
+      console.log('communities collection does not exist.')
+    } else {
+      console.error('Error dropping User collection:', error)
+    }
+  }
+}) */
 
 module.exports = Community

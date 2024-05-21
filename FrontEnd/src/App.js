@@ -56,7 +56,7 @@ function App() {
         <Route exact path="/EditProfile" element={<EditProfile />} />
         <Route exact path="/AI" element={<AI/>} />
         <Route exact path="/Courses" element={<Courses/>} />
-        <Route exact path="/CommunityPage" element={<CommunityPage/>} />
+        <Route exact path="/CommunityPage/:communityId" element={<CommunityPage/>} />
         
       
       </Routes>

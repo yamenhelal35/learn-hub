@@ -1,8 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
+import { useParams } from 'react-router-dom';
 
 const CommunityPage = () => {
     const [activeTab, setActiveTab] = useState('Posts');
+    const [community, setCommunity] = useState(null);
+    const [userRole, setUserRole] = useState(null); // Add state for userRole
+    const { communityId } = useParams(); // Get communityId from URL
+
+    useEffect(() => {
+        const fetchCommunityData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8003/community/get/${communityId}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
+                if (!response.ok) {
+                    throw new Error("Retrieving data failed: " + (await response.text()));
+                }
+                const data = await response.json();
+                setCommunity(data); // Set the fetched community data
+                setUserRole(data.userRole);
+            } catch (error) {
+                console.error("Fetch community data error:", error);
+            }
+        };
+
+        fetchCommunityData();
+    }, [communityId]); // Fetch data when communityId changes
+
+
 
     const posts = [
         {
@@ -59,61 +86,29 @@ const CommunityPage = () => {
         // More posts...
     ];
 
-    const people = [
-        {
-            name: 'Leslie Alexander',
-            email: 'leslie.alexander@example.com',
-            role: 'Co-Founder / CEO',
-            imageUrl:
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Michael Foster',
-            email: 'michael.foster@example.com',
-            role: 'Co-Founder / CTO',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Dries Vincent',
-            email: 'dries.vincent@example.com',
-            role: 'Business Relations',
-            imageUrl:
-                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: null,
-        },
-        {
-            name: 'Lindsay Walton',
-            email: 'lindsay.walton@example.com',
-            role: 'Front-end Developer',
-            imageUrl:
-                'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Courtney Henry',
-            email: 'courtney.henry@example.com',
-            role: 'Designer',
-            imageUrl:
-                'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Tom Cook',
-            email: 'tom.cook@example.com',
-            role: 'Director of Product',
-            imageUrl:
-                'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: null,
-        },
-    ]
+    const people = community.members.map((member) => ({
+        name: member.username,
+        email: member.email,
+        role: userRole, // Assign userRole to each member
+        imageUrl: member.profilepic,
+        lastSeen: member.lastSeen,
+        lastSeenDateTime: member.lastSeenDateTime,
+    }));
 
+    if (!community) {
+        return (
+            <div className="bg-slate-800 min-h-full">
+                <Sidebar />
+                <div className="bg-gray-800 ml-64 py-24 sm:py-32">
+                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">Loading...</h2>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+        
     const renderContent = () => {
         switch (activeTab) {
             case 'Posts':
@@ -436,9 +431,9 @@ const CommunityPage = () => {
             <div className="bg-gray-800 ml-64 py-24 sm:py-32">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl lg:mx-0">
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">CommunityName</h2>
+                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">{community.name}</h2>
                         <p className="mt-2 text-lg leading-8 text-gray-400">
-                            CommunityBio Goes Here, LoremIpsum (Can be deleted) if you want
+                            {community.about}
                         </p>
                     </div>
 

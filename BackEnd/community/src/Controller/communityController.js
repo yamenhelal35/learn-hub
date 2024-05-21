@@ -16,10 +16,9 @@ class CommunityController {
       const community = {
         ownerID: userId,
         name: req.body.name,
-        isOwner: true,
         members: [{
-          _id: userId,
-          username
+          _id: userId
+
         }],
         privacy: req.body.privacy,
         about: req.body.about
@@ -41,7 +40,10 @@ class CommunityController {
       const community = await this.communityService.getCommunityById(communityId)
       console.log('Fetched Community:', community)
 
-      res.json(community)
+      res.json({
+        community,
+        userRole: req.userRole
+      })
     } catch (err) {
       res.status(400).json({ message: err.message })
     }
@@ -52,16 +54,11 @@ class CommunityController {
       const communityId = req.params.communityId
       const userId = req.mongouserId
       const username = req.username
-      let isOwner = false
 
       const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username)
       console.log(`Updated Community: ${JSON.stringify(updatedCommunity)}`)
 
-      if (updatedCommunity.ownerID === userId) {
-        isOwner = true
-      }
-
-      res.json({ ...updatedCommunity, isOwner }) // Send isOwner as part of the response
+      res.json({ ...updatedCommunity }) // Send isOwner as part of the response
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: 'Internal Server Error' })
@@ -80,6 +77,17 @@ class CommunityController {
         updatedCommunities.push({ ...updatedCommunity.toObject(), communityName, isOwner })
       }
       res.json({ communities: updatedCommunities })
+    } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async getTenCommunities (req, res) {
+    try {
+      const userId = req.userId
+      const communities = await this.communityService.getTenCommunities(userId)
+      console.log('Randomcommunities', communities)
+      res.json(communities)
     } catch (err) {
       res.status(400).json({ message: err.message })
     }

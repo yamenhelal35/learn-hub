@@ -60,6 +60,24 @@ class CommunityRepository {
     }
   }
 
+  async getTenCommunities () {
+    try {
+      const communities = await Community.find().limit(10).lean()
+      return communities
+    } catch (error) {
+      throw new Error(`Failed to fetch users: ${error.message}`)
+    }
+  }
+
+  async getAdditionalCommunities (excludedIds) {
+    try {
+      const additionalCommunities = await Community.find({ _id: { $nin: Array.from(excludedIds) } }).limit(10).lean()
+      return additionalCommunities
+    } catch (error) {
+      throw new Error(`Failed to fetch additional communities: ${error.message}`)
+    }
+  }
+
   async updateUserRole (_id, isOwner) {
     const updateObject = { isOwner: Boolean(isOwner) }
     const community = await Community.findById(_id, updateObject, { new: true })

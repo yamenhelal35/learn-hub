@@ -10,7 +10,6 @@ class CommunityService {
     const schema = joi.object({
       name: joi.string().required().label('name'),
       ownerID: joi.string().label('ownerID'),
-      isOwner: joi.boolean().label('isOwner'),
       members: joi.array().label('members'),
       about: joi.string().label('about'),
       privacy: joi.string().required().label('privacy')
@@ -62,6 +61,51 @@ class CommunityService {
       console.log(`received communities are : ${communities}`)
 
       return communities
+    } catch (error) {
+      throw new Error(`Failed to fetch communities: ${error.message}`)
+    }
+  }
+
+  async getTenCommunities (userId) {
+    try {
+      const communities = await this.communityRepository.getTenCommunities()
+      const retrievedCommunities = []
+      const seenCommunityIds = new Set()
+
+      let additionalCommunitiesNeeded = 10
+
+      for (const community of communities) {
+        const communityMembers = community.members
+        if (!communityMembers.includes(userId)) {
+          retrievedCommunities.push(community)
+          seenCommunityIds.add(community._id)
+          additionalCommunitiesNeeded--
+        }
+      }
+
+      // Fetch additional communities if needed
+      while (additionalCommunitiesNeeded > 0) {
+        const additionalCommunities = await this.communityRepository.getAdditionalCommunities(seenCommunityIds)
+
+        if (additionalCommunities.length === 0) {
+          // No more additional communities to fetch
+          break
+        }
+
+        for (const community of additionalCommunities) {
+          if (!community.members.includes(userId) && !seenCommunityIds.has(community._id)) {
+            retrievedCommunities.push(community)
+            seenCommunityIds.add(community._id)
+            additionalCommunitiesNeeded--
+
+            if (additionalCommunitiesNeeded === 0) {
+              break
+            }
+          }
+        }
+      }
+
+      return { communities: retrievedCommunities }
     } catch (error) {
       throw new Error(`Failed to fetch communities: ${error.message}`)
     }

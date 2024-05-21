@@ -12,4 +12,16 @@ const UserSchema = new mongoose.Schema(
 
 const User = mongoose.model('User', UserSchema)
 
-module.exports = User
+/* mongoose.connection.on('connected', async () => {
+  try {
+    await mongoose.connection.db.dropCollection('users') // Replace 'users' with the actual name of your collection
+    console.log('User collection dropped.')
+  } catch (error) {
+    if (error.code === 26) {
+      console.log('User collection does not exist.')
+    } else {
+      console.error('Error dropping User collection:', error)
+    }
+  }
+}) */
+module.exports = { User, UserSchema }
