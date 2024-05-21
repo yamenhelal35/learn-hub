@@ -25,7 +25,8 @@ const NewCommunity = () => {
                            
                         </a> */}
 
-                    <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border flex flex-row border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Create Community
+                    <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border flex flex-row border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                   <a href="CreateCommunity">Create Community</a>
                     </button>
 
 
@@ -73,8 +74,10 @@ const NewCommunity = () => {
                         <span class="text-gray-500 dark:text-gray-400">Bio Goes Here</span>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
 
-
-                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
+                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <a href="CommunityPage">Open Community</a>
+                            </button>
+                        {/* <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button> */}
 
                     </div>
                 </div>
@@ -110,19 +113,22 @@ const NewCommunity = () => {
 
                 {/* ======================= Community Card ======================== */}
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-700 dark:border-gray-200 mt-8">
-                    <a href="#">
+                
+                    
                         {/* If You Want To ADD Images For EAch Community UnComment this  */}
                         {/* <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar"/> */}
-                    </a>
+                    
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <a href="#">Community Name</a>
+                            <a >Community Name</a>
                         </h3>
                         <span class="text-gray-500 dark:text-gray-400">Bio Goes Here</span>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
 
 
-                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
+                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <a href="CommunityPage">Open Community</a>
+                            </button>
 
                     </div>
                 </div>
@@ -140,7 +146,9 @@ const NewCommunity = () => {
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
 
 
-                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
+                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <a href="CommunityPage">Open Community</a>
+                            </button>
 
                     </div>
                 </div>
@@ -156,7 +164,10 @@ const NewCommunity = () => {
                         </h3>
                         <span class="text-gray-500 dark:text-gray-400">Bio Goes Here</span>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
-                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
+                        <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <a href="CommunityPage">Open Community</a>
+                            </button>
+                        {/* <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button> */}
                     </div>
                 </div>
 
