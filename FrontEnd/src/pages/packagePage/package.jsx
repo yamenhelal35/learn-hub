@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import SearchBar from "../../components/landingPage/Searchbar/Searchbar";
+import Footer from '../../components/Footer/Footer';
 
 const Package = () => {
     return (
@@ -132,7 +133,15 @@ const Package = () => {
                         </div>
                     </div>
                 </div>
-                ?</section>
+                </section>
+
+
+                 {/* =================Footer================================= */}
+            <div className='mt-8'>
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+                <Footer></Footer>
+            </div>
         </div>
     )
 }

@@ -14,6 +14,9 @@ import EditProfile from './pages/Profile/EditProfile';
 import Chat from './pages/Chat/Chat';
 import AI from './pages/AskAi/AI';
 import Courses from './pages/Courses/Courses';
+import CommunityPage from './pages/Communities/CommunityPage';
+import NewCommunity from './pages/Communities/NewCommunity';
+
 
 
 
@@ -54,6 +57,9 @@ function App() {
         <Route exact path="/EditProfile" element={<EditProfile />} />
         <Route exact path="/AI" element={<AI/>} />
         <Route exact path="/Courses" element={<Courses/>} />
+        <Route exact path="/CommunityPage" element={<CommunityPage/>} />
+        <Route exact path="/NewCommunity" element={<NewCommunity/>} />
+        
         
       
       </Routes>
