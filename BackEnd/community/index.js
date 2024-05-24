@@ -8,8 +8,10 @@ const cors = require('cors')
 const port = process.env.PORT || 8003
 
 app.use(express.json())
-app.use(cors())
-
+app.use(cors({
+  origin: 'http://localhost:3000', // Adjust this to match your client URL
+  credentials: true
+}))
 connectToDB()
 
 app.use(cookieParser())

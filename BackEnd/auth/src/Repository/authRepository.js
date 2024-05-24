@@ -17,7 +17,9 @@ class AuthRepository {
 
   async findUserByEmail (email) {
     try {
-      const user = await User.findOne({ email }, { _id: 1, username: 1 }).lean()
+      console.log(email)
+
+      const user = await User.findOne({ email }, { _id: 1, username: 1, profilepic: 1 }).lean()
       return user
     } catch (error) {
       console.error('Error finding user by email:', error)

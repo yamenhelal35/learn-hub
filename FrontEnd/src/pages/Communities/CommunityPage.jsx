@@ -1,36 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import nopic from "../../components/images/404.jpeg";
+
+
 
 const CommunityPage = () => {
     const [activeTab, setActiveTab] = useState('Posts');
     const [community, setCommunity] = useState(null);
-    const [userRole, setUserRole] = useState(null); // Add state for userRole
-    const { communityId } = useParams(); // Get communityId from URL
+    const [userRole, setUserRole] = useState(null);
+    const [members, setMembers] = useState([]);
+    const { communityId } = useParams();
+    const [error, setError] = useState(null);
+
 
     useEffect(() => {
         const fetchCommunityData = async () => {
             try {
-                const response = await fetch(`http://localhost:8003/community/get/${communityId}`, {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                });
-                if (!response.ok) {
-                    throw new Error("Retrieving data failed: " + (await response.text()));
-                }
-                const data = await response.json();
-                setCommunity(data); // Set the fetched community data
-                setUserRole(data.userRole);
+              console.log(`commmmmid ${communityId}`);
+              const token = Cookies.get('token');
+      
+              const response = await fetch(`http://localhost:8003/community/get/${communityId}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                credentials: 'include'
+              });
+      
+              if (!response.ok) {
+                throw new Error("Retrieving data failed: " + (await response.text()));
+              }
+      
+              const data = await response.json();
+              setCommunity(data);
+              setUserRole(data.userRole);
+              console.log("Fetched Community:", data);
+               
+              if (data.community.members && data.community.members.length > 0) {
+                console.log("Members array exists and is not empty:", data.community.members);
+                setMembers(data.community.members);
+
+              } else {
+                console.log("No members found.");
+                setMembers([]);
+              }
             } catch (error) {
-                console.error("Fetch community data error:", error);
+              console.error("Fetch community data error:", error);
+              setError(error.message);
             }
-        };
+          };
+      
+          fetchCommunityData();
+        }, [communityId]);
 
-        fetchCommunityData();
-    }, [communityId]); // Fetch data when communityId changes
-
-
-
+        if (error) {
+            return <div>Error: {error}</div>;
+          }
+        
+          if (!community) {
+            return <div>Loading community details...</div>;
+          }
+      
+    
     const posts = [
         {
             id: 1,
@@ -86,29 +120,61 @@ const CommunityPage = () => {
         // More posts...
     ];
 
-    const people = community.members.map((member) => ({
-        name: member.username,
-        email: member.email,
-        role: userRole, // Assign userRole to each member
-        imageUrl: member.profilepic,
-        lastSeen: member.lastSeen,
-        lastSeenDateTime: member.lastSeenDateTime,
-    }));
+/*     const people = [
+        {
+            name: 'Leslie Alexander',
+            email: 'leslie.alexander@example.com',
+            role: 'Co-Founder / CEO',
+            imageUrl:
+                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: '3h ago',
+            lastSeenDateTime: '2023-01-23T13:23Z',
+        },
+        {
+            name: 'Michael Foster',
+            email: 'michael.foster@example.com',
+            role: 'Co-Founder / CTO',
+            imageUrl:
+                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: '3h ago',
+            lastSeenDateTime: '2023-01-23T13:23Z',
+        },
+        {
+            name: 'Dries Vincent',
+            email: 'dries.vincent@example.com',
+            role: 'Business Relations',
+            imageUrl:
+                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: null,
+        },
+        {
+            name: 'Lindsay Walton',
+            email: 'lindsay.walton@example.com',
+            role: 'Front-end Developer',
+            imageUrl:
+                'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: '3h ago',
+            lastSeenDateTime: '2023-01-23T13:23Z',
+        },
+        {
+            name: 'Courtney Henry',
+            email: 'courtney.henry@example.com',
+            role: 'Designer',
+            imageUrl:
+                'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: '3h ago',
+            lastSeenDateTime: '2023-01-23T13:23Z',
+        },
+        {
+            name: 'Tom Cook',
+            email: 'tom.cook@example.com',
+            role: 'Director of Product',
+            imageUrl:
+                'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            lastSeen: null,
+        },
+    ] */
 
-    if (!community) {
-        return (
-            <div className="bg-slate-800 min-h-full">
-                <Sidebar />
-                <div className="bg-gray-800 ml-64 py-24 sm:py-32">
-                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">Loading...</h2>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-        
     const renderContent = () => {
         switch (activeTab) {
             case 'Posts':
@@ -386,38 +452,40 @@ const CommunityPage = () => {
                 return <div className="text-white border-t border-gray-200">
                                             {/* <hr className='p-4'/> */}
 
-                    <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-700">
-                        {people.map((person) => (
-                            <li key={person.email} className="flex justify-between gap-x-6 py-5">
-                                <div className="flex min-w-0 gap-x-4">
-                                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50 dark:bg-gray-800" src={person.imageUrl} alt="" />
-                                    <div className="min-w-0 flex-auto">
-                                        <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{person.name}</p>
-                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-400">{person.email}</p>
-                                    </div>
-                                </div>
-                                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                    <p className="text-sm leading-6 text-gray-900 dark:text-gray-100">{person.role}</p>
-                                    {person.lastSeen ? (
-                                        <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
-                                            Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-                                        </p>
-                                    ) : (
-                                        <div className="mt-1 flex items-center gap-x-1.5">
-                                            <div className="flex-none rounded-full bg-emerald-500/20 dark:bg-emerald-400/20 p-1">
-                                                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                            </div>
-                                            <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">Online</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <button className="ml-4 rounded-md bg-blue-300 px-8 py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600">
-                                    Add Friend
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                                            <div className="text-white border-t border-gray-200">
+        <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-700">
+          {members.map((member) => (
+            <li key={member._id} className="flex justify-between gap-x-6 py-5">
+              <div className="flex min-w-0 gap-x-4">
+                <img className="h-12 w-12 flex-none rounded-full bg-gray-50 dark:bg-gray-800" src={member.profilepic || nopic} alt="" />
+                <div className="min-w-0 flex-auto">
+                  <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{member.username}</p>
+                  <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-400">{member.email}</p>
                 </div>
+              </div>
+              <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                <p className="text-sm leading-6 text-gray-900 dark:text-gray-100">{member.userRole}</p>
+                {member.lastSeen ? (
+                  <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                    Last seen <time dateTime={member.lastSeenDateTime}>{member.lastSeen}</time>
+                  </p>
+                ) : (
+                  <div className="mt-1 flex items-center gap-x-1.5">
+                    <div className="flex-none rounded-full bg-emerald-500/20 dark:bg-emerald-400/20 p-1">
+                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                    </div>
+                    <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">Online</p>
+                  </div>
+                )}
+              </div>
+              <button className="ml-4 rounded-md bg-blue-300 px-8 py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600">
+                Add Friend
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
 
             default:
                 return null;
@@ -431,9 +499,9 @@ const CommunityPage = () => {
             <div className="bg-gray-800 ml-64 py-24 sm:py-32">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl lg:mx-0">
-                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">{community.name}</h2>
+                        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl py-5">{community.community.name}</h2>
                         <p className="mt-2 text-lg leading-8 text-gray-400">
-                            {community.about}
+                            {community.community.about}
                         </p>
                     </div>
 

@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     firstname: { type: String, required: false, unique: false },
     lastname: { type: String, required: false, unique: false },
-    profilepic: { type: String, required: false, unique: false, default: '' }
+    profilepic: { type: String, required: false, unique: false, default: '' },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   }, { timestamps: true })
 
 const User = mongoose.model('User', UserSchema)
@@ -24,4 +25,4 @@ const User = mongoose.model('User', UserSchema)
     }
   }
 }) */
-module.exports = { User, UserSchema }
+module.exports = { User }

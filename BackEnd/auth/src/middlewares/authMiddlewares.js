@@ -19,10 +19,14 @@ async function isAuthenticated (req, res, next) {
     const userId = decodedToken.uid
     const mongouserId = decodedToken.mongoUserID
     const username = decodedToken.mongoUserName
-
+    const email = decodedToken.email
+    const profilepic = decodedToken.profilepic
+    console.log('profilepic', profilepic)
     req.userId = userId
     req.mongouserId = mongouserId
     req.username = username
+    req.email = email
+    req.userProfilePic = profilepic
 
     next()
   } catch (error) {

@@ -17,7 +17,7 @@ class CommunityService {
     return schema.validate(data)
   }
 
-  async newCommunity (communityData) {
+  async newCommunity (communityData, username) {
     try {
       const { error } = this.validateCommunityData(communityData)
       if (error) {
@@ -46,9 +46,9 @@ class CommunityService {
     }
   }
 
-  async joinCommunity (communityId, userId, username) {
+  async joinCommunity (communityId, userId, username, userEmail, userProfilePic) {
     try {
-      const community = await this.communityRepository.joinCommunity(communityId, userId, username)
+      const community = await this.communityRepository.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
       return community
     } catch (error) {
       throw new Error(`Failed to join community: ${error.message}`)
@@ -63,6 +63,17 @@ class CommunityService {
       return communities
     } catch (error) {
       throw new Error(`Failed to fetch communities: ${error.message}`)
+    }
+  }
+
+  async allMemberForCommunity (communityId) {
+    try {
+      const communityMembers = await this.communityRepository.allMemberForCommunity(communityId)
+      console.log(`received communities members are : ${communityMembers}`)
+
+      return communityMembers
+    } catch (error) {
+      throw new Error(`Failed to fetch communities members: ${error.message}`)
     }
   }
 

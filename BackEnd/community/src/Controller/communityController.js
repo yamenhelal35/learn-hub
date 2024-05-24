@@ -10,21 +10,27 @@ class CommunityController {
   async addNewCommunity (req, res) {
     try {
       const userId = req.mongouserId
-      const username = req.username
+      const memberusername = req.username
+      const userEmail = req.useremail
+      const userProfilePic = req.userProfilePic
       console.log(`userId: ${userId}`)
-      console.log(`username: ${username}`)
+      console.log(`username: ${memberusername}`)
       const community = {
         ownerID: userId,
         name: req.body.name,
         members: [{
-          _id: userId
+          username: memberusername,
+          _id: userId,
+          email: userEmail,
+          profilepic: userProfilePic
 
         }],
         privacy: req.body.privacy,
         about: req.body.about
+
       }
       console.log(`community data: ${JSON.stringify(community)}`)
-      const result = await this.communityService.newCommunity(community)
+      const result = await this.communityService.newCommunity(community, memberusername)
       console.log(`ownerID : ${community.ownerID}`)
       res.json(result)
     } catch (error) {
@@ -54,8 +60,11 @@ class CommunityController {
       const communityId = req.params.communityId
       const userId = req.mongouserId
       const username = req.username
+      const userEmail = req.useremail
+      const userProfilePic = req.userProfilePic
+      console.log('userProfilePifghfghfgc', userProfilePic)
 
-      const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username)
+      const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
       console.log(`Updated Community: ${JSON.stringify(updatedCommunity)}`)
 
       res.json({ ...updatedCommunity }) // Send isOwner as part of the response
@@ -69,14 +78,20 @@ class CommunityController {
     try {
       const userId = req.mongouserId
       const communities = await this.communityService.getAllCommunitiesforuser(userId)
-      const updatedCommunities = []
 
-      for (const community of communities) {
-        const communityName = community.name
-        const [updatedCommunity, isOwner] = await this.communityService.updateIsOwner(community._id, userId)
-        updatedCommunities.push({ ...updatedCommunity.toObject(), communityName, isOwner })
-      }
-      res.json({ communities: updatedCommunities })
+      res.json({ communities })
+    } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async allMemberForCommunity (req, res) {
+    try {
+      const communityId = req.params.communityId
+      const userRole = req.userRole
+      const communityMembers = await this.communityService.allMemberForCommunity(communityId)
+      console.log(`communityMembers::::${communityMembers}`)
+      res.json({ communityMembers, userRole })
     } catch (err) {
       res.status(400).json({ message: err.message })
     }
@@ -84,7 +99,7 @@ class CommunityController {
 
   async getTenCommunities (req, res) {
     try {
-      const userId = req.userId
+      const userId = req.mongouserId
       const communities = await this.communityService.getTenCommunities(userId)
       console.log('Randomcommunities', communities)
       res.json(communities)

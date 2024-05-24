@@ -51,10 +51,11 @@ const CreateCommunity = ({ onSave }) => {
       console.log(`token: ${token}`);
       const response = await fetch('http://localhost:8003/community/new', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": token
+      },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
       const responseBody = await response.json();

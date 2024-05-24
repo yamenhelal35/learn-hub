@@ -25,7 +25,7 @@ class CommunityRepository {
     }
   }
 
-  async joinCommunity (communityId, userId, username) {
+  async joinCommunity (communityId, userId, username, userEmail, userProfilePic) {
     try {
       const community = await Community.findById(communityId)
       if (!community) {
@@ -40,7 +40,7 @@ class CommunityRepository {
         throw new Error('User is already a member of this community')
       }
 
-      community.members.push({ _id: userId, username })
+      community.members.push({ _id: userId, username, email: userEmail, profilepic: userProfilePic })
       await community.save()
 
       return community.toObject()
@@ -57,6 +57,35 @@ class CommunityRepository {
       return communities
     } catch (error) {
       throw new Error(`Failed to fetch communities: ${error.message}`)
+    }
+  }
+
+  async allMemberForCommunity (_id) {
+    try {
+      const communityObjectId = new mongoose.Types.ObjectId(_id) // Use 'new' keyword
+      const community = await Community.findById(communityObjectId).lean()
+      if (!community) {
+        throw new Error('Community not found')
+      }
+      console.log('retrived community', community)
+      const members = community.members.map(member => {
+        if (member._id && mongoose.Types.ObjectId.isValid(member._id)) {
+          const memberID = new mongoose.Types.ObjectId(member._id) // Use 'new' keyword
+          const memberUserName = member.username
+          return { _id: memberID, username: memberUserName }
+        } else {
+          throw new Error(`Invalid member ID: ${JSON.stringify(member)}`)
+        }
+      })
+
+      console.log(`Fetching members with IDs: ${members}`)
+
+      // Fetch only necessary fields
+      console.log('membersssssssssssssss', members)
+      return members
+    } catch (error) {
+      console.error(`Failed to fetch community members for community ID ${_id}: ${error.message}`)
+      throw new Error(`Failed to fetch community members: ${error.message}`)
     }
   }
 

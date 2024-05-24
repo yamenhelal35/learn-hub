@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const MemberSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, required: false }
+  username: { type: String, required: true, unique: false },
+  email: { type: String, required: true, unique: true },
+  profilepic: { type: String, required: false, unique: false, default: '' }
+
 })
 
 const CommunitySchema = new mongoose.Schema(

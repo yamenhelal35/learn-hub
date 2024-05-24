@@ -5,16 +5,16 @@ const Community = require('../models/community') // Assuming you have a Communit
 dotenv.config()
 
 async function userFromToken (req, res, next) {
-  const tokenHeader = req.headers.authorization
-  console.log(`req.headers : ${req.headers}`)
+  const token = req.cookies.token
+  console.log(`tokenHeader : ${token}`)
 
-  if (!tokenHeader) {
+  if (!token) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' })
   }
 
   try {
-    const token = tokenHeader.split('Bearer ')[1]
-    console.log(`token : ${token}`)
+    /*     const token = tokenHeader.split('Bearer ')[1]
+    console.log(`token : ${token}`) */
 
     const decodedToken = await admin.auth().verifyIdToken(token)
     console.log('Firebase ID token verified successfully:', decodedToken)
@@ -22,6 +22,8 @@ async function userFromToken (req, res, next) {
     req.userId = decodedToken.uid
     req.mongouserId = decodedToken.mongoUserID
     req.username = decodedToken.mongoUserName
+    req.useremail = decodedToken.email
+    req.userProfilePic = decodedToken.userProfilePic
 
     next()
   } catch (error) {
@@ -33,19 +35,20 @@ async function userFromToken (req, res, next) {
 async function checkIsOwner (req, res, next) {
   try {
     const { communityId } = req.params
-    const userId = req.userId
+    const userId = req.mongouserId
+    const username = req.username
 
-    const community = await Community.findById(communityId)
+    console.log(`useeeeeeeeeerid ${userId}`)
+    console.log(`Checking ownership for user ${userId} on community ${communityId}`)
+
+    const community = await Community.findById(communityId).lean()
     if (!community) {
       return res.status(404).json({ error: 'Community not found' })
     }
 
-    if (community.ownerID === userId) {
-      req.userRole = 'Admin'
-    } else {
-      req.userRole = 'Member'
-    }
-
+    req.userRole = (community.ownerID.toString() === userId) ? 'Admin' : 'Member'
+    console.log(`UserName: ${username}`)
+    console.log(`UserRole: ${req.userRole}`)
     next()
   } catch (error) {
     console.error(`Error while checking ownership: ${error}`)

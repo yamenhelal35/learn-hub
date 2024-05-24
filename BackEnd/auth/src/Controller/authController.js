@@ -83,9 +83,11 @@ class AuthController {
       const firebaseUid = userCredential.user.uid
 
       const mongoUser = await this.authService.getMongoUserFromEmail(email)
+
       const mongoUserID = mongoUser._id
       const mongoUserName = mongoUser.username
-      await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName })
+      const userProfilePic = mongoUser.profilepic
+      await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName, email, userProfilePic })
         .then(() => {
           console.log('Custom claims set successfully')
         })
