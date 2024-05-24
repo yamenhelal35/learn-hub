@@ -59,6 +59,7 @@ function App() {
         <Route exact path="/Courses" element={<Courses/>} />
         <Route exact path="/CommunityPage" element={<CommunityPage/>} />
         <Route exact path="/NewCommunity" element={<NewCommunity/>} />
+        <Route exact path="/Chat" element={<Chat/>} />
         
         
       
