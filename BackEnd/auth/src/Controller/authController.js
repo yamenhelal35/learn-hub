@@ -87,6 +87,8 @@ class AuthController {
       const mongoUserID = mongoUser._id
       const mongoUserName = mongoUser.username
       const userProfilePic = mongoUser.profilepic
+      console.log('userProfilePicuserProfilePic :', userProfilePic)
+
       await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName, email, userProfilePic })
         .then(() => {
           console.log('Custom claims set successfully')
@@ -123,6 +125,30 @@ class AuthController {
       const users = await this.authService.getAllUsers()
       res.json(users)
     } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async addFriend (req, res) {
+    try {
+      const userId = req.mongouserId
+      const { friendID } = req.body
+      const result = await this.authService.addFriend(userId, friendID)
+      res.json(result)
+    } catch (err) {
+      console.error('Error in addFriend:', err.message)
+
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async getFriendList (req, res) {
+    try {
+      const userId = req.mongouserId
+      const friends = await this.authService.getFriendList(userId)
+      res.json(friends)
+    } catch (err) {
+      console.error('Error in getFriendList:', err.message)
       res.status(400).json({ message: err.message })
     }
   }

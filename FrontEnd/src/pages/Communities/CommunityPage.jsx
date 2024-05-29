@@ -11,6 +11,8 @@ const CommunityPage = () => {
     const [community, setCommunity] = useState(null);
     const [userRole, setUserRole] = useState(null);
     const [members, setMembers] = useState([]);
+    const [userFriends, setUserFriends] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
     const { communityId } = useParams();
     const [error, setError] = useState(null);
 
@@ -29,6 +31,7 @@ const CommunityPage = () => {
                 },
                 credentials: 'include'
               });
+              
       
               if (!response.ok) {
                 throw new Error("Retrieving data failed: " + (await response.text()));
@@ -37,6 +40,7 @@ const CommunityPage = () => {
               const data = await response.json();
               setCommunity(data);
               setUserRole(data.userRole);
+              setCurrentUser(data.userId);
               console.log("Fetched Community:", data);
                
               if (data.community.members && data.community.members.length > 0) {
@@ -52,9 +56,70 @@ const CommunityPage = () => {
               setError(error.message);
             }
           };
+          const fetchFriendList = async () => {
+            try {
+              const token = Cookies.get('token');
+      
+              const response = await fetch('http://localhost:8002/auth/getFriendList', {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                credentials: 'include'
+              });
+      
+              if (!response.ok) {
+                throw new Error("Retrieving friend list failed: " + (await response.text()));
+              }
+      
+              const friends = await response.json();
+              setUserFriends(friends);
+              console.log("Fetched Friends:", friends);
+            } catch (error) {
+              console.error("Fetch friend list error:", error);
+              setError(error.message);
+            }
+          };
+
       
           fetchCommunityData();
+          fetchFriendList();
         }, [communityId]);
+
+        
+        const addFriend = async (friendID) => {
+            try {
+                if (currentUser && currentUser._id === friendID) {
+                    setError('You cannot add yourself as a friend.');
+                    return;
+                  }
+              const token = Cookies.get('token');
+        
+              const response = await fetch('http://localhost:8002/auth/addFriend    ', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ friendID }),
+                credentials: 'include'
+              });
+        
+              if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+              }
+        
+              const data = await response.json();
+              console.log('Friend added:', data.message);
+              setUserFriends(prevFriends => [...prevFriends, { _id: friendID }]);
+
+            } catch (error) {
+              console.error('Error adding friend:', error.message);
+              setError(error.message);
+            }
+          };
 
         if (error) {
             return <div>Error: {error}</div>;
@@ -449,7 +514,7 @@ const CommunityPage = () => {
 
                 </div>;
             case 'People':
-                return <div className="text-white border-t border-gray-200">
+                return <div className="text-white border-t border-gray-200 ">
                                             {/* <hr className='p-4'/> */}
 
                                             <div className="text-white border-t border-gray-200">
@@ -478,9 +543,16 @@ const CommunityPage = () => {
                   </div>
                 )}
               </div>
-              <button className="ml-4 rounded-md bg-blue-300 px-8 py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600">
-                Add Friend
-              </button>
+              {currentUser !== member._id && (
+                    <button
+                      onClick={() => addFriend(member._id)}
+                      className={`ml-4 rounded-md px-8 py-1 text-sm font-semibold text-white shadow-sm ${userFriends.some(friend => friend._id === member._id) ? 'bg-gray-400' : 'bg-blue-300 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600'}`}
+                      disabled={userFriends.some(friend => friend._id === member._id)}
+                    >
+                      {userFriends.some(friend => friend._id === member._id) ? 'Added' : 'Add Friend'}
+                    </button>
+
+              )}
             </li>
           ))}
         </ul>

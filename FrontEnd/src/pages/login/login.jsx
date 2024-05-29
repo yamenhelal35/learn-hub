@@ -80,6 +80,7 @@ const Login = () => {
       const loginData = await response.json(); // Parse response data
       
       if(loginData){
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         document.cookie = `token=${loginData.token}; SameSite=Strict; Secure`;
         console.log("Login successful:", loginData);
         navigate("/home");        

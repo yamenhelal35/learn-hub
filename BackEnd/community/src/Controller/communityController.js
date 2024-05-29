@@ -40,6 +40,7 @@ class CommunityController {
 
   async findCommunityById (req, res) {
     try {
+      const userId = req.mongouserId
       const communityId = req.params.communityId
       console.log(`Community ID: ${communityId}`)
 
@@ -48,7 +49,8 @@ class CommunityController {
 
       res.json({
         community,
-        userRole: req.userRole
+        userRole: req.userRole,
+        userId
       })
     } catch (err) {
       res.status(400).json({ message: err.message })

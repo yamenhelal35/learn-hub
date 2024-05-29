@@ -16,5 +16,7 @@ router.post('/logout', authController.logout.bind(authController))
 
 router.get('/profile', authMiddlewares.isAuthenticated, authController.getProfile.bind(authController))
 router.get('/all', authController.getAll.bind(authController))
+router.post('/addFriend',authMiddlewares.isAuthenticated, authController.addFriend.bind(authController))
+router.get('/getFriendList',authMiddlewares.isAuthenticated, authController.getFriendList.bind(authController))
 
 module.exports = router

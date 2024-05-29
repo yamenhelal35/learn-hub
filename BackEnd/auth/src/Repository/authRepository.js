@@ -49,6 +49,42 @@ class AuthRepository {
       throw new Error(`Failed to fetch users: ${error.message}`)
     }
   }
+
+  async addFriend (userID, friendID) {
+    try {
+      const user = await User.findById(userID)
+      const friend = await User.findById(friendID)
+      if (!user) {
+        throw new Error('User not found')
+      }
+      if (!friend) {
+        throw new Error('friend not found')
+      }
+
+      if (user.friends.includes(friendID)) {
+        throw new Error('Friend already added')
+      }
+
+      user.friends.push(friendID)
+      friend.friends.push(userID)
+
+      await user.save()
+      await friend.save()
+
+      return user
+    } catch (error) {
+      throw new Error(`Failed to Add Friend: ${error.message}`)
+    }
+  }
+
+  async getFriendList (friendIds) {
+    try {
+      const friends = await User.find({ _id: { $in: friendIds } })
+      return friends
+    } catch (error) {
+      throw new Error(`Failed to Get Friends: ${error.message}`)
+    }
+  }
 }
 
 module.exports = AuthRepository
