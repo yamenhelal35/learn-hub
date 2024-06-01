@@ -21,20 +21,10 @@ const NewCommunity = () => {
                 <div className='flex flex-row'>
 
 
-                    {/* <a href="#" class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
-                            Create Your Community
-                           
-                        </a> */}
-
                     <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border flex flex-row border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                   <a href="CreateCommunity">Create Community</a>
+                        <a href="CreateCommunity">Create Community</a>
                     </button>
 
-
-
-                    {/* <div className='ml-100'>
-                        <input type="text" id="CommunityID" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Join Code" required />
-                    </div> */}
                     <form class="flex items-center max-w-sm mx-auto ml-96">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
@@ -56,6 +46,8 @@ const NewCommunity = () => {
 
                 </div>
             </div>
+
+            
             <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
             {/* ========================== Created Part =========================== */}
@@ -76,8 +68,8 @@ const NewCommunity = () => {
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
 
                         <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <a href="CommunityPage">Open Community</a>
-                            </button>
+                            <a href="CommunityPage">Open Community</a>
+                        </button>
                         {/* <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button> */}
 
                     </div>
@@ -114,11 +106,11 @@ const NewCommunity = () => {
 
                 {/* ======================= Community Card ======================== */}
                 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-700 dark:border-gray-200 mt-8">
-                
-                    
-                        {/* If You Want To ADD Images For EAch Community UnComment this  */}
-                        {/* <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar"/> */}
-                    
+
+
+                    {/* If You Want To ADD Images For EAch Community UnComment this  */}
+                    {/* <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar"/> */}
+
                     <div class="p-5">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                             <a >Community Name</a>
@@ -128,8 +120,8 @@ const NewCommunity = () => {
 
 
                         <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <a href="CommunityPage">Open Community</a>
-                            </button>
+                            <a href="CommunityPage">Open Community</a>
+                        </button>
 
                     </div>
                 </div>
@@ -148,8 +140,8 @@ const NewCommunity = () => {
 
 
                         <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <a href="CommunityPage">Open Community</a>
-                            </button>
+                            <a href="CommunityPage">Open Community</a>
+                        </button>
 
                     </div>
                 </div>
@@ -166,8 +158,8 @@ const NewCommunity = () => {
                         <span class="text-gray-500 dark:text-gray-400">Bio Goes Here</span>
                         <p class="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">AnotherBio Goes Here If Not (Make it Names of People inside it or Number of Files).</p>
                         <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <a href="CommunityPage">Open Community</a>
-                            </button>
+                            <a href="CommunityPage">Open Community</a>
+                        </button>
                         {/* <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200  dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button> */}
                     </div>
                 </div>
