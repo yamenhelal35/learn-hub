@@ -16,13 +16,7 @@ import AI from './pages/AskAi/AI';
 import Courses from './pages/Courses/Courses';
 import CommunityPage from './pages/Communities/CommunityPage';
 import NewCommunity from './pages/Communities/NewCommunity';
-
-
-
-
-
-
-
+import CourseDetails from './pages/Courses/CourseDetails';
 
 function App() {
   const [communityData, setCommunityData] = useState([
@@ -44,24 +38,37 @@ function App() {
     //<Dashboard/> 
     <Router>
       <Routes>
-
+        {/* ===========Commuinty Routes================= */}
         <Route exact path="/Community" element={<Community communityData={communityData} />} />
         <Route exact path="/CreateCommunity" element={<CreateCommunity onSave={handleSaveCommunity} />} />
+        <Route exact path="/CommunityPage" element={<CommunityPage />} />
+        <Route exact path="/NewCommunity" element={<NewCommunity />} />
+
+        {/* ===========Login & Register Routes================= */}
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/Inbox" element={<Chat />} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/Packages" element={<Package />} />
+
+        {/* ===========Chat Routes================= */}
+        <Route exact path="/Inbox" element={<Chat />} />
+
+        {/* ===========Profile Routes================= */}
+        <Route exact path="/EditProfile" element={<EditProfile />} />
         <Route exact path="/Profile" element={<Profile />} />
+
+        {/* ===========Courses Routes================= */}
+        <Route exact path="/Courses" element={<Courses />} />
+        <Route exact path="/CourseDetails" element={<CourseDetails />} />
+
+        <Route exact path="/Packages" element={<Package />} />
         <Route exact path="/Dashboard" element={<Dashboard />} />
         <Route exact path="/Home" element={<Landing />} />
-        <Route exact path="/EditProfile" element={<EditProfile />} />
-        <Route exact path="/AI" element={<AI/>} />
-        <Route exact path="/Courses" element={<Courses/>} />
-        <Route exact path="/CommunityPage" element={<CommunityPage/>} />
-        <Route exact path="/NewCommunity" element={<NewCommunity/>} />
-        
-        
-      
+        <Route exact path="/AI" element={<AI />} />
+
+
+
+
+
+
       </Routes>
     </Router>
   );

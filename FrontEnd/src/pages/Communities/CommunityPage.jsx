@@ -494,7 +494,7 @@ const CommunityPage = () => {
 
 
 
-
+{/*==========Input Modal for posts================== */}
 
             {showModal && (
                 <div id="crud-modal" tabindex="-1" aria-hidden="true" className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50">
