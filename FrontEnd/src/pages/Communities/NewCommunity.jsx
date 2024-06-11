@@ -67,6 +67,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     }, []);
 
     return (
+        // Commit Testing
         <div className='flex flex-col bg-gray-800 min-h-screen'>
             <Sidebar />
 
