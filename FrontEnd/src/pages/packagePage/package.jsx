@@ -6,13 +6,13 @@ import Footer from '../../components/Footer/Footer';
 
 const Package = () => {
     return (
-        <div className="flex flex-col bg-[#F4F0FF]">
+        <div className="flex flex-col">
             <Sidebar></Sidebar>
             {/* =======================Packages Page======================= */}
 
 
 
-            <section class="bg-white dark:bg-gray-900 ml-64 mt-12">
+            <section class="dark:bg-gray-900 ml-64 mt-12">
                 <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
                     <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
                         <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Better Studying with new additions </h2>
@@ -138,7 +138,7 @@ const Package = () => {
 
                  {/* =================Footer================================= */}
             <div className='mt-8'>
-                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr class="h-px my-8 border-0 dark:bg-gray-700" />
 
                 <Footer></Footer>
             </div>

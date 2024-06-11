@@ -1,138 +1,97 @@
 import React from 'react'
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar'
+import LogoUdacity from "../../components/images/LogoUdacity.png";
+
 
 const Courses = () => {
-
-
-    const products = [
-        {
-            id: 1,
-            name: 'Earthen Bottle',
-            href: '#',
-            price: '$48',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-            imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-        },
-        {
-            id: 2,
-            name: 'Nomad Tumbler',
-            href: '#',
-            price: '$35',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-            imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-        },
-        {
-            id: 3,
-            name: 'Focus Paper Refill',
-            href: '#',
-            price: '$89',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-            imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-        },
-        {
-            id: 4,
-            name: 'Machined Mechanical Pencil',
-            href: '#',
-            price: '$35',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-            imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-        },
-        // More products...
-    ]
-
-
-
     return (
         <div>
             <Sidebar />
-            <section className="container mx-auto py-12 md:py-24 dark:bg-gray-900 ml-12 ">
-                <div className="flex flex-col items-center justify-center space-y-6 md:space-y-10">
-                    <div className="text-center">
-                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-white">Explore Our Courses</h2>
-                        <p className="mt-4 max-w-2xl text-lg text-gray-400">
-                            Browse through our wide selection of courses and find the perfect one for you.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-1 ml-56">
-                        <div className="w-full sm:w-auto md:w-auto lg:w-auto xl:w-auto">
-                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-                            <div className="group relative rounded-lg border border-gray-800 bg-gray-950 shadow-sm transition-all duration-300 hover:border-gray-700 hover:shadow-md">
-                                <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-lg">
-                                    <img
-                                        alt="Course Thumbnail"
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        src="/placeholder.svg"
-                                    />
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold">Introduction to Web Development</h3>
-                                    <p className="mt-2 text-sm text-gray-400">
-                                        Learn the fundamentals of web development, including HTML, CSS, and JavaScript.
-                                    </p>
-                                    <button className="mt-4 inline-flex items-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                                        Select Course
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="group relative rounded-lg border border-gray-800 bg-gray-950 shadow-sm transition-all duration-300 hover:border-gray-700 hover:shadow-md">
-                                <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-lg">
-                                    <img
-                                        alt="Course Thumbnail"
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        src="/placeholder.svg"
-                                    />
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold">Introduction to Web Development</h3>
-                                    <p className="mt-2 text-sm text-gray-400">
-                                        Learn the fundamentals of web development, including HTML, CSS, and JavaScript.
-                                    </p>
-                                    <button className="mt-4 inline-flex items-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                                        Select Course
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="group relative rounded-lg border border-gray-800 bg-gray-950 shadow-sm transition-all duration-300 hover:border-gray-700 hover:shadow-md">
-                                <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-lg">
-                                    <img
-                                        alt="Course Thumbnail"
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        src="/placeholder.svg"
-                                    />
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold">Introduction to Web Development</h3>
-                                    <p className="mt-2 text-sm text-gray-400">
-                                        Learn the fundamentals of web development, including HTML, CSS, and JavaScript.
-                                    </p>
-                                    <button className="mt-4 inline-flex items-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                                        Select Course
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="group relative rounded-lg border border-gray-800 bg-gray-950 shadow-sm transition-all duration-300 hover:border-gray-700 hover:shadow-md">
-                                <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-lg">
-                                    <img
-                                        alt="Course Thumbnail"
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        src="/placeholder.svg"
-                                    />
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold">Introduction to Web Development</h3>
-                                    <p className="mt-2 text-sm text-gray-400">
-                                        Learn the fundamentals of web development, including HTML, CSS, and JavaScript.
-                                    </p>
-                                    <button className="mt-4 inline-flex items-center rounded-md bg-gray-50 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                                        Select Course
-                                    </button>
-                                </div>
-                            </div>
+
+            <div className="bg-gray-800 min-h-screen ml-64 pt-16">
+                <div className="py-4 px-2 sm:px-4 lg:px-2">
+                    <div className="text-left p-8 mb-3">
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-4xl font-bold text-white">Courses</h1>
+                            <div className="flex space-x-2 mt-3">
+                                <button className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">All</button>
+                                <button className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">
+                                    Ongoing
+                                </button>
+                                <button className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">
+                                    Completed
+                                </button>
+
                             </div>
                         </div>
+                        <p className='text-gray-400'>Welcome to <strong>learnHub Courses</strong> page where you can find many mentors <br />
+                            to have knowledge from them. With our expertise in many fields you <br />
+                            take your course and hop straight into the work field directly and <br />
+                            gain the knowledge you need.</p>
+
+                    </div>
+                    <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+
+
+                    {/*===================== Button Div =================*/}
+                    <div className="flex justify-between items-center mb-6 px-8">
+                        <div className="flex space-x-4">
+                            <button className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">
+                                Classes
+                            </button>
+                            <button className="bg-transparent hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">
+                                Calendar
+                            </button>
+                        </div>
+
+                    </div>
+                    {/*====================== Div Courses=============== */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8 ">
+                        {Array.from({ length: 6 }, (_, i) => (
+                            <div className="bg-gray-700 text-white rounded-lg overflow-hidden">
+                                <div className="flex items-center space-x-4 p-4">
+                                    <div className="bg-white rounded-full w-12  flex items-center justify-center">
+                                        <img src={LogoUdacity} alt="Instructor" className="w-full h-full object-center" />
+                                    </div>
+                                    <div>
+                                        <div className="font-semibold">FrontEnd Developemnt Intro Guide  - Class {i + 1}</div>
+                                        <div className="text-sm opacity-70">Udacity</div>
+                                    </div>
+                                </div>
+
+                                {/* =============Part to Edit progress=================== */}
+                                <div className="p-4 border-t border-gray-600">
+                                    <div className="flex justify-between items-center">
+                                        <span className="bg-gray-600 text-white px-2 py-1 rounded-full text-xs">8/10</span>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 text-green-500"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="mt-2">
+                                        <div className="w-full h-2 bg-gray-600 rounded-full">
+                                            <div className="h-full bg-green-500 rounded-full" style={{ width: "80%" }} />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center mt-4 text-sm">
+                                        <span>Due: Dec 19</span>
+                                        <span>HC/MC</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </section>
+            </div>
+
         </div>
     )
 }
