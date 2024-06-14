@@ -17,4 +17,9 @@ router.get('/getTenCommunities', communityMiddlewares.userFromToken, communityCo
 router.post('/uploadFile/:communityId', communityMiddlewares.userFromToken, upload.single('file'), communityController.uploadFile.bind(communityController))
 /* router.patch('/:communityId', communityController.updateCommunity) */
 
+router.get('/getAllPostsforcommunity/:communityId', communityController.getAllPostsForCommunity.bind(communityController))
+router.post('/createpost/:communityId', communityController.createPost.bind(communityController))
+/* router.get('/getpost/:postId', communityController.getPostById.bind(communityController))
+router.put('/update/:postId', communityController.updatePost.bind(communityController))
+router.delete('/delete/:postId', communityController.deletePost.bind(communityController)) */
 module.exports = router

@@ -1,6 +1,6 @@
 const dotenv = require('dotenv')
 const { admin } = require('../Config/firebaseeconfig')
-const Community = require('../models/community') // Assuming you have a Community model
+const { Community, Post } = require('../models/community')
 
 dotenv.config()
 
@@ -54,6 +54,23 @@ async function checkIsOwner (req, res, next) {
     console.error(`Error while checking ownership: ${error}`)
     res.status(500).json({ error: 'Internal Server Error' })
   }
+}
+
+exports.validatePost = (req, res, next) => {
+  const { title, content, communityId } = req.body
+  if (!title || !content || !communityId) {
+    return res.status(400).json({ error: 'Title and content are required' })
+  }
+  next()
+}
+
+exports.checkPostExists = (req, res, next) => {
+  const postId = req.params.id
+  const post = Post.find(post => post.id === parseInt(postId))
+  if (!post) {
+    return res.status(404).json({ error: 'Post not found' })
+  }
+  next()
 }
 
 module.exports = { userFromToken, checkIsOwner }

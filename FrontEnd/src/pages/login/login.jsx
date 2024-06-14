@@ -66,7 +66,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8001/auth/login", {
+      const response = await fetch("http://localhost:8002/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

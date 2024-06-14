@@ -7,6 +7,27 @@ const MemberSchema = new mongoose.Schema({
 
 })
 
+const postSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  communityId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Community',
+    required: true
+  }
+
+})
+
 const CommunitySchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: false },
@@ -14,17 +35,19 @@ const CommunitySchema = new mongoose.Schema(
     privacy: {
       type: String,
       required: true,
-      enum: ['public', 'private'], // Only allow "public" and "private"
+      enum: ['public', 'private'],
       unique: false
     },
     ownerID: { type: String, required: false, unique: false },
     members: [MemberSchema],
-    files: { type: Array, required: false }
+    files: { type: Array, required: false },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
   },
   { timestamps: true }
 )
 
 const Community = mongoose.model('Community', CommunitySchema)
+const Post = mongoose.model('Post', postSchema)
 
 /* mongoose.connection.on('connected', async () => {
   try {
@@ -39,4 +62,4 @@ const Community = mongoose.model('Community', CommunitySchema)
   }
 }) */
 
-module.exports = Community
+module.exports = { Community, Post }

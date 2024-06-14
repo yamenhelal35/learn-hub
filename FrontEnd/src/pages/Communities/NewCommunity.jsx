@@ -41,8 +41,12 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
             if (!response.ok) {
                 throw new Error(`Error fetching communities: ${response.statusText}`);
             }
+
             const data = await response.json();
             
+            if (!Array.isArray(data.communities)) {
+                throw new Error('Invalid community data format');
+            }
             return data;
         } catch (error) {
             console.error('Error fetching communities:', error);
@@ -55,6 +59,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
             try {
                 const communities = await fetchCommunities();
                 setCommunityList(communities.communities);
+
                 console.log('communities:', communities);
                 setIsLoading(false);
             } catch (error) {
@@ -62,7 +67,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                 setIsLoading(false);
             }
         };
-
+    
         fetchData();
     }, []);
 

@@ -8,7 +8,8 @@ const UserSchema = new mongoose.Schema(
     firstname: { type: String, required: false, unique: false },
     lastname: { type: String, required: false, unique: false },
     profilepic: { type: String, required: false, unique: false, default: '' },
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    joinedCommunities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Community' }]
   }, { timestamps: true })
 
 const User = mongoose.model('User', UserSchema)

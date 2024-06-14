@@ -15,6 +15,7 @@ const CommunityPage = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const { communityId } = useParams();
     const [error, setError] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
 
     useEffect(() => {
@@ -184,6 +185,20 @@ const CommunityPage = () => {
         },
         // More posts...
     ];
+
+    const handleCreatePost = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Add your form submission logic here
+        setShowModal(false);
+    };
 
 /*     const people = [
         {

@@ -17,7 +17,7 @@ const Profile = () => {
           const token = Cookies.get('token');
 
           console.log(`token: ${token}`)
-          const response = await fetch('http://localhost:8001/auth/profile', {
+          const response = await fetch('http://localhost:8002/auth/profile', {
             method: "GET", 
             credentials: 'include',
             headers: {

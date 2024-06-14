@@ -27,7 +27,7 @@ app.use(cookieParser())
 
 connectToDB()
 /* app.use(authMiddlewares.cookieParser()) */
-app.use('/', authRoutes)
+app.use('/auth', authRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Authentication service is running on port ${port}!`)

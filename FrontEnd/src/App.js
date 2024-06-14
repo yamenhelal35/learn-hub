@@ -41,7 +41,7 @@ function App() {
         {/* ===========Commuinty Routes================= */}
         <Route exact path="/Community" element={<Community communityData={communityData} />} />
         <Route exact path="/CreateCommunity" element={<CreateCommunity onSave={handleSaveCommunity} />} />
-        <Route exact path="/CommunityPage" element={<CommunityPage />} />
+        <Route exact path="/CommunityPage/:communityId" element={<CommunityPage />} />
         <Route exact path="/NewCommunity" element={<NewCommunity />} />
 
         {/* ===========Login & Register Routes================= */}

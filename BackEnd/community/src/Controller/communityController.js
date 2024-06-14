@@ -1,6 +1,7 @@
 const CommunityService = require('../Service/communityService')
 const { uploadFile } = require('../Config/firebaseeconfig')
 const admin = require('firebase-admin')
+const { User } = require('../../../auth/src/models/user')
 
 class CommunityController {
   constructor () {
@@ -68,6 +69,7 @@ class CommunityController {
 
       const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
       console.log(`Updated Community: ${JSON.stringify(updatedCommunity)}`)
+      await User.findByIdAndUpdate(userId, { $addToSet: { joinedCommunities: communityId } })
 
       res.json({ ...updatedCommunity }) // Send isOwner as part of the response
     } catch (error) {
@@ -128,6 +130,80 @@ class CommunityController {
       res.status(500).json({ error: 'Internal Server Error' })
     }
   }
+
+  async createPost (req, res) {
+    try {
+      const { title, content } = req.body
+      const { communityId } = req.params
+
+      const community = await this.communityService.getCommunityById(communityId)
+      if (!community) {
+        return res.status(404).json({ error: 'Community not found' })
+      }
+
+      const newPost = await this.communityService.createPost(title, content, communityId)
+      console.log(`New Post: ${newPost}`)
+      res.status(201).json(newPost)
+    } catch (error) {
+      console.error('Error creating post:', error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  async getAllPostsForCommunity (req, res) {
+    try {
+      const { communityId } = req.params
+
+      const posts = await this.communityService.getAllPostsForCommunity(communityId)
+      res.json(posts)
+    } catch (error) {
+      console.error('Error fetching posts for community:', error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+/*   async getPostById (req, res) {
+    try {
+      const postId = req.params.id
+      const post = await this.communityService.getPostById(postId)
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found' })
+      }
+      res.json(post)
+    } catch (error) {
+      console.error('Error fetching post by ID:', error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  async updatePost (req, res) {
+    try {
+      const postId = req.params.id
+      const { title, content } = req.body
+      const updatedPost = await this.communityService.updatePost(postId, title, content)
+      if (!updatedPost) {
+        return res.status(404).json({ error: 'Post not found' })
+      }
+      res.json(updatedPost)
+    } catch (error) {
+      console.error('Error updating post:', error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  async deletePost (req, res) {
+    try {
+      const postId = req.params.id
+      const deleted = await this.communityService.deletePost(postId)
+      if (!deleted) {
+        return res.status(404).json({ error: 'Post not found' })
+      }
+      res.status(204).end()
+    } catch (error) {
+      console.error('Error deleting post:', error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  } */
 }
 
 module.exports = CommunityController

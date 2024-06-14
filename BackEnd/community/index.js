@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 })
 
 // Use community routes
-app.use('/', communityRoutes)
+app.use('/community', communityRoutes)
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Community service is running on port ${port}!`)

@@ -1,4 +1,5 @@
 const CommunityRepository = require('../Repository/communityRepository')
+
 const joi = require('joi')
 
 class CommunityService {
@@ -38,6 +39,7 @@ class CommunityService {
   async getCommunityById (_id) {
     try {
       const community = await this.communityRepository.findCommunityById(_id)
+
       console.log(`communityID: ${_id}`)
 
       return community
@@ -155,6 +157,36 @@ class CommunityService {
       throw new Error(`Failed to upload file: ${error.message}`)
     }
   }
+
+  async getAllPostsForCommunity (communityId) {
+    try {
+      const posts = await this.communityRepository.getAllPostsForCommunity(communityId)
+      return posts
+    } catch (error) {
+      throw new Error(`Failed to fetch posts for community: ${error.message}`)
+    }
+  }
+
+  async createPost (title, content, communityId) {
+    try {
+      const result = await this.communityRepository.createPost(title, content, communityId)
+      return result
+    } catch (error) {
+      throw new Error(`Failed to create post: ${error.message}`)
+    }
+  }
+
+/*   getPostById (id) {
+    return this.communityRepository.getPostById(id)
+  }
+
+  updatePost (id, title, content) {
+    return this.communityRepository.updatePost(id, title, content)
+  }
+
+  deletePost (id) {
+    return this.communityRepository.deletePost(id)
+  } */
 }
 
 module.exports = CommunityService
