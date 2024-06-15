@@ -11,16 +11,13 @@ const AI = () => {
 
     const handleAsk = async () => {
         try {
-            const apiKey=process.env.REACT_APP_OPENAI_API_KEY;
-
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('http://localhost:8004/chat/ai', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-
                 },
-                body: JSON.stringify({ text: userInput }),
+                credentials: 'include',
+                body: JSON.stringify({ prompt: userInput }),
             });
             const data = await response.json();
             setAIResponse(data.response);
@@ -30,6 +27,9 @@ const AI = () => {
             setAIResponse('Error fetching AI response. Please try again.');
         }
     };
+    
+    
+    
 
     return (
         <div className="bg-gray-900 h-full">
