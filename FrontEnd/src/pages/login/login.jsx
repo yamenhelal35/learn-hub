@@ -91,7 +91,7 @@ const Login = () => {
             />
           </div>
           <div className="w-full flex flex-col my-4">
-            <Link to="Home">
+            
             <button onClick={handleSubmit} className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center">
               Login
             </button>
