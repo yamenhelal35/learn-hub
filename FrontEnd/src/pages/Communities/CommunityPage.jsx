@@ -16,6 +16,8 @@ const CommunityPage = () => {
     const { communityId } = useParams();
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [posts, setPosts] = useState([]);
+
 
 
     useEffect(() => {
@@ -83,9 +85,24 @@ const CommunityPage = () => {
             }
           };
 
+          const fetchPosts = async () => {
+            try {
+                const response = await fetch(`http://localhost:8003/community/getAllPostsforcommunity/${communityId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch posts');
+                }
+                const postsData = await response.json();
+                setPosts(postsData);
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+                setError(error.message);
+            }
+        };
+
       
           fetchCommunityData();
           fetchFriendList();
+          fetchPosts();
         }, [communityId]);
 
         
@@ -131,7 +148,7 @@ const CommunityPage = () => {
           }
       
     
-    const posts = [
+/*     const posts = [
         {
             id: 1,
             title: 'Boost your conversion rate',
@@ -184,7 +201,7 @@ const CommunityPage = () => {
             },
         },
         // More posts...
-    ];
+    ]; */
 
     const handleCreatePost = () => {
         setShowModal(true);
@@ -194,11 +211,85 @@ const CommunityPage = () => {
         setShowModal(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Add your form submission logic here
-        setShowModal(false);
+    
+        const formData = new FormData(event.target);
+        const formDataObject = {};
+        formData.forEach((value, key) => {
+            formDataObject[key] = value;
+        });
+    
+        try {
+            const token = Cookies.get('token');
+    
+            // Fetch user profile data including profile picture and username
+            const profileResponse  = await fetch('http://localhost:8002/auth/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include'
+            });
+            console.log(profileResponse.data)
+    
+            if (!profileResponse.ok) {
+                throw new Error('Failed to fetch user profile');
+            }
+    
+            const userProfileData = await profileResponse.json();
+            const userProfilePic = userProfileData.profilepic;
+            const username = userProfileData.username;
+    
+            // Include userProfilePic and username in formDataObject
+            formDataObject.imageUrl = userProfilePic;
+            formDataObject.username = username;
+    
+    
+            const postData = {
+                ...formDataObject,
+                userProfilePic: userProfilePic,
+                username: username // Assuming this is how the username is named in your data structure
+            };
+    
+            const postResponse = await fetch(`http://localhost:8003/community/createpost/${communityId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            });
+    
+            if (!postResponse.ok) {
+                throw new Error('Error creating post');
+            }
+    
+            const newPost = await postResponse.json();
+            console.log('New Post:', newPost);
+            setPosts([...posts, newPost]);
+            setShowModal(false);
+
+
+            // Optionally handle success, e.g., show a success message or update UI
+        } catch (error) {
+            console.error('Error creating post:', error);
+            // Optionally handle error, e.g., show an error message to the user
+        }
     };
+    
+    
+
+
+      
+
+
+
+      
+      
+      // Example usage assuming you have a form with ID 'postForm'
+      
+      
 
 /*     const people = [
         {
@@ -253,7 +344,8 @@ const CommunityPage = () => {
                 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
             lastSeen: null,
         },
-    ] */
+    ]
+ */
 
     const renderContent = () => {
         switch (activeTab) {
@@ -261,44 +353,42 @@ const CommunityPage = () => {
                 return (
                     // Content Div Posts Urgent and ETC
                     <div className="grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 dark:border-gray-700 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-
-                        {posts.map((post) => (
-                            <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
-                                <div className="flex items-center gap-x-4 text-xs">
-                                    <time dateTime={post.datetime} className="text-gray-500 dark:text-gray-400">
-                                        {post.date}
-                                    </time>
-                                    <a
-                                        href={post.category.href}
-                                        className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                                    >
-                                        {post.category.title}
+                    {posts.map((post) => (
+                        <article key={post._id} className="flex flex-col items-start justify-between">
+                            <div className="flex items-center gap-x-4 text-xs">
+                                <time dateTime={post.createdAt} className="text-gray-500 dark:text-gray-400">
+                                    {new Date(post.createdAt).toLocaleDateString()}
+                                </time>
+                                <a
+                                    href={`/${post.category.toLowerCase()}`} // Example link, replace with actual route
+                                    className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                                >
+                                    {post.category}
+                                </a>
+                            </div>
+                            <div className="group relative mt-3">
+                                <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 dark:text-gray-100 dark:group-hover:text-gray-300">
+                                    <a href={`/posts/${post._id}`} className="hover:underline">
+                                        {post.title}
                                     </a>
+                                </h3>
+                                <p className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-400">{post.description}</p>
+                            </div>
+                            <div className="relative mt-4 flex items-center gap-x-4">
+                                <img
+                                    src={post.imageUrl || '/path/to/default/image'} // Replace with your default image URL
+                                    alt=""
+                                    className="h-10 w-10 rounded-full bg-gray-50 dark:bg-gray-800"
+                                />
+                                <div className="text-sm leading-6">
+                                    <p className="font-semibold text-gray-900 dark:text-gray-100">
+                                        {post.username}
+                                    </p>
                                 </div>
-                                <div className="group relative">
-                                    <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 dark:text-gray-100 dark:group-hover:text-gray-300">
-                                        <a href={post.href}>
-                                            <span className="absolute inset-0" />
-                                            {post.title}
-                                        </a>
-                                    </h3>
-                                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-400">{post.description}</p>
-                                </div>
-                                <div className="relative mt-8 flex items-center gap-x-4">
-                                    <img src={post.author.imageUrl} alt="" className="h-10 w-10 rounded-full bg-gray-50 dark:bg-gray-800" />
-                                    <div className="text-sm leading-6">
-                                        <p className="font-semibold text-gray-900 dark:text-gray-100">
-                                            <a href={post.author.href}>
-                                                <span className="absolute inset-0" />
-                                                {post.author.name}
-                                            </a>
-                                        </p>
-                                        <p className="text-gray-600 dark:text-gray-400">{post.author.role}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
+                            </div>
+                        </article>
+                    ))}
+                </div>
                 );
             case 'Files':
                 return <div className="text-white border-t border-gray-200">
@@ -623,64 +713,60 @@ const CommunityPage = () => {
 
 {/*==========Input Modal for posts================== */}
 
-            {showModal && (
-                <div id="crud-modal" tabindex="-1" aria-hidden="true" className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50">
-                    <div className="relative p-4 w-full max-w-md max-h-full">
-                        {/* Modal content */}
-                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            {/* Modal header */}
-                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Create New Post 
-                                </h3>
-                                <button
-                                    type="button"
-                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    onClick={handleCloseModal}
-                                >
-                                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
-                                    </svg>
-                                    <span className="sr-only">Close modal</span>
-                                </button>
-                            </div>
-                            {/* Modal body */}
-                            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
-                                <div className="grid gap-4 mb-4 grid-cols-2">
-                                    <div className="col-span-2">
-                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                                        <input type="text" name="name" id="Title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Make Unique Title for your post " required />
-                                    </div>
-                                    {/* <div className="col-span-2 sm:col-span-1">
-                                        <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                        <input type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required />
-                                    </div> */}
-                                    <div className="col-span-2 sm:col-span-1">
-                                        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                        <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="" selected disabled>Select category</option>
-                                            <option value="Important">Important</option>
-                                            <option value="Class">Class Matarial</option>
-                                            <option value="Exam">Exam</option>
-                                            <option value="Discusson">Discussion</option>
-                                        </select>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Description</label>
-                                        <textarea id="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Post here"></textarea>
-                                    </div>
-                                </div>
-                                <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                                    </svg>
-                                    Add your post
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+{showModal && (
+        <div id="crud-modal" tabIndex="-1" aria-hidden="true" className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50">
+          <div className="relative p-4 w-full max-w-md max-h-full">
+            {/* Modal content */}
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              {/* Modal header */}
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Create New Post
+                </h3>
+                <button
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  onClick={handleCloseModal}
+                >
+                  <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+              {/* Modal body */}
+              <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+                <div className="grid gap-4 mb-4 grid-cols-2">
+                  <div className="col-span-2">
+                    <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                    <input type="text" id="title" name="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter Title" required />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <select id="category" name="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                      <option value="" disabled>Select category</option>
+                      <option value="Important">Important</option>
+                      <option value="Class Material">Class Material</option>
+                      <option value="Exam">Exam</option>
+                      <option value="Discussion">Discussion</option>
+                    </select>
+                  </div>
+                  <div className="col-span-2">
+                    <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                    <textarea id="description" name="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Description"></textarea>
+                  </div>
                 </div>
-            )}
+                <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                  </svg>
+                  Add Post
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
 
 

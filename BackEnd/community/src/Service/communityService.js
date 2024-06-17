@@ -167,9 +167,9 @@ class CommunityService {
     }
   }
 
-  async createPost (title, content, communityId) {
+  async createPost (title, description, category, imageUrl, username, communityId) {
     try {
-      const result = await this.communityRepository.createPost(title, content, communityId)
+      const result = await this.communityRepository.createPost(title, description, category, imageUrl, username, communityId)
       return result
     } catch (error) {
       throw new Error(`Failed to create post: ${error.message}`)

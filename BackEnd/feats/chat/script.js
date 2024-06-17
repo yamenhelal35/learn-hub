@@ -1,25 +1,107 @@
-module.exports = (io) => {
-    const users = {};
+module.exports = ({ io, app }) => {
+  const users = {}; // Stores the user info associated with user IDs
+  const messages = {}; // In-memory storage for messages
+  const offlineMessages = {}; // In-memory storage for offline messages
 
-    io.on('connection', (socket) => {
-        console.log('New client connected');
+  io.on('connection', (socket) => {
+    console.log('New client connected:', socket.id);
 
-        socket.on('new-user', name => {
-            users[socket.id] = name;
-            socket.broadcast.emit('user-connected', name);
+    // Handle new user connection
+    socket.on('new-user', (user) => {
+      console.log('New user data received:', user);
+      users[user._id] = { ...user, socketId: socket.id };
+
+      // Send any stored offline messages to the user
+      if (offlineMessages[user._id]) {
+        console.log(`Sending ${offlineMessages[user._id].length} offline messages to user ${user._id}`);
+        offlineMessages[user._id].forEach(message => {
+          io.to(users[user._id].socketId).emit('chat-message', message);
         });
+        delete offlineMessages[user._id]; // Clear offline messages after sending
+      }
 
-        socket.on('send-chat-message', message => {
-            const data = { message: message, name: users[socket.id] };
-            socket.broadcast.emit('chat-message', data);
-        });
-
-        socket.on('disconnect', () => {
-            if (users[socket.id]) {
-                socket.broadcast.emit('user-disconnected', users[socket.id]);
-                delete users[socket.id];
-            }
-            console.log('Client disconnected');
-        });
+      console.log('Users after new user connection:', users);
+      socket.broadcast.emit('user-connected', user);
     });
+
+    // Handle sending chat messages
+    socket.on('send-chat-message', (message) => {
+      const { friendId, userId } = message;
+      console.log('Sending message from:', userId, 'to:', friendId);
+      console.log('Current Users:', users);
+
+      // Store the message in the in-memory storage
+      if (!messages[friendId]) messages[friendId] = [];
+      if (!messages[userId]) messages[userId] = [];
+
+      messages[friendId].push(message);
+      messages[userId].push(message);
+
+      console.log('Messages stored:', messages);
+
+      // Ensure both users are connected
+      if (users[friendId]) {
+        io.to(users[friendId].socketId).emit('chat-message', message);
+      } else {
+        console.error('User not connected:', friendId);
+        // Store the message for the offline user
+        if (!offlineMessages[friendId]) offlineMessages[friendId] = [];
+        offlineMessages[friendId].push(message);
+        console.log(`Stored message for offline user ${friendId}. Total messages stored: ${offlineMessages[friendId].length}`);
+      }
+    });
+
+    // Handle user disconnect
+    socket.on('disconnect', () => {
+      let disconnectedUserId = null;
+      for (const userId in users) {
+        if (users[userId].socketId === socket.id) {
+          disconnectedUserId = userId;
+          socket.broadcast.emit('user-disconnected', users[userId]);
+          delete users[userId];
+          break;
+        }
+      }
+      console.log('Client disconnected:', socket.id);
+      console.log('Users after disconnection:', users);
+      if (disconnectedUserId) {
+        console.log('Disconnected user ID:', disconnectedUserId);
+      }
+    });
+  });
+
+  // HTTP route to get messages for a specific friend
+  app.get('/messages/:userId/:friendId', (req, res) => {
+    const { userId, friendId } = req.params;
+    console.log('Fetching messages for userId:', userId, 'friendId:', friendId);
+    const userMessages = messages[userId] || [];
+    const friendMessages = messages[friendId] || [];
+    const allMessages = [...userMessages, ...friendMessages];
+    res.json(allMessages);
+  });
+
+  // HTTP route to send a message
+  app.post('/send-message', (req, res) => {
+    const { message, name, image, friendId, userId } = req.body;
+    const newMessage = { message, name, image, friendId, userId };
+
+    if (!messages[friendId]) messages[friendId] = [];
+    if (!messages[userId]) messages[userId] = [];
+
+    messages[friendId].push(newMessage);
+    messages[userId].push(newMessage);
+
+    res.status(200).send('Message sent');
+
+    // Ensure both users are connected
+    if (users[friendId] && users[userId]) {
+      io.to(users[friendId].socketId).emit('chat-message', newMessage);
+    } else {
+      console.error('User not connected:', friendId, userId);
+      // Store the message for the offline user
+      if (!offlineMessages[friendId]) offlineMessages[friendId] = [];
+      offlineMessages[friendId].push(newMessage);
+      console.log(`Stored message for offline user ${friendId}. Total messages stored: ${offlineMessages[friendId].length}`);
+    }
+  });
 };

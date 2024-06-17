@@ -133,15 +133,21 @@ class CommunityController {
 
   async createPost (req, res) {
     try {
-      const { title, content } = req.body
+      const { title, description, category, imageUrl, username } = req.body
       const { communityId } = req.params
 
+      console.log(imageUrl)
+      console.log(username)
+
+      if (!title || !description || category) {
+        console.log('please enter all fields')
+      }
       const community = await this.communityService.getCommunityById(communityId)
       if (!community) {
         return res.status(404).json({ error: 'Community not found' })
       }
 
-      const newPost = await this.communityService.createPost(title, content, communityId)
+      const newPost = await this.communityService.createPost(title, description, category, imageUrl, username, communityId)
       console.log(`New Post: ${newPost}`)
       res.status(201).json(newPost)
     } catch (error) {

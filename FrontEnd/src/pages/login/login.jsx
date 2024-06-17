@@ -75,10 +75,24 @@ const Login = () => {
       if (!response.ok) {
         throw new Error("Login failed: " + (await response.text()));
       }
+      localStorage.setItem('currentUser', JSON.stringify(response.data));
 
-      const loginData = await response.json(); // Parse response data
+
+      const loginData = await response.json(); 
       
       if(loginData){
+        const decodedToken = jwt_decode(loginData.token);
+
+        // Ensure complete user data including _id is stored
+        const currentUser = {
+          _id: decodedToken.mongoUserID,
+          username: decodedToken.mongoUserName,
+          email: decodedToken.email,
+          profilepic: decodedToken.userProfilePic,
+        };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        console.log('currentUser set in local storage:', loginData.user);
         document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         document.cookie = `token=${loginData.token}; SameSite=Strict; Secure`;
         console.log("Login successful:", loginData);

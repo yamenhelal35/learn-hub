@@ -55,7 +55,7 @@ const Package = () => {
                                     <span>Free updates: <span class="font-semibold">6 months</span></span>
                                 </li>
                             </ul>
-                            <a href="#" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
+                            <a href="https://buy.stripe.com/test_8wM3cc8uMdHTe1G288" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
                         </div>
 {/* ================Silver Plan ================================= */}
                         <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
@@ -93,7 +93,7 @@ const Package = () => {
                                     <span>Free updates: <span class="font-semibold">24 months</span></span>
                                 </li>
                             </ul>
-                            <a href="#" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
+                            <a href="https://buy.stripe.com/test_dR65kkdP6dHT4r6001" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
                         </div>
 {/* ================Gold Plan ================================= */}
                         <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
@@ -129,7 +129,7 @@ const Package = () => {
                                     <span>Free updates: <span class="font-semibold">36 months</span></span>
                                 </li>
                             </ul>
-                            <a href="#" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
+                            <a href="https://buy.stripe.com/test_4gw7sseTaeLX5va9AC" class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900">Get started</a>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,6 @@ const Package = () => {
                  {/* =================Footer================================= */}
             <div className='mt-8'>
                 <hr class="h-px my-8 border-0 dark:bg-gray-700" />
-
                 <Footer></Footer>
             </div>
         </div>

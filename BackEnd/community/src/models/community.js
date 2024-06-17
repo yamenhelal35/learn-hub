@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  content: {
+  description: {
     type: String,
     required: true
   },
@@ -24,9 +24,23 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',
     required: true
+  },
+  category: {
+    type: String,
+    enum: ['Important', 'Class Material', 'Exam', 'Discussion'],
+    required: true
+  },
+  imageUrl: {
+    type: String,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
   }
-
 })
+
+module.exports = mongoose.model('Post', postSchema)
 
 const CommunitySchema = new mongoose.Schema(
   {

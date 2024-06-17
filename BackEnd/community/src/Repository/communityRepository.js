@@ -138,13 +138,16 @@ class CommunityRepository {
     }
   }
 
-  async createPost (title, content, communityId) {
+  async createPost (title, description, category, imageUrl, username, communityId) {
     const session = await mongoose.startSession()
     session.startTransaction()
     try {
       const newPost = new Post({
         title,
-        content,
+        description,
+        category,
+        imageUrl,
+        username,
         communityId,
         createdAt: Date.now()
       })
