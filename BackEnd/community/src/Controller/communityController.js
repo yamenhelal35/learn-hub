@@ -64,14 +64,22 @@ class CommunityController {
       const userId = req.mongouserId
       const username = req.username
       const userEmail = req.useremail
-      const userProfilePic = req.userProfilePic
-      console.log('userProfilePifghfghfgc', userProfilePic)
+      const userProfilePic = req.userProfilePic || '' // Default to an empty string if not provided
+
+      // Debugging logs
+      console.log('Community ID:', communityId)
+      console.log('User ID:', userId)
+      console.log('Username:', username)
+      console.log('User Email:', userEmail)
+      console.log('User Profile Pic:', userProfilePic)
+
+      if (!username || !userEmail) {
+        return res.status(400).json({ error: 'Missing required user information' })
+      }
 
       const updatedCommunity = await this.communityService.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
-      console.log(`Updated Community: ${JSON.stringify(updatedCommunity)}`)
-      await User.findByIdAndUpdate(userId, { $addToSet: { joinedCommunities: communityId } })
 
-      res.json({ ...updatedCommunity }) // Send isOwner as part of the response
+      res.json({ ...updatedCommunity })
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: 'Internal Server Error' })

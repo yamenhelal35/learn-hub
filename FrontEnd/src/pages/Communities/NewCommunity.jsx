@@ -93,6 +93,36 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
         }
     };
 
+    const joinCommunity = async (communityId) => {
+        try {
+            const token = Cookies.get('token');
+            if (!token) {
+                throw new Error('Token not found');
+            }
+            const response = await fetch(`http://localhost:8003/community/joinCommunity/${communityId}`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error joining community: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Joined community:', data);
+
+            // Navigate to the community page after successfully joining
+            communityPageRoute(communityId);
+            console.log("you should be navigatted")
+        } catch (error) {
+            console.error('Error joining community:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -298,7 +328,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                                     <span className="text-gray-500 dark:text-gray-400">{community.about}</span>
                                     <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">{community.about}</p>
                                     <button
-                                        onClick={() => communityPageRoute(community._id)}
+                                        onClick={() => joinCommunity(community._id)}
                                         type="button"
                                         className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                     >

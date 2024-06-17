@@ -1,4 +1,4 @@
-const { Community, Post } = require('../models/community')
+const { Community, Post, Member } = require('../models/community')
 const mongoose = require('mongoose')
 
 class CommunityRepository {
@@ -33,15 +33,31 @@ class CommunityRepository {
         throw new Error('Community not found')
       }
 
-      console.log('Community:', community)
+      // Debugging logs
+      console.log('Repository - Community:', community)
+      console.log('Repository - User ID:', userId)
+      console.log('Repository - Username:', username)
+      console.log('Repository - User Email:', userEmail)
+      console.log('Repository - User Profile Pic:', userProfilePic)
 
-      const isMember = community.members && community.members.some((member) => member._id.toString() === userId)
-
+      const isMember = community.members.some((member) => member._id.toString() === userId)
       if (isMember) {
         throw new Error('User is already a member of this community')
       }
 
-      community.members.push({ _id: userId, username, email: userEmail, profilepic: userProfilePic })
+      // Create a new member instance
+      const newMember = {
+        _id: userId,
+        username,
+        email: userEmail,
+        profilepic: userProfilePic || ''
+      }
+
+      // Push the new member instance to the members array
+      community.members.push(newMember)
+
+      console.log('Updated Community Members:', community.members) // Log members before saving
+
       await community.save()
 
       return community.toObject()

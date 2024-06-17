@@ -50,6 +50,13 @@ class CommunityService {
 
   async joinCommunity (communityId, userId, username, userEmail, userProfilePic) {
     try {
+      // Debugging logs
+      console.log('Service - Community ID:', communityId)
+      console.log('Service - User ID:', userId)
+      console.log('Service - Username:', username)
+      console.log('Service - User Email:', userEmail)
+      console.log('Service - User Profile Pic:', userProfilePic)
+
       const community = await this.communityRepository.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
       return community
     } catch (error) {

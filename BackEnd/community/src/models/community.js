@@ -62,6 +62,7 @@ const CommunitySchema = new mongoose.Schema(
 
 const Community = mongoose.model('Community', CommunitySchema)
 const Post = mongoose.model('Post', postSchema)
+const Member = mongoose.model('Member', MemberSchema)
 
 /* mongoose.connection.on('connected', async () => {
   try {
@@ -76,4 +77,4 @@ const Post = mongoose.model('Post', postSchema)
   }
 }) */
 
-module.exports = { Community, Post }
+module.exports = { Community, Post, Member }
