@@ -93,18 +93,28 @@ class CommunityRepository {
     }
   }
 
-  async getTenCommunities () {
+  async getTenCommunities (userId, excludeIds = []) {
     try {
-      const communities = await Community.find().limit(10).lean()
+      const communities = await Community.aggregate([
+        {
+          $match: {
+            _id: { $nin: excludeIds.map(id => new mongoose.Types.ObjectId(id)) },
+            'members._id': { $ne: new mongoose.Types.ObjectId(userId) } // Ensure the user is not a member
+          }
+        },
+        { $sample: { size: 10 } } // Ensures randomness
+      ])
       return communities
     } catch (error) {
-      throw new Error(`Failed to fetch users: ${error.message}`)
+      throw new Error(`Failed to fetch communities: ${error.message}`)
     }
   }
 
-  async getAdditionalCommunities (excludedIds) {
+  async getAdditionalCommunities (seenCommunityIds) {
     try {
-      const additionalCommunities = await Community.find({ _id: { $nin: Array.from(excludedIds) } }).limit(10).lean()
+      const additionalCommunities = await Community.find({
+        _id: { $nin: Array.from(seenCommunityIds) }
+      }).limit(10).lean()
       return additionalCommunities
     } catch (error) {
       throw new Error(`Failed to fetch additional communities: ${error.message}`)

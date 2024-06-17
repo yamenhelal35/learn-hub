@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer/Footer';
 import Cookies from 'js-cookie';
+import { scroller } from 'react-scroll';
 
 const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     const [communityList, setCommunityList] = useState(initialCommunityData);
@@ -11,6 +12,8 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     const [filteredCommunityList, setFilteredCommunityList] = useState(initialCommunityData);
     const [discoverSearchQuery, setDiscoverSearchQuery] = useState('');
     const [filteredDiscoverCommunityList, setFilteredDiscoverCommunityList] = useState(initialCommunityData);
+    const [tenCommunities, setTenCommunities] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Track the current page for pagination
 
     let navigate = useNavigate();
 
@@ -34,11 +37,11 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     const fetchCommunities = async () => {
         try {
             const token = Cookies.get('token');
-            console.log(`token: ${token}`);
+            console.log(`Token: ${token}`);
             const response = await fetch('http://localhost:8003/community/getallforuser', {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": token
+                    "Authorization": `Bearer ${token}` // Ensure token is correctly formatted
                 },
                 credentials: 'include'
             });
@@ -59,6 +62,37 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
         }
     };
 
+    const fetchTenCommunities = async (page) => {
+        try {
+            console.log(`fetchTenCommunities called for page: ${page}`);
+            const token = Cookies.get('token');
+            console.log(`Token for fetchTenCommunities: ${token}`);
+            if (!token) {
+                throw new Error('Token not found');
+            }
+            const response = await fetch(`http://localhost:8003/community/getTenCommunities?page=${page}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Ensure token is correctly formatted
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error fetching ten communities: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Fetched ten communities:', data);
+            setTenCommunities(data.communities);
+            setFilteredDiscoverCommunityList(data.communities);
+
+        } catch (error) {
+            console.error('Error fetching ten communities:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -76,7 +110,12 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
         };
 
         fetchData();
-    }, []);
+        fetchTenCommunities(currentPage);
+    }, [currentPage]);
+
+    useEffect(() => {
+        console.log('Updated ten communities:', tenCommunities);
+    }, [tenCommunities]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -93,9 +132,9 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     const handleDiscoverSearch = (e) => {
         e.preventDefault();
         if (discoverSearchQuery.trim() === '') {
-            setFilteredDiscoverCommunityList(communityList);
+            setFilteredDiscoverCommunityList(tenCommunities);
         } else {
-            const filtered = communityList.filter(community =>
+            const filtered = tenCommunities.filter(community =>
                 community.name.toLowerCase().includes(discoverSearchQuery.toLowerCase())
             );
             setFilteredDiscoverCommunityList(filtered);
@@ -112,8 +151,18 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
     const handleDiscoverSearchQueryChange = (e) => {
         setDiscoverSearchQuery(e.target.value);
         if (e.target.value.trim() === '') {
-            setFilteredDiscoverCommunityList(communityList);
+            setFilteredDiscoverCommunityList(tenCommunities);
         }
+    };
+
+    const handleRefresh = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+        fetchTenCommunities(currentPage + 1);
+        scroller.scrollTo('DiscoverCommunities', {
+            duration: 800,
+            delay: 0,
+            smooth: 'easeInOutQuart'
+        });
     };
 
     return (
@@ -160,7 +209,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                             className="p-2.5 ms-2 text-sm font-medium text-white rounded-lg border focus:ring-4 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                <path stroke="currentColor" d="M19 19l-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                             <span className="sr-only">Search</span>
                         </button>
@@ -230,7 +279,7 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                             className="p-2.5 ms-2 text-sm font-medium text-white rounded-lg border focus:ring-4 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                <path stroke="currentColor" d="M19 19l-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                             <span className="sr-only">Search</span>
                         </button>
@@ -242,17 +291,19 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                     {filteredDiscoverCommunityList.length > 0 ? (
                         filteredDiscoverCommunityList.map((community) => (
                             <div className="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-700 dark:border-gray-200" key={community._id}>
-                                <a href="#">
-                                    {/* If You Want To ADD Images For Each Community Uncomment this  */}
-                                    {/* <img className="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar"/> */}
-                                </a>
                                 <div className="p-5">
                                     <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         <a href="#">{community.name}</a>
                                     </h3>
                                     <span className="text-gray-500 dark:text-gray-400">{community.about}</span>
                                     <p className="mt-3 mb-4 font-light text-gray-500 dark:text-gray-400">{community.about}</p>
-                                    <button type="button" className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Open Community</button>
+                                    <button
+                                        onClick={() => communityPageRoute(community._id)}
+                                        type="button"
+                                        className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    >
+                                        Join Community
+                                    </button>
                                 </div>
                             </div>
                         ))
@@ -260,6 +311,12 @@ const NewCommunity = ({ communityData: initialCommunityData = [] }) => {
                         <p className="text-center">No communities found.</p>
                     )}
                 </div>
+                <button
+                    onClick={handleRefresh}
+                    className="py-2.5 px-5 mt-4 text-sm font-medium text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none dark:bg-blue-800 dark:hover:bg-blue-900 dark:focus:ring-blue-900"
+                >
+                    Refresh
+                </button>
             </div>
 
             {/* =================Footer================================= */}

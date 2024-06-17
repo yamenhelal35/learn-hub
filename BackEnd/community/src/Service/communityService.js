@@ -79,48 +79,34 @@ class CommunityService {
     }
   }
 
-  async getTenCommunities (userId) {
+  async getTenCommunities (userId, excludeIds = []) {
     try {
-      const communities = await this.communityRepository.getTenCommunities()
       const retrievedCommunities = []
-      const seenCommunityIds = new Set()
+      const seenCommunityIds = new Set(excludeIds)
 
       let additionalCommunitiesNeeded = 10
 
-      for (const community of communities) {
-        const communityMembers = community.members
-        if (!communityMembers.includes(userId)) {
-          retrievedCommunities.push(community)
-          seenCommunityIds.add(community._id)
-          additionalCommunitiesNeeded--
-        }
-      }
-
-      // Fetch additional communities if needed
       while (additionalCommunitiesNeeded > 0) {
-        const additionalCommunities = await this.communityRepository.getAdditionalCommunities(seenCommunityIds)
+        const communities = await this.communityRepository.getTenCommunities(userId, Array.from(seenCommunityIds))
 
-        if (additionalCommunities.length === 0) {
-          // No more additional communities to fetch
+        if (communities.length === 0) {
           break
         }
 
-        for (const community of additionalCommunities) {
-          if (!community.members.includes(userId) && !seenCommunityIds.has(community._id)) {
-            retrievedCommunities.push(community)
-            seenCommunityIds.add(community._id)
-            additionalCommunitiesNeeded--
+        for (const community of communities) {
+          retrievedCommunities.push(community)
+          seenCommunityIds.add(community._id)
+          additionalCommunitiesNeeded--
 
-            if (additionalCommunitiesNeeded === 0) {
-              break
-            }
+          if (additionalCommunitiesNeeded === 0) {
+            break
           }
         }
       }
 
-      return { communities: retrievedCommunities }
+      return retrievedCommunities
     } catch (error) {
-      throw new Error(`Failed to fetch communities: ${error.message}`)
+      throw new Error(`Failed to get ten communities: ${error.message}`)
     }
   }
 

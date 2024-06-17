@@ -104,9 +104,11 @@ class CommunityController {
   async getTenCommunities (req, res) {
     try {
       const userId = req.mongouserId
-      const communities = await this.communityService.getTenCommunities(userId)
-      console.log('Randomcommunities', communities)
-      res.json(communities)
+      const { excludeIds } = req.query
+      const excludeIdsArray = excludeIds ? excludeIds.split(',') : []
+      const communities = await this.communityService.getTenCommunities(userId, excludeIdsArray)
+      console.log('Random communities', communities)
+      res.json({ communities })
     } catch (err) {
       res.status(400).json({ message: err.message })
     }
