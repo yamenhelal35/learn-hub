@@ -143,24 +143,44 @@ class CommunityRepository {
     return community
   }
 
-  async uploadFile (communityId, userId, file) {
+  async uploadFile (communityId, userId, file, fileDetails) {
     try {
       const community = await Community.findById(communityId)
       if (!community) {
         throw new Error('Community not found')
       }
 
-      if (community.ownerID !== userId) {
+      /*       if (community.ownerID !== userId) {
         throw new Error('You are not authorized to upload.')
+      } */
+
+      const fileLink = `https://storage.googleapis.com/${file.bucket}/${file.originalname}`
+      const newFile = {
+        link: fileLink,
+        title: fileDetails.title,
+        description: fileDetails.description,
+        category: fileDetails.category
       }
 
-      community.files.push(`https://storage.googleapis.com/${file.bucket}/${file.originalname}`)
+      community.files.push(newFile)
 
       await community.save()
 
-      return { downloadURL: `https://storage.googleapis.com/${file.bucket}/${file.originalname}` }
+      return { downloadURL: fileLink }
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`)
+    }
+  }
+
+  async getFilesFromCommunity (communityID) {
+    try {
+      const community = await Community.findById(communityID)
+      if (!community) {
+        throw new Error('Community not found')
+      }
+      return community.files
+    } catch (error) {
+      throw new Error(`Failed to get files from community: ${error.message}`)
     }
   }
 

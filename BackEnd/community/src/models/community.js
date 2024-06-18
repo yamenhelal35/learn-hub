@@ -7,6 +7,15 @@ const MemberSchema = new mongoose.Schema({
 
 })
 
+const FileSchema = new mongoose.Schema(
+  {
+    link: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: false },
+    category: { type: String, required: true }
+  }
+)
+
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -54,7 +63,7 @@ const CommunitySchema = new mongoose.Schema(
     },
     ownerID: { type: String, required: false, unique: false },
     members: [MemberSchema],
-    files: { type: Array, required: false },
+    files: [FileSchema],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
   },
   { timestamps: true }

@@ -141,13 +141,21 @@ class CommunityService {
     }
   }
 
-  async uploadFile (communityId, userId, file) {
+  async uploadFile (communityId, userId, file, fileDetails) {
     try {
-      const result = await this.communityRepository.uploadFile(communityId, userId, file)
-
+      const result = await this.communityRepository.uploadFile(communityId, userId, file, fileDetails)
       return result
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`)
+    }
+  }
+
+  async getFilesFromCommunity (communityID) {
+    try {
+      const result = await this.communityRepository.getFilesFromCommunity(communityID)
+      return result
+    } catch (error) {
+      throw new Error(`Failed to get community file: ${error.message}`)
     }
   }
 

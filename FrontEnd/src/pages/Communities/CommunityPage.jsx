@@ -15,6 +15,8 @@ const CommunityPage = () => {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [files, setFiles] = useState([]);
+    const [showFileModal, setShowFileModal] = useState(false);
 
     useEffect(() => {
         const fetchCommunityData = async () => {
@@ -95,10 +97,33 @@ const CommunityPage = () => {
             }
         };
 
+        const fetchFiles = async () => {
+            try {
+              const token = Cookies.get('token');
+              const response = await fetch(`http://localhost:8003/community/getFilesFromCommunity/${communityId}`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                credentials: 'include'
+              });
+      
+              if (!response.ok) {
+                throw new Error('Failed to fetch files');
+              }
+      
+              const filesData = await response.json();
+              setFiles(filesData);
+            } catch (error) {
+              console.error('Error fetching files:', error);
+            }
+          };
+
       
           fetchCommunityData();
           fetchFriendList();
           fetchPosts();
+          fetchFiles();
         }, [communityId]);
 
         
@@ -218,7 +243,54 @@ const CommunityPage = () => {
         } catch (error) {
             console.error('Error creating post:', error);
         }
+        
     };
+
+    const handleSubmitFile = async (event) => {
+        event.preventDefault();
+
+        const fileInput = event.target.file_input.files[0];
+        const title = event.target.title.value;
+        const description = event.target.description.value;
+        const category = event.target.category.value;
+
+        if (!fileInput || !title) {
+            setError('File and title are required.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('category', category);
+
+        try {
+            const token = Cookies.get('token');
+
+            const response = await fetch(`http://localhost:8003/community/uploadFile/${communityId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData,
+                credentials: 'include'
+
+            });
+            console.log("communityId",communityId)
+            if (!response.ok) {
+                throw new Error('Failed to upload file');
+            }
+
+            const data = await response.json();
+            setFiles([...files, data]);
+            setShowFileModal(false);
+
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+    
 
     const renderContent = () => {
         switch (activeTab) {
@@ -357,19 +429,21 @@ const CommunityPage = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        {files.map((file) => (
 
-                                            <tr class="border-b dark:border-gray-700">
-                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple iPhone 14</th>
-                                                <td class="px-4 py-3">Phone</td>
-                                                <td class="px-4 py-3">Apple</td>
-
+                                            <tr key={file.id} class="border-b dark:border-gray-700">
+                                            <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <a href={file.link} target="_blank" rel="noopener noreferrer">{file.title}</a>
+                                            </th>
+                                            <td className="px-4 py-3">{file.category}</td>
+                                            <td className="px-4 py-3">{file.description}</td>
                                                 <td class="px-4 py-3 flex items-center justify-end">
-                                                    <button id="apple-iphone-14-dropdown-button" data-dropdown-toggle="apple-iphone-14-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                                                    <button id={`${file.id}-dropdown-button`} data-dropdown-toggle={`${file.id}-dropdown`} class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                                         </svg>
                                                     </button>
-                                                    <div id="apple-iphone-14-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                                    <div id={`${file.id}-dropdown`} class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-iphone-14-dropdown-button">
                                                             <li>
                                                                 <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
@@ -384,59 +458,8 @@ const CommunityPage = () => {
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="border-b dark:border-gray-700">
-                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple iPad Air</th>
-                                                <td class="px-4 py-3">Tablet</td>
-                                                <td class="px-4 py-3">Apple</td>
+                                    ))}
 
-                                                <td class="px-4 py-3 flex items-center justify-end">
-                                                    <button id="apple-ipad-air-dropdown-button" data-dropdown-toggle="apple-ipad-air-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
-                                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                        </svg>
-                                                    </button>
-                                                    <div id="apple-ipad-air-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-ipad-air-dropdown-button">
-                                                            <li>
-                                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                                            </li>
-                                                        </ul>
-                                                        <div class="py-1">
-                                                            <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="border-b dark:border-gray-700">
-                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Xbox Series S</th>
-                                                <td class="px-4 py-3">Gaming/Console</td>
-                                                <td class="px-4 py-3">Microsoft</td>
-
-                                                <td class="px-4 py-3 flex items-center justify-end">
-                                                    <button id="xbox-series-s-dropdown-button" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
-                                                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                        </svg>
-                                                    </button>
-                                                    <div id="xbox-series-s-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="xbox-series-s-dropdown-button">
-                                                            <li>
-                                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                                            </li>
-                                                        </ul>
-                                                        <div class="py-1">
-                                                            <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                            </tr>
 
                                         </tbody>
                                     </table>
@@ -485,7 +508,7 @@ const CommunityPage = () => {
                             </div>
                         </div>
                     </section>
-                </div>;
+                </div>
             case 'People':
                 return <div className="text-white border-t border-gray-200 ">
                     <div className="text-white border-t border-gray-200">
@@ -656,15 +679,15 @@ const CommunityPage = () => {
                                 </button>
                             </div>
                             {/* Modal body */}
-                            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+                            <form className="p-4 md:p-5" onSubmit={handleSubmitFile}>
                                 <div className="grid gap-4 mb-4 grid-cols-2">
                                     <div className="col-span-2">
-                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                                        <input type="text" name="name" id="Title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Make Unique Title for your post " required />
+                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                                        <input type="text" name="title" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Make Unique Title for your post " required />
                                     </div>
                                     <div className="col-span-2 sm:col-span-1">
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                        <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <select id="category" name="category"  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                             <option value="" selected disabled>Select category</option>
                                             <option value="Important">Important</option>
                                             <option value="Class">Class Matarial</option>
@@ -673,12 +696,12 @@ const CommunityPage = () => {
                                         </select>
                                     </div>
                                     <div className="col-span-2 sm:col-span-1">
-                                        <label htmlFor="File" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload</label>
-                                        <input class="block w-full text-sm p-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" style={{ height: '40px' }} />
+                                        <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload</label>
+                                        <input name="file"  class="block w-full text-sm p-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" style={{ height: '40px' }} />
                                     </div>
                                     <div className="col-span-2">
                                         <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File Description</label>
-                                        <textarea id="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Post here"></textarea>
+                                        <textarea name="description" id="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your Post here"></textarea>
                                     </div>
                                 </div>
                                 <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

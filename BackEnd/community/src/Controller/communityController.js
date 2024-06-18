@@ -127,14 +127,29 @@ class CommunityController {
       const file = req.file
       const userId = req.mongouserId
       const communityId = req.params.communityId
+      const { title, description, category } = req.body
 
       if (!file) {
         return res.status(400).json({ error: 'No file uploaded.' })
       }
 
-      const result = await this.communityService.uploadFile(communityId, userId, file)
+      const fileDetails = { title, description, category }
+
+      const result = await this.communityService.uploadFile(communityId, userId, file, fileDetails)
 
       res.json(result)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  async getFilesFromCommunity (req, res) {
+    try {
+      const communityID = req.params.communityId
+      const files = await this.communityService.getFilesFromCommunity(communityID)
+
+      res.json(files)
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: 'Internal Server Error' })

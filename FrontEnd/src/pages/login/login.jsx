@@ -64,7 +64,6 @@ const Login = () => {
 
         console.log('currentUser set in local storage:', loginData.user);
         document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      const loginData = await response.json(); // Parse response data
 
       if (loginData) {
         document.cookie = `token=${loginData.token}; SameSite=Strict; Secure`;
@@ -72,10 +71,11 @@ const Login = () => {
         navigate("/home");
       }
 
-    } catch (error) {
+    } }
+    catch (error) {
       console.error("Login error:", error);
     }
-  };
+  }
 
   //flex-col lg:flex-row items-center
   return (
