@@ -3,11 +3,24 @@ module.exports = ({ io, app }) => {
   const messages = {}; // In-memory storage for messages
   const offlineMessages = {}; // In-memory storage for offline messages
 
+  const printConnectedUsers = () => {
+    console.log('Connected users:', Object.values(users).map(user => ({
+      userId: user._id,
+      username: user.username,
+      socketId: user.socketId
+    })));
+  };
+
   io.on('connection', (socket) => {
     console.log('New client connected:', socket.id);
 
     // Handle new user connection
     socket.on('new-user', (user) => {
+      if (!user || !user._id) {
+        console.error('Invalid user data received:', user);
+        return;
+      }
+
       console.log('New user data received:', user);
       users[user._id] = { ...user, socketId: socket.id };
 
@@ -22,6 +35,7 @@ module.exports = ({ io, app }) => {
 
       console.log('Users after new user connection:', users);
       socket.broadcast.emit('user-connected', user);
+      printConnectedUsers(); // Print connected users whenever a new user connects
     });
 
     // Handle sending chat messages
@@ -67,6 +81,12 @@ module.exports = ({ io, app }) => {
       if (disconnectedUserId) {
         console.log('Disconnected user ID:', disconnectedUserId);
       }
+      printConnectedUsers(); // Print connected users whenever a user disconnects
+    });
+
+    // Handle request to print connected users
+    socket.on('print-connected-users', () => {
+      printConnectedUsers();
     });
   });
 

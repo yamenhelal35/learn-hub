@@ -31,7 +31,9 @@ const UserChat = ({ friend, currentUser, setMessages }) => {
       } else {
         updatedMessages[friendId] = [newMessage];
       }
-      console.log('Updated messages state:', updatedMessages);
+      const chatKey = `${currentUser._id}_${friend._id}`;
+      localStorage.setItem(chatKey, JSON.stringify(updatedMessages[friendId]));
+      console.log('Updated messages state and localStorage:', updatedMessages);
       return updatedMessages;
     });
 

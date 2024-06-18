@@ -143,15 +143,20 @@ class CommunityController {
 
   async createPost (req, res) {
     try {
-      const { title, description, category, imageUrl, username } = req.body
+      const { title, description, category, username, imageUrl } = req.body // Correctly extract imageUrl from req.body
       const { communityId } = req.params
 
+      console.log(title)
+      console.log(description)
+      console.log(category)
       console.log(imageUrl)
       console.log(username)
 
-      if (!title || !description || category) {
+      if (!title || !description || !category || !imageUrl || !username) { // Correct the condition to check for missing fields
         console.log('please enter all fields')
+        return res.status(400).json({ error: 'Please enter all fields' })
       }
+
       const community = await this.communityService.getCommunityById(communityId)
       if (!community) {
         return res.status(404).json({ error: 'Community not found' })

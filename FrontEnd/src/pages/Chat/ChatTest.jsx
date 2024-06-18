@@ -12,16 +12,6 @@ const ChatTest = () => {
   const prevSelectedFriend = useRef(null);
   const socketRef = useRef(null);
 
-  const initializeSocket = () => {
-    socketRef.current = io('http://localhost:8004'); // Update with your server's Socket.IO address
-    socketRef.current.on('connect', () => {
-      console.log('Socket connected');
-      if (currentUser) {
-        socketRef.current.emit('new-user', currentUser);
-      }
-    });
-  };
-
   useEffect(() => {
     const fetchCurrentUser = () => {
       try {
@@ -30,7 +20,6 @@ const ChatTest = () => {
           const parsedUser = JSON.parse(user);
           setCurrentUser(parsedUser);
           console.log('Fetched current user:', parsedUser);
-          initializeSocket();
         } else {
           console.error('No current user found in localStorage');
         }
@@ -40,6 +29,12 @@ const ChatTest = () => {
     };
 
     fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      initializeSocket();
+    }
 
     return () => {
       if (socketRef.current) {
@@ -47,7 +42,48 @@ const ChatTest = () => {
         console.log('Socket disconnected');
       }
     };
-  }, []);
+  }, [currentUser]);
+
+  const initializeSocket = () => {
+    socketRef.current = io('http://localhost:8004'); // Update with your server's Socket.IO address
+    socketRef.current.on('connect', () => {
+      console.log('Socket connected');
+      if (currentUser) {
+        socketRef.current.emit('new-user', currentUser);
+      }
+    });
+
+    socketRef.current.on('chat-message', handleIncomingMessage);
+  };
+
+  const handleIncomingMessage = (newMessage) => {
+    console.log('Incoming message:', newMessage);
+    const chatKey = `${newMessage.userId}_${newMessage.friendId}`;
+    const reversedChatKey = `${newMessage.friendId}_${newMessage.userId}`;
+
+    // Store the message for both sender and receiver in localStorage
+    const storeMessage = (key) => {
+      const storedMessages = JSON.parse(localStorage.getItem(key) || '[]');
+      const newChatHistory = [...storedMessages, newMessage];
+      localStorage.setItem(key, JSON.stringify(newChatHistory));
+      console.log('Updated chat history in localStorage for key:', key, newChatHistory);
+    };
+
+    storeMessage(chatKey);
+    storeMessage(reversedChatKey);
+
+    // Update state if the chat is currently active
+    setMessages((prevMessages) => {
+      const updatedMessages = { ...prevMessages };
+      const friendId = newMessage.friendId === currentUser._id ? newMessage.userId : newMessage.friendId;
+      if (updatedMessages[friendId]) {
+        updatedMessages[friendId] = [...updatedMessages[friendId], newMessage];
+      } else {
+        updatedMessages[friendId] = [newMessage];
+      }
+      return updatedMessages;
+    });
+  };
 
   useEffect(() => {
     if (selectedFriend && currentUser && selectedFriend !== prevSelectedFriend.current) {
@@ -69,47 +105,6 @@ const ChatTest = () => {
     }));
     setLoading(false);
   };
-
-  useEffect(() => {
-    const handleIncomingMessage = (newMessage) => {
-      console.log('Incoming message:', newMessage);
-      const chatKey = `${newMessage.userId}_${newMessage.friendId}`;
-      const reversedChatKey = `${newMessage.friendId}_${newMessage.userId}`;
-
-      // Store the message for both sender and receiver in localStorage
-      const storeMessage = (key) => {
-        const storedMessages = JSON.parse(localStorage.getItem(key) || '[]');
-        const newChatHistory = [...storedMessages, newMessage];
-        localStorage.setItem(key, JSON.stringify(newChatHistory));
-        console.log('Updated chat history in localStorage for key:', key, newChatHistory);
-      };
-
-      storeMessage(chatKey);
-      storeMessage(reversedChatKey);
-
-      // Update state if the chat is currently active
-      setMessages((prevMessages) => {
-        const updatedMessages = { ...prevMessages };
-        const friendId = newMessage.friendId === currentUser._id ? newMessage.userId : newMessage.friendId;
-        if (updatedMessages[friendId]) {
-          updatedMessages[friendId] = [...updatedMessages[friendId], newMessage];
-        } else {
-          updatedMessages[friendId] = [newMessage];
-        }
-        return updatedMessages;
-      });
-    };
-
-    if (socketRef.current) {
-      socketRef.current.on('chat-message', handleIncomingMessage);
-    }
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.off('chat-message', handleIncomingMessage);
-      }
-    };
-  }, [selectedFriend, currentUser]);
 
   const handleSelectFriend = (friend) => {
     console.log('Friend selected:', friend);

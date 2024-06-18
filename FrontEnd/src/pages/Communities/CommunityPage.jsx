@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import nopic from "../../components/images/404.jpeg";
 
-
-
 const CommunityPage = () => {
     const [activeTab, setActiveTab] = useState('Posts');
     const [community, setCommunity] = useState(null);
@@ -17,8 +15,6 @@ const CommunityPage = () => {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [posts, setPosts] = useState([]);
-
-
 
     useEffect(() => {
         const fetchCommunityData = async () => {
@@ -147,61 +143,6 @@ const CommunityPage = () => {
             return <div>Loading community details...</div>;
           }
       
-    
-/*     const posts = [
-        {
-            id: 1,
-            title: 'Boost your conversion rate',
-            href: '#',
-            description:
-                'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-            date: 'Mar 16, 2020',
-            datetime: '2020-03-16',
-            category: { title: 'Marketing', href: '#' },
-            author: {
-                name: 'Michael Foster',
-                role: 'Co-Founder / CTO',
-                href: '#',
-                imageUrl:
-                    'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            },
-        },
-        {
-            id: 2,
-            title: 'Boost your conversion rate',
-            href: '#',
-            description:
-                'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-            date: 'Mar 16, 2020',
-            datetime: '2020-03-16',
-            category: { title: 'Marketing', href: '#' },
-            author: {
-                name: 'Michael Foster',
-                role: 'Co-Founder / CTO',
-                href: '#',
-                imageUrl:
-                    'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            },
-        },
-        {
-            id: 3,
-            title: 'Boost your conversion rate',
-            href: '#',
-            description:
-                'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-            date: 'Mar 16, 2020',
-            datetime: '2020-03-16',
-            category: { title: 'Marketing', href: '#' },
-            author: {
-                name: 'Michael Foster',
-                role: 'Co-Founder / CTO',
-                href: '#',
-                imageUrl:
-                    'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            },
-        },
-        // More posts...
-    ]; */
 
     const handleCreatePost = () => {
         setShowModal(true);
@@ -243,7 +184,7 @@ const CommunityPage = () => {
             const username = userProfileData.username;
     
             // Include userProfilePic and username in formDataObject
-            formDataObject.imageUrl = userProfilePic;
+            formDataObject.imageUrl = userProfilePic || nopic;;
             formDataObject.username = username;
     
     
@@ -270,82 +211,10 @@ const CommunityPage = () => {
             setPosts([...posts, newPost]);
             setShowModal(false);
 
-
-            // Optionally handle success, e.g., show a success message or update UI
         } catch (error) {
             console.error('Error creating post:', error);
-            // Optionally handle error, e.g., show an error message to the user
         }
     };
-    
-    
-
-
-      
-
-
-
-      
-      
-      // Example usage assuming you have a form with ID 'postForm'
-      
-      
-
-/*     const people = [
-        {
-            name: 'Leslie Alexander',
-            email: 'leslie.alexander@example.com',
-            role: 'Co-Founder / CEO',
-            imageUrl:
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Michael Foster',
-            email: 'michael.foster@example.com',
-            role: 'Co-Founder / CTO',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Dries Vincent',
-            email: 'dries.vincent@example.com',
-            role: 'Business Relations',
-            imageUrl:
-                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: null,
-        },
-        {
-            name: 'Lindsay Walton',
-            email: 'lindsay.walton@example.com',
-            role: 'Front-end Developer',
-            imageUrl:
-                'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Courtney Henry',
-            email: 'courtney.henry@example.com',
-            role: 'Designer',
-            imageUrl:
-                'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: '3h ago',
-            lastSeenDateTime: '2023-01-23T13:23Z',
-        },
-        {
-            name: 'Tom Cook',
-            email: 'tom.cook@example.com',
-            role: 'Director of Product',
-            imageUrl:
-                'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            lastSeen: null,
-        },
-    ]
- */
 
     const renderContent = () => {
         switch (activeTab) {
@@ -360,10 +229,10 @@ const CommunityPage = () => {
                                     {new Date(post.createdAt).toLocaleDateString()}
                                 </time>
                                 <a
-                                    href={`/${post.category.toLowerCase()}`} // Example link, replace with actual route
+                                    href={post.category ? `/${post.category.toLowerCase()}` : '#'} // Ensure category exists before calling toLowerCase
                                     className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                                 >
-                                    {post.category}
+                                    {post.category || 'Uncategorized'}
                                 </a>
                             </div>
                             <div className="group relative mt-3">
@@ -393,7 +262,6 @@ const CommunityPage = () => {
             case 'Files':
                 return <div className="text-white border-t border-gray-200">
                     <section>
-                        {/* <hr className='p-4'/> */}
                         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
 
                             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden max-w-fill">
@@ -407,7 +275,6 @@ const CommunityPage = () => {
                                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                                     </svg>
                                                 </div>
-                                                {/* <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required=""> */}
                                             </div>
                                         </form>
                                     </div>
@@ -448,23 +315,18 @@ const CommunityPage = () => {
                                                 <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
                                                 <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
                                                     <li class="flex items-center">
-                                                        {/* <input id="apple" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> */}
                                                         <label for="apple" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple (56)</label>
                                                     </li>
                                                     <li class="flex items-center">
-                                                        {/* <input id="fitbit" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> */}
                                                         <label for="fitbit" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft (16)</label>
                                                     </li>
                                                     <li class="flex items-center">
-                                                        {/* <input id="razor" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> */}
                                                         <label for="razor" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor (49)</label>
                                                     </li>
                                                     <li class="flex items-center">
-                                                        {/* <input id="nikon" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> */}
                                                         <label for="nikon" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon (12)</label>
                                                     </li>
                                                     <li class="flex items-center">
-                                                        {/* <input id="benq" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"> */}
                                                         <label for="benq" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ (74)</label>
                                                     </li>
                                                 </ul>
@@ -567,8 +429,6 @@ const CommunityPage = () => {
                                                 </td>
                                             </tr>
 
-
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -584,7 +444,7 @@ const CommunityPage = () => {
                                             <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                 <span class="sr-only">Previous</span>
                                                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                                 </svg>
                                             </a>
                                         </li>
@@ -607,7 +467,7 @@ const CommunityPage = () => {
                                             <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                 <span class="sr-only">Next</span>
                                                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                                 </svg>
                                             </a>
                                         </li>
@@ -616,55 +476,49 @@ const CommunityPage = () => {
                             </div>
                         </div>
                     </section>
-
-
                 </div>;
             case 'People':
                 return <div className="text-white border-t border-gray-200 ">
-                                            {/* <hr className='p-4'/> */}
-
-                                            <div className="text-white border-t border-gray-200">
-        <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-700">
-          {members.map((member) => (
-            <li key={member._id} className="flex justify-between gap-x-6 py-5">
-              <div className="flex min-w-0 gap-x-4">
-                <img className="h-12 w-12 flex-none rounded-full bg-gray-50 dark:bg-gray-800" src={member.profilepic || nopic} alt="" />
-                <div className="min-w-0 flex-auto">
-                  <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{member.username}</p>
-                  <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-400">{member.email}</p>
-                </div>
-              </div>
-              <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                <p className="text-sm leading-6 text-gray-900 dark:text-gray-100">{member.userRole}</p>
-                {member.lastSeen ? (
-                  <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
-                    Last seen <time dateTime={member.lastSeenDateTime}>{member.lastSeen}</time>
-                  </p>
-                ) : (
-                  <div className="mt-1 flex items-center gap-x-1.5">
-                    <div className="flex-none rounded-full bg-emerald-500/20 dark:bg-emerald-400/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                    <div className="text-white border-t border-gray-200">
+                        <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-700">
+                            {members.map((member) => (
+                                <li key={member._id} className="flex justify-between gap-x-6 py-5">
+                                    <div className="flex min-w-0 gap-x-4">
+                                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50 dark:bg-gray-800" src={member.profilepic || nopic} alt="" />
+                                        <div className="min-w-0 flex-auto">
+                                            <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{member.username}</p>
+                                            <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-400">{member.email}</p>
+                                        </div>
+                                    </div>
+                                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                        <p className="text-sm leading-6 text-gray-900 dark:text-gray-100">{member.userRole}</p>
+                                        {member.lastSeen ? (
+                                            <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                                                Last seen <time dateTime={member.lastSeenDateTime}>{member.lastSeen}</time>
+                                            </p>
+                                        ) : (
+                                            <div className="mt-1 flex items-center gap-x-1.5">
+                                                <div className="flex-none rounded-full bg-emerald-500/20 dark:bg-emerald-400/20 p-1">
+                                                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                                </div>
+                                                <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">Online</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {currentUser !== member._id && (
+                                        <button
+                                            onClick={() => addFriend(member._id)}
+                                            className={`ml-4 rounded-md px-8 py-1 text-sm font-semibold text-white shadow-sm ${userFriends.some(friend => friend._id === member._id) ? 'bg-gray-400' : 'bg-blue-300 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600'}`}
+                                            disabled={userFriends.some(friend => friend._id === member._id)}
+                                        >
+                                            {userFriends.some(friend => friend._id === member._id) ? 'Added' : 'Add Friend'}
+                                        </button>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                    <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">Online</p>
-                  </div>
-                )}
-              </div>
-              {currentUser !== member._id && (
-                    <button
-                      onClick={() => addFriend(member._id)}
-                      className={`ml-4 rounded-md px-8 py-1 text-sm font-semibold text-white shadow-sm ${userFriends.some(friend => friend._id === member._id) ? 'bg-gray-400' : 'bg-blue-300 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600'}`}
-                      disabled={userFriends.some(friend => friend._id === member._id)}
-                    >
-                      {userFriends.some(friend => friend._id === member._id) ? 'Added' : 'Add Friend'}
-                    </button>
-
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-
+                </div>
             default:
                 return null;
         }
@@ -709,68 +563,61 @@ const CommunityPage = () => {
                 </div>
             </div>
 
-
-
-{/*==========Input Modal for posts================== */}
-
-{showModal && (
-        <div id="crud-modal" tabIndex="-1" aria-hidden="true" className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50">
-          <div className="relative p-4 w-full max-w-md max-h-full">
-            {/* Modal content */}
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              {/* Modal header */}
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Create New Post
-                </h3>
-                <button
-                  type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={handleCloseModal}
-                >
-                  <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
-                  </svg>
-                  <span className="sr-only">Close modal</span>
-                </button>
-              </div>
-              {/* Modal body */}
-              <form className="p-4 md:p-5" onSubmit={handleSubmit}>
-                <div className="grid gap-4 mb-4 grid-cols-2">
-                  <div className="col-span-2">
-                    <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                    <input type="text" id="title" name="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter Title" required />
-                  </div>
-                  <div className="col-span-2 sm:col-span-1">
-                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                    <select id="category" name="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                      <option value="" disabled>Select category</option>
-                      <option value="Important">Important</option>
-                      <option value="Class Material">Class Material</option>
-                      <option value="Exam">Exam</option>
-                      <option value="Discussion">Discussion</option>
-                    </select>
-                  </div>
-                  <div className="col-span-2">
-                    <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                    <textarea id="description" name="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Description"></textarea>
-                  </div>
+            {/*==========Input Modal for posts================== */}
+            {showModal && (
+                <div id="crud-modal" tabIndex="-1" aria-hidden="true" className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50">
+                    <div className="relative p-4 w-full max-w-md max-h-full">
+                        {/* Modal content */}
+                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            {/* Modal header */}
+                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    Create New Post
+                                </h3>
+                                <button
+                                    type="button"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    onClick={handleCloseModal}
+                                >
+                                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
+                                    </svg>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            {/* Modal body */}
+                            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+                                <div className="grid gap-4 mb-4 grid-cols-2">
+                                    <div className="col-span-2">
+                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                                        <input type="text" id="title" name="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter Title" required />
+                                    </div>
+                                    <div className="col-span-2 sm:col-span-1">
+                                        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                        <select id="category" name="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option value="" disabled>Select category</option>
+                                            <option value="Important">Important</option>
+                                            <option value="Class Material">Class Material</option>
+                                            <option value="Exam">Exam</option>
+                                            <option value="Discussion">Discussion</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                        <textarea id="description" name="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Description"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    Add Post
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                  </svg>
-                  Add Post
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-
-
-
-
+            )}
         </div>
     );
 };
