@@ -139,5 +139,13 @@ class AuthService {
       throw new Error('Error fetching MongoDB user ID by email')
     }
   }
+
+  async updateUser (userId, updateData) {
+    const user = await this.authRepository.updateUser(userId, updateData)
+    if (!user) {
+      throw new Error('Failed to update user')
+    }
+    return user
+  }
 }
 module.exports = AuthService

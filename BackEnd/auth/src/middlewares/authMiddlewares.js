@@ -21,7 +21,6 @@ async function isAuthenticated (req, res, next) {
     const username = decodedToken.mongoUserName
     const email = decodedToken.email
     const profilepic = decodedToken.profilepic
-    console.log('profilepic', profilepic)
     req.userId = userId
     req.mongouserId = mongouserId
     req.username = username

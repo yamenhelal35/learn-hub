@@ -218,6 +218,27 @@ class AuthController {
       res.status(400).json({ message: err.message })
     }
   }
+
+  async updateUser (req, res) {
+    try {
+      const userId = req.mongouserId
+      const updateData = {
+        username: req.body.username,
+        bio: req.body.bio
+      }
+
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path)
+        updateData.profilepic = result.secure_url
+      }
+
+      const updatedUser = await this.authService.updateUser(userId, updateData)
+      res.json(updatedUser)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: error.message })
+    }
+  }
 }
 
 module.exports = AuthController

@@ -34,7 +34,7 @@ class AuthRepository {
 
   async updateOne (filter, update) {
     try {
-      const result = await User.updateOne(filter, update) // Perform the update
+      const result = await User.updateOne(filter, update)
       return result
     } catch (error) {
       throw new Error(`Failed to update user: ${error.message}`)
@@ -84,6 +84,10 @@ class AuthRepository {
     } catch (error) {
       throw new Error(`Failed to Get Friends: ${error.message}`)
     }
+  }
+
+  async updateUser (userId, updateData) {
+    return await User.findByIdAndUpdate(userId, updateData, { new: true })
   }
 }
 

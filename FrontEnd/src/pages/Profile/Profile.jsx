@@ -83,7 +83,7 @@ const Profile = () => {
                     </div>
                     {/* ================== User Bio ===================== */}
                     <p className="mt-4 text-sm leading-6" id='bio'>
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of <br /> using Lorem Ipsum is that it has a more-or-less normal distribution of letters, <br />as opposed to using 'Content here, content here', making it look like readable English.
+                        {profileData.bio || 'Bio not available.'}
                     </p>
 
                     <div className='mt-3'>

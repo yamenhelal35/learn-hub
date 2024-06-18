@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/StickyComponent/Side Bar/Sidebar';
 import SearchBar from '../../components/landingPage/Searchbar/Searchbar';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 const CreateCommunity = ({ onSave }) => {
 
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     name: '',
@@ -70,6 +73,10 @@ const CreateCommunity = ({ onSave }) => {
 
       alert("Community Created!");
       onSave(data); // If you want to save the created community data
+
+      const communityId = responseBody.community._id; // Use the MongoDB _id returned by the backend
+      navigate(`/communitypage/${communityId}`);
+
     } catch (error) {
       console.error('Error while creating community:', error);
     }
