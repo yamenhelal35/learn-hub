@@ -5,7 +5,8 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const tokenDecoder = require('./tokenDecoder');
+const { userFromToken } = require('./tokenDecoder');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
@@ -17,7 +18,7 @@ const io = socketIo(server, {
   }
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8004;
 
 app.use(cors({
   origin: 'http://localhost:3000', // Replace with your frontend URL
@@ -25,13 +26,20 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'feats/chat')));
 
-app.use(tokenDecoder.userFromToken);
+app.use(userFromToken);
 
-require(path.join(__dirname, 'ai/script'))(app);
-require(path.join(__dirname, 'chat/script'))({ io, app });
+require('./ai/script')(app);
+require('./chat/script')({ io, app });
+require('./todolist/script')({ app });
 
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+    server.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to MongoDB', err);
+  });
