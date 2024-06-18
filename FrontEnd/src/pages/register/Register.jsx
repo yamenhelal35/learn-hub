@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Text from "../login/Text.svg";
-import logo2 from "../login/login-promotion 1.png";
+import logo2 from "../../components/images/LoginNew.png";
 import { Link } from "react-router-dom";
 
 function Register() {
@@ -64,11 +64,11 @@ function Register() {
   return (
     <div className="w-full h-full flex items-start ">
       {/* Left Part Form and Login */}
-      <div className="w-1/2 h-screen flex flex-col p-10 justify-between bg-[#FAFAFA]">
+      <div className="w-1/2 h-screen flex flex-col p-10 justify-between bg-gray-800">
         <div className="w-full flex flex-col max-w-[550px]:">
           <div className="w-full flex flex-col mb-1">
-            <h3 className="text-4xl font-bold mb-4">Register To LearnHub</h3>
-            <p className="text-base mb-2">Welcome To LearnHub, Start your Journey Now</p>
+            <h3 className="text-4xl font-bold mb-4 text-white">Register To LearnHub</h3>
+            <p className="text-base mb-2 text-gray-200">Create your account and Join now for free</p>
           </div>
 
           <div className="w-full flex flex-col">
@@ -105,7 +105,7 @@ function Register() {
             />
           </div>
           <div className="w-full flex flex-col my-4">
-            <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center text-white flex items-center justify-center" onClick={handleSubmit}>
+            <button className="w-full bg-blue-600 rounded-md  p-4 text-center text-white flex items-center justify-center" onClick={handleSubmit}>
               Create Account
             </button>
           </div>
@@ -118,11 +118,11 @@ function Register() {
       </div>
 
       {/* Right Part Logo and Button */}
-      <div className="w-1/2 h-screen flex flex-col p-10 justify-between">
+      <div className="w-1/2 h-screen flex flex-col p-10 justify-between  bg-gray-800">
         <img src={Text} alt="" className="mb-3" />
         <img src={logo2} alt="" className="w-97"/>
-        <Link to="/">
-        <button className="w-full bg-[#968BC9] rounded-md  p-4 text-center font-semibold text-white flex items-center justify-center">
+        <Link to="/login">
+        <button className="w-full bg-blue-700 rounded-md  p-4 text-center font-semibold text-white flex items-center justify-center">
             Login to Existing Account
             </button>
       </Link>

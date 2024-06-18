@@ -17,6 +17,8 @@ import Courses from './pages/Courses/Courses';
 import CommunityPage from './pages/Communities/CommunityPage';
 import NewCommunity from './pages/Communities/NewCommunity';
 import CourseDetails from './pages/Courses/CourseDetails';
+import ContactUs from './pages/ContactUS/ContactUs';
+
 
 function App() {
   const [communityData, setCommunityData] = useState([
@@ -63,7 +65,7 @@ function App() {
         <Route exact path="/Dashboard" element={<Dashboard />} />
         <Route exact path="/Home" element={<Landing />} />
         <Route exact path="/AI" element={<AI />} />
-
+        <Route exact path="/ContactUs" element={<ContactUs />} />
 
 
 

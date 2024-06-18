@@ -14,46 +14,46 @@ const Profile = () => {
 
     const fetchProfileData = async () => {
         try {
-          const token = Cookies.get('token');
+            const token = Cookies.get('token');
 
-          console.log(`token: ${token}`)
-          const response = await fetch('http://localhost:8002/auth/profile', {
-            method: "GET", 
-            credentials: 'include',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            }
-          });
-          console.log(response)
-
-          if (!response.ok) {
-            throw new Error(`Error fetching ProfileData: ${response.statusText}`);
-          }
-          const data = await response.json();
-          return data;
-        } catch (error) {
-          console.error('Error fetching ProfileData:', error);
-          return []; 
-        }
-      };
-
-      useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const data
-             = await fetchProfileData();
-            if (data) {
-                setProfileData(data); 
+            console.log(`token: ${token}`)
+            const response = await fetch('http://localhost:8002/auth/profile', {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                 }
-            setIsLoading(false);
-          } catch (error) {
-            console.error('Error loading profileData:', error);
-            setIsLoading(false);
-          }
+            });
+            console.log(response)
+
+            if (!response.ok) {
+                throw new Error(`Error fetching ProfileData: ${response.statusText}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching ProfileData:', error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data
+                    = await fetchProfileData();
+                if (data) {
+                    setProfileData(data);
+                }
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error loading profileData:', error);
+                setIsLoading(false);
+            }
         };
-      
+
         fetchData();
-      }, []);
+    }, []);
 
 
     return (
@@ -74,13 +74,10 @@ const Profile = () => {
                         </div>
                         {/* =============Button Edit Profile Info =============== */}
 
-                       
+                  
 
-                        <div className='ml-100'>
-                        <Link to="/EditProfile"> 
-                            <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Edit Profile</button>
-                            </Link>
-                        </div>
+
+
 
 
                     </div>
@@ -89,6 +86,11 @@ const Profile = () => {
                         It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of <br /> using Lorem Ipsum is that it has a more-or-less normal distribution of letters, <br />as opposed to using 'Content here, content here', making it look like readable English.
                     </p>
 
+                    <div className='mt-3'>
+                            <Link to="/EditProfile">
+                                <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Edit Profile</button>
+                            </Link>
+                        </div>
 
 
                     {/* ================ Analytics ======================== */}
@@ -170,7 +172,7 @@ const Profile = () => {
                             <svg class="w-8 h-8 text-gray-400 dark:text-gray-600 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
                                 <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
                             </svg>
-                            <p className='Qoute'>"Flowbite is just awesome. It contains tons of predesigned components and pages starting from login screen to complex dashboard. Perfect choice for your next SaaS application."</p>
+                            <p className='Qoute'>"when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"</p>
                         </blockquote>
 
 
