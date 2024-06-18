@@ -5,10 +5,34 @@ import nopic from "../../components/images/404.jpeg";
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
+const quotes = [
+    "When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+    "The quick brown fox jumps over the lazy dog.",
+    "To be, or not to be, that is the question.",
+    "A journey of a thousand miles begins with a single step.",
+    "In the end, we only regret the chances we didn't take.",
+    "You miss 100% of the shots you don't take.",
+    "The only way to do great work is to love what you do.",
+    "The best time to plant a tree was 20 years ago. The second best time is now.",
+    "Life is what happens when you're busy making other plans.",
+    "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "Success is not the key to happiness. Happiness is the key to success.",
+    "The only limit to our realization of tomorrow is our doubts of today.",
+    "Your time is limited, don't waste it living someone else's life.",
+    "Don't watch the clock; do what it does. Keep going.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "You are never too old to set another goal or to dream a new dream.",
+    "Act as if what you do makes a difference. It does.",
+    "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
+    "Believe you can and you're halfway there.",
+    "The best way to predict the future is to create it."
+  ];
+
 
 const Profile = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [profileData, setProfileData] = useState({});
+    const [quote, setQuote] = useState('');
 
 
 
@@ -53,6 +77,8 @@ const Profile = () => {
         };
 
         fetchData();
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        setQuote(quotes[randomIndex]);
     }, []);
 
 
@@ -83,7 +109,7 @@ const Profile = () => {
                     </div>
                     {/* ================== User Bio ===================== */}
                     <p className="mt-4 text-sm leading-6" id='bio'>
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of <br /> using Lorem Ipsum is that it has a more-or-less normal distribution of letters, <br />as opposed to using 'Content here, content here', making it look like readable English.
+                        {profileData.bio || 'Bio not available.'}
                     </p>
 
                     <div className='mt-3'>
@@ -172,7 +198,7 @@ const Profile = () => {
                             <svg class="w-8 h-8 text-gray-400 dark:text-gray-600 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
                                 <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
                             </svg>
-                            <p className='Qoute'>"when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"</p>
+                            <p className="Qoute">{quote}</p>
                         </blockquote>
 
 

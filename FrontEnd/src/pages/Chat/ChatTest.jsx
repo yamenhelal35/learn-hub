@@ -1,65 +1,160 @@
-// src/components/ChatTest.jsx
-import React from 'react';
-import FriendChat from './Components/FriendChat';
-import UserChat from './Components/UserChat';
-import OnlineFriends from './Components/OnlineFriends';
-
-
+import React, { useState, useEffect, useRef } from 'react';
+import io from 'socket.io-client';
+import OnlineFriends from './Components/OnlineFriends'; // Adjust path if necessary
+import FriendChat from './Components/FriendChat'; // Adjust path if necessary
+import UserChat from './Components/UserChat'; // Adjust path if necessary
 
 const ChatTest = () => {
-    return (
-        <div className="container bg-gray-800 text-white min-h-screen">
-            {/* ==============Top Section===================== */}
-            <div className="px-5 py-5 flex justify-between items-center bg-gray-900 border-b-2 border-gray-700">
-                <div className="font-semibold text-2xl">Chat</div>
-            </div>
+  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [messages, setMessages] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const prevSelectedFriend = useRef(null);
+  const socketRef = useRef(null);
 
-            <div className="flex flex-row justify-between bg-gray-800">
-                
-                {/*========== People Online in Your Chatting  ================*/}
+  useEffect(() => {
+    const fetchCurrentUser = () => {
+      try {
+        const user = localStorage.getItem('currentUser');
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          setCurrentUser(parsedUser);
+          console.log('Fetched current user:', parsedUser);
+        } else {
+          console.error('No current user found in localStorage');
+        }
+      } catch (error) {
+        console.error('Failed to fetch current user:', error);
+      }
+    };
 
-                <div className="flex flex-col w-2/5 border-r-2 border-gray-700 overflow-y-auto">
-                 <OnlineFriends></OnlineFriends>
-                 </div> 
+    fetchCurrentUser();
+  }, []);
 
-                {/* ===========Chat Place=========== */}
+  useEffect(() => {
+    if (currentUser) {
+      initializeSocket();
+    }
 
-                <div className="w-full px-5 flex flex-col justify-between">
-                    <div className="flex flex-col mt-5 overflow-y-auto">
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        console.log('Socket disconnected');
+      }
+    };
+  }, [currentUser]);
 
-                        <FriendChat></FriendChat>
+  const initializeSocket = () => {
+    socketRef.current = io('http://localhost:8004'); // Update with your server's Socket.IO address
+    socketRef.current.on('connect', () => {
+      console.log('Socket connected');
+      if (currentUser) {
+        socketRef.current.emit('new-user', currentUser);
+      }
+    });
 
-                        <UserChat></UserChat>
+    socketRef.current.on('chat-message', handleIncomingMessage);
+  };
 
-                    </div>
-                    
-                    {/* =========Send Message=============== */}
-                    <div className="py-5">
-                        <form>
-                            <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Say Hello, it's been a while</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                </div>
-                                <input class="block w-full p-4 ps-4 text-sm border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Say Hello It's been a while...." required />
-                                <div className='flex flex-row'>
-                                    <button type="button" class="text-gray-500 absolute end-14 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 mr-12 ">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                                    </button>
-                                    <button type="button" class="text-gray-500 absolute end-9 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 mr-8">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                                    </button>
-                                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-pink-700 dark:focus:ring-Pink-800">Send</button>
-                                </div>
-                            </div>
-                        </form>
+  const handleIncomingMessage = (newMessage) => {
+    console.log('Incoming message:', newMessage);
+    const chatKey = `${newMessage.userId}_${newMessage.friendId}`;
+    const reversedChatKey = `${newMessage.friendId}_${newMessage.userId}`;
 
-                    </div>
-                </div>
+    // Store the message for both sender and receiver in localStorage
+    const storeMessage = (key) => {
+      const storedMessages = JSON.parse(localStorage.getItem(key) || '[]');
+      const newChatHistory = [...storedMessages, newMessage];
+      localStorage.setItem(key, JSON.stringify(newChatHistory));
+      console.log('Updated chat history in localStorage for key:', key, newChatHistory);
+    };
 
+    storeMessage(chatKey);
+    storeMessage(reversedChatKey);
 
-            </div>
+    // Update state if the chat is currently active
+    setMessages((prevMessages) => {
+      const updatedMessages = { ...prevMessages };
+      const friendId = newMessage.friendId === currentUser._id ? newMessage.userId : newMessage.friendId;
+      if (updatedMessages[friendId]) {
+        updatedMessages[friendId] = [...updatedMessages[friendId], newMessage];
+      } else {
+        updatedMessages[friendId] = [newMessage];
+      }
+      return updatedMessages;
+    });
+  };
+
+  useEffect(() => {
+    if (selectedFriend && currentUser && selectedFriend !== prevSelectedFriend.current) {
+      console.log('Selected friend changed:', selectedFriend);
+      prevSelectedFriend.current = selectedFriend;
+      loadMessages(currentUser._id, selectedFriend._id);
+    }
+  }, [selectedFriend, currentUser]);
+
+  const loadMessages = (userId, friendId) => {
+    setLoading(true);
+    const chatKey = `${userId}_${friendId}`;
+    const reversedChatKey = `${friendId}_${userId}`;
+    const storedMessages =
+      JSON.parse(localStorage.getItem(chatKey)) || JSON.parse(localStorage.getItem(reversedChatKey)) || [];
+    setMessages((prevMessages) => ({
+      ...prevMessages,
+      [friendId]: storedMessages,
+    }));
+    setLoading(false);
+  };
+
+  const handleSelectFriend = (friend) => {
+    console.log('Friend selected:', friend);
+    if (selectedFriend?._id !== friend._id) {
+      setSelectedFriend(friend);
+    }
+  };
+
+  return (
+    <div className="container bg-gray-800 text-white min-h-screen">
+      <div className="px-5 py-5 flex justify-between items-center bg-gray-900 border-b-2 border-gray-700">
+        <div className="font-semibold text-2xl">Chat</div>
+      </div>
+
+      <div className="flex flex-row justify-between bg-gray-800">
+        <div className="flex flex-col w-2/5 border-r-2 border-gray-700 overflow-y-auto">
+          <OnlineFriends
+            onSelectFriend={handleSelectFriend}
+            messages={messages}
+            currentUser={currentUser}
+          />
         </div>
-    );
-}
+
+        <div className="w-full px-5 flex flex-col justify-between">
+          {selectedFriend ? (
+            <>
+              {loading ? (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  <p>Loading...</p>
+                </div>
+              ) : (
+                <>
+                  <FriendChat
+                    friend={selectedFriend}
+                    messages={messages[selectedFriend._id] || []}
+                    currentUser={currentUser}
+                  />
+                  <UserChat friend={selectedFriend} currentUser={currentUser} setMessages={setMessages} />
+                </>
+              )}
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">
+              <p>Select a friend to start chatting</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ChatTest;

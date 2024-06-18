@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const { User } = require('../models/user')
 
 class AuthRepository {
   async createUser (userData) {
@@ -17,7 +17,9 @@ class AuthRepository {
 
   async findUserByEmail (email) {
     try {
-      const user = await User.findOne({ email }, { _id: 1, username: 1 }).lean()
+      console.log(email)
+
+      const user = await User.findOne({ email }, { _id: 1, username: 1, profilepic: 1 }).lean()
       return user
     } catch (error) {
       console.error('Error finding user by email:', error)
@@ -32,7 +34,7 @@ class AuthRepository {
 
   async updateOne (filter, update) {
     try {
-      const result = await User.updateOne(filter, update) // Perform the update
+      const result = await User.updateOne(filter, update)
       return result
     } catch (error) {
       throw new Error(`Failed to update user: ${error.message}`)
@@ -46,6 +48,46 @@ class AuthRepository {
     } catch (error) {
       throw new Error(`Failed to fetch users: ${error.message}`)
     }
+  }
+
+  async addFriend (userID, friendID) {
+    try {
+      const user = await User.findById(userID)
+      const friend = await User.findById(friendID)
+      if (!user) {
+        throw new Error('User not found')
+      }
+      if (!friend) {
+        throw new Error('friend not found')
+      }
+
+      if (user.friends.includes(friendID)) {
+        throw new Error('Friend already added')
+      }
+
+      user.friends.push(friendID)
+      friend.friends.push(userID)
+
+      await user.save()
+      await friend.save()
+
+      return user
+    } catch (error) {
+      throw new Error(`Failed to Add Friend: ${error.message}`)
+    }
+  }
+
+  async getFriendList (friendIds) {
+    try {
+      const friends = await User.find({ _id: { $in: friendIds } })
+      return friends
+    } catch (error) {
+      throw new Error(`Failed to Get Friends: ${error.message}`)
+    }
+  }
+
+  async updateUser (userId, updateData) {
+    return await User.findByIdAndUpdate(userId, updateData, { new: true })
   }
 }
 

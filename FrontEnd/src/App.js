@@ -17,6 +17,7 @@ import Courses from './pages/Courses/Courses';
 import CommunityPage from './pages/Communities/CommunityPage';
 import NewCommunity from './pages/Communities/NewCommunity';
 import CourseDetails from './pages/Courses/CourseDetails';
+import Todos  from './pages/ToDoList/Todo';
 import ContactUs from './pages/ContactUS/ContactUs';
 
 
@@ -43,7 +44,7 @@ function App() {
         {/* ===========Commuinty Routes================= */}
         <Route exact path="/Community" element={<Community communityData={communityData} />} />
         <Route exact path="/CreateCommunity" element={<CreateCommunity onSave={handleSaveCommunity} />} />
-        <Route exact path="/CommunityPage" element={<CommunityPage />} />
+        <Route exact path="/CommunityPage/:communityId" element={<CommunityPage />} />
         <Route exact path="/NewCommunity" element={<NewCommunity />} />
 
         {/* ===========Login & Register Routes================= */}
@@ -65,6 +66,7 @@ function App() {
         <Route exact path="/Dashboard" element={<Dashboard />} />
         <Route exact path="/Home" element={<Landing />} />
         <Route exact path="/AI" element={<AI />} />
+        <Route exact path="/ToDoList" element={<Todos  />} />
         <Route exact path="/ContactUs" element={<ContactUs />} />
 
 

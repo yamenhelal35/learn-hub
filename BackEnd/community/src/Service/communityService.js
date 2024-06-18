@@ -1,4 +1,5 @@
 const CommunityRepository = require('../Repository/communityRepository')
+
 const joi = require('joi')
 
 class CommunityService {
@@ -8,15 +9,16 @@ class CommunityService {
 
   validateCommunityData (data) {
     const schema = joi.object({
-      name: joi.string().required().label('Name'),
+      name: joi.string().required().label('name'),
       ownerID: joi.string().label('ownerID'),
-      isOwner: joi.boolean().label('isOwner'),
-      members: joi.array().label('members')
+      members: joi.array().label('members'),
+      about: joi.string().label('about'),
+      privacy: joi.string().required().label('privacy')
     })
     return schema.validate(data)
   }
 
-  async newCommunity (communityData) {
+  async newCommunity (communityData, username) {
     try {
       const { error } = this.validateCommunityData(communityData)
       if (error) {
@@ -37,6 +39,7 @@ class CommunityService {
   async getCommunityById (_id) {
     try {
       const community = await this.communityRepository.findCommunityById(_id)
+
       console.log(`communityID: ${_id}`)
 
       return community
@@ -45,9 +48,16 @@ class CommunityService {
     }
   }
 
-  async joinCommunity (communityId, userId, username) {
+  async joinCommunity (communityId, userId, username, userEmail, userProfilePic) {
     try {
-      const community = await this.communityRepository.joinCommunity(communityId, userId, username)
+      // Debugging logs
+      console.log('Service - Community ID:', communityId)
+      console.log('Service - User ID:', userId)
+      console.log('Service - Username:', username)
+      console.log('Service - User Email:', userEmail)
+      console.log('Service - User Profile Pic:', userProfilePic)
+
+      const community = await this.communityRepository.joinCommunity(communityId, userId, username, userEmail, userProfilePic)
       return community
     } catch (error) {
       throw new Error(`Failed to join community: ${error.message}`)
@@ -62,6 +72,48 @@ class CommunityService {
       return communities
     } catch (error) {
       throw new Error(`Failed to fetch communities: ${error.message}`)
+    }
+  }
+
+  async allMemberForCommunity (communityId) {
+    try {
+      const communityMembers = await this.communityRepository.allMemberForCommunity(communityId)
+      console.log(`received communities members are : ${communityMembers}`)
+
+      return communityMembers
+    } catch (error) {
+      throw new Error(`Failed to fetch communities members: ${error.message}`)
+    }
+  }
+
+  async getTenCommunities (userId, excludeIds = []) {
+    try {
+      const retrievedCommunities = []
+      const seenCommunityIds = new Set(excludeIds)
+
+      let additionalCommunitiesNeeded = 10
+
+      while (additionalCommunitiesNeeded > 0) {
+        const communities = await this.communityRepository.getTenCommunities(userId, Array.from(seenCommunityIds))
+
+        if (communities.length === 0) {
+          break
+        }
+
+        for (const community of communities) {
+          retrievedCommunities.push(community)
+          seenCommunityIds.add(community._id)
+          additionalCommunitiesNeeded--
+
+          if (additionalCommunitiesNeeded === 0) {
+            break
+          }
+        }
+      }
+
+      return retrievedCommunities
+    } catch (error) {
+      throw new Error(`Failed to get ten communities: ${error.message}`)
     }
   }
 
@@ -89,15 +141,53 @@ class CommunityService {
     }
   }
 
-  async uploadFile (communityId, userId, file) {
+  async uploadFile (communityId, userId, file, fileDetails) {
     try {
-      const result = await this.communityRepository.uploadFile(communityId, userId, file)
-
+      const result = await this.communityRepository.uploadFile(communityId, userId, file, fileDetails)
       return result
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`)
     }
   }
+
+  async getFilesFromCommunity (communityID) {
+    try {
+      const result = await this.communityRepository.getFilesFromCommunity(communityID)
+      return result
+    } catch (error) {
+      throw new Error(`Failed to get community file: ${error.message}`)
+    }
+  }
+
+  async getAllPostsForCommunity (communityId) {
+    try {
+      const posts = await this.communityRepository.getAllPostsForCommunity(communityId)
+      return posts
+    } catch (error) {
+      throw new Error(`Failed to fetch posts for community: ${error.message}`)
+    }
+  }
+
+  async createPost (title, description, category, imageUrl, username, communityId) {
+    try {
+      const result = await this.communityRepository.createPost(title, description, category, imageUrl, username, communityId)
+      return result
+    } catch (error) {
+      throw new Error(`Failed to create post: ${error.message}`)
+    }
+  }
+
+/*   getPostById (id) {
+    return this.communityRepository.getPostById(id)
+  }
+
+  updatePost (id, title, content) {
+    return this.communityRepository.updatePost(id, title, content)
+  }
+
+  deletePost (id) {
+    return this.communityRepository.deletePost(id)
+  } */
 }
 
 module.exports = CommunityService
