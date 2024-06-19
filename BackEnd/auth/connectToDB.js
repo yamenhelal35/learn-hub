@@ -8,7 +8,9 @@ dotenv.config({ path: path.resolve(__dirname, '.env') })
 const connectToDB = async () => {
   const connectionParams = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000,
+    socketTimeoutMS: 45000
   }
 
   try {

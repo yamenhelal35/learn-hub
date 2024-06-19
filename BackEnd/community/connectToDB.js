@@ -12,7 +12,12 @@ const connectToDB = async () => {
   }
 
   try {
-    await mongoose.connect(config.mongoURI, connectionParams)
+    await mongoose.connect(config.mongoURI, connectionParams, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000, // 30 seconds
+      socketTimeoutMS: 30000
+    })
     console.log('Connected to DB')
   } catch (error) {
     console.log('Could not connect to DB')

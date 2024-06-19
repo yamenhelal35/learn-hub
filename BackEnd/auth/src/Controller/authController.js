@@ -83,9 +83,13 @@ class AuthController {
       const firebaseUid = userCredential.user.uid
 
       const mongoUser = await this.authService.getMongoUserFromEmail(email)
+
       const mongoUserID = mongoUser._id
       const mongoUserName = mongoUser.username
-      await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName })
+      const userProfilePic = mongoUser.profilepic
+      console.log('userProfilePicuserProfilePic :', userProfilePic)
+
+      await admin.auth().setCustomUserClaims(firebaseUid, { mongoUserID, mongoUserName, email, userProfilePic })
         .then(() => {
           console.log('Custom claims set successfully')
         })
@@ -121,6 +125,30 @@ class AuthController {
       const users = await this.authService.getAllUsers()
       res.json(users)
     } catch (err) {
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async addFriend (req, res) {
+    try {
+      const userId = req.mongouserId
+      const { friendID } = req.body
+      const result = await this.authService.addFriend(userId, friendID)
+      res.json(result)
+    } catch (err) {
+      console.error('Error in addFriend:', err.message)
+
+      res.status(400).json({ message: err.message })
+    }
+  }
+
+  async getFriendList (req, res) {
+    try {
+      const userId = req.mongouserId
+      const friends = await this.authService.getFriendList(userId)
+      res.json(friends)
+    } catch (err) {
+      console.error('Error in getFriendList:', err.message)
       res.status(400).json({ message: err.message })
     }
   }
@@ -188,6 +216,27 @@ class AuthController {
       res.json({ message: 'Logged Out' })
     } catch (err) {
       res.status(400).json({ message: err.message })
+    }
+  }
+
+  async updateUser (req, res) {
+    try {
+      const userId = req.mongouserId
+      const updateData = {
+        username: req.body.username,
+        bio: req.body.bio
+      }
+
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path)
+        updateData.profilepic = result.secure_url
+      }
+
+      const updatedUser = await this.authService.updateUser(userId, updateData)
+      res.json(updatedUser)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: error.message })
     }
   }
 }

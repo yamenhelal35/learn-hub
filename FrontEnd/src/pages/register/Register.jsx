@@ -78,7 +78,7 @@ function Register() {
               value={data.username}
               onChange={handleInputChange}
               placeholder="Name *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+              className="w-full text-white py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
             />
             <input
               type="email"
@@ -86,7 +86,7 @@ function Register() {
               value={data.email}
               onChange={handleInputChange}
               placeholder="Email Address *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+              className="w-full text-white py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
             />
             <input
               type="password"
@@ -94,13 +94,13 @@ function Register() {
               value={data.password}
               onChange={handleInputChange}
               placeholder="Password *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+              className="w-full text-white py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
             />
             <input
               type="password"
               id="confirmPassword"
               placeholder="Re Enter Password *"
-              className="w-full text-black py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
+              className="w-full text-white py-2 bg-transparent my-2 border-b border-[#968BC9] outline-none focus:outline-none"
               onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
             />
           </div>

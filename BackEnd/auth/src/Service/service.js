@@ -100,6 +100,31 @@ class AuthService {
     }
   }
 
+  async addFriend (userID, friendID) {
+    try {
+      if (userID === friendID) {
+        throw new Error('You cannot add yourself as a friend.')
+      }
+      const user = await this.authRepository.addFriend(userID, friendID)
+      return { message: 'Friend added !!', user }
+    } catch (error) {
+      throw new Error(`Failed to Add Friend: ${error.message}`)
+    }
+  }
+
+  async getFriendList (userId) {
+    try {
+      const user = await this.authRepository.findUserById(userId)
+      if (!user) {
+        throw new Error('User not found')
+      }
+      const friends = await this.authRepository.getFriendList(user.friends)
+      return friends
+    } catch (error) {
+      throw new Error(`Failed to Get Friend List: ${error.message}`)
+    }
+  }
+
   async getMongoUserFromEmail (email) {
     try {
       const user = await this.authRepository.findUserByEmail(email)
@@ -113,6 +138,14 @@ class AuthService {
       console.error('Error fetching MongoDB user ID by email:', error)
       throw new Error('Error fetching MongoDB user ID by email')
     }
+  }
+
+  async updateUser (userId, updateData) {
+    const user = await this.authRepository.updateUser(userId, updateData)
+    if (!user) {
+      throw new Error('Failed to update user')
+    }
+    return user
   }
 }
 module.exports = AuthService
